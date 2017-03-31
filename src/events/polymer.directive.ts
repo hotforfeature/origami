@@ -1,7 +1,7 @@
 import { Directive, ElementRef, OnInit } from '@angular/core';
 
-import { Polymer } from '../util/Polymer';
 import { getCustomElementClass } from '../util/getCustomElementClass';
+import { Polymer } from '../util/Polymer';
 
 @Directive({
   selector: '[polymer]'

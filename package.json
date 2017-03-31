@@ -20,7 +20,7 @@
   },
   "scripts": {
     "clean": "rimraf lib/ bundles/",
-    "lint": "tslint --project tsconfig.json --fix",
+    "lint": "tslint --project tsconfig.json",
     "test": "echo \"Error: no test specified\"",
     "precommit": "npm run lint",
     "commitmsg": "validate-commit-msg",
