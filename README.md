@@ -14,11 +14,11 @@ Origami bridges gaps between the Angular framework and Polymer-built custom elem
 
 ### Features
 
-- [Two-Way `[( )]` Databinding ✅](#docs/data-binding)
-- [Angular Template/Reactive Form Support ✅](#docs/forms)
-- [Polymer Templates (`<iron-list>`) ✅](#docs/polymer-templates)
+- [Two-Way `[( )]` Databinding ✅](docs/data-binding.md)
+- [Angular Template/Reactive Form Support ✅](#ocs/forms.md)
+- [Polymer Templates (`<iron-list>`) ✅](docs/polymer-templates.md)
 - Angular Components in Polymer Templates ❌
-- [OnPush Change Detection ✅](#docs/change-detection)
+- [OnPush Change Detection ✅](docs/change-detection.md)
 - Ahead-of-Time Compilation ✅
 - `<custom-style>` in Component HTML ⚠️
 - CSS custom property support ❌
