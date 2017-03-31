@@ -1,0 +1,62 @@
+{
+  "name": "@codebakery/origami",
+  "version": "0.0.0",
+  "description": "Angular + Polymer",
+  "keywords": [
+    "Angular",
+    "Polymer"
+  ],
+  "author": "Andrew Mitchell <abmitchell77@gmail.com>",
+  "license": "MIT",
+  "module": "lib/origami.js",
+  "types": "lib/origami.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hotforfeature/origami.git"
+  },
+  "homepage": "https://github.com/hotforfeature/origami#readme",
+  "bugs": {
+    "url": "https://github.com/hotforfeature/origami/issues"
+  },
+  "scripts": {
+    "clean": "rimraf lib/ bundles/",
+    "lint": "tslint --project tsconfig.json --fix",
+    "test": "echo \"Error: no test specified\"",
+    "precommit": "npm run lint",
+    "commitmsg": "validate-commit-msg",
+    "commit": "git-cz",
+    "prepush": "npm test",
+    "prebuild": "npm run clean",
+    "build": "ngc -p tsconfig.json",
+    "release": "standard-version"
+  },
+  "peerDependencies": {
+    "@angular/core": "^4.0.0",
+    "@angular/forms": "^4.0.0"
+  },
+  "devDependencies": {
+    "@angular/common": "^4.0.0",
+    "@angular/compiler": "^4.0.0",
+    "@angular/compiler-cli": "^4.0.0",
+    "@angular/core": "^4.0.0",
+    "@angular/forms": "^4.0.0",
+    "@angular/platform-browser": "^4.0.0",
+    "@types/node": "^7.0.12",
+    "codelyzer": "^3.0.0-beta.4",
+    "commitizen": "^2.9.6",
+    "cz-conventional-changelog": "^2.0.0",
+    "husky": "^0.13.3",
+    "rimraf": "^2.6.1",
+    "rxjs": "^5.0.1",
+    "standard-version": "^4.0.0",
+    "tslint": "^4.5.1",
+    "typescript": "~2.1.6",
+    "validate-commit-msg": "^2.11.2",
+    "zone.js": "^0.8.4"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}

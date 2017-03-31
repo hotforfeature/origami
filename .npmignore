@@ -1,0 +1,7 @@
+docs/
+src/
+.editorconfig
+.gitignore
+tsconfig.json
+tslint.json
+yarn.lock
