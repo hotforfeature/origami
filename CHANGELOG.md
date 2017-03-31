@@ -4,3 +4,5 @@ All notable changes to this project will be documented in this file. See [standa
 
 <a name="0.1.0"></a>
 # 0.1.0 (2017-03-31)
+
+Initial release 🎉
