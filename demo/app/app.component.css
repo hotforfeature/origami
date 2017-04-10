@@ -1,6 +1,4 @@
 app-toolbar {
-  @apply --shadow-elevation-4dp;
-
   background: var(--primary-color);
   color: var(--dark-theme-text-color);
 }
