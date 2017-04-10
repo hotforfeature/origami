@@ -20,9 +20,9 @@ Origami bridges gaps between the Angular framework and Polymer-built custom elem
 - Angular Components in Polymer Templates ❌
 - [OnPush Change Detection ✅](docs/change-detection.md)
 - Ahead-of-Time Compilation ✅
-- `<custom-style>` in Component HTML ⚠️
-- CSS custom property support ❌
-- SASS custom property support ❌
+- [`<custom-style>` in Component HTML](docs/custom-style.md) ✅
+- [CSS custom property support](docs/custom-style.md) ✅
+- [SASS custom property support](docs/custom-style.md) ✅
 - Vulcanized builds ❌
 
 ## Support
