@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { PolymerElementsModule } from './collections/polymer-elements/polymer-elements.module';
 import { PolymerDirective } from './events/polymer.directive';
 import { IronControl } from './forms/iron-control';
+import { CustomStyleService } from './style/custom-style.service';
 import { PolymerTemplateDirective } from './templates/polymer-template';
 
 @NgModule({
@@ -15,6 +16,9 @@ import { PolymerTemplateDirective } from './templates/polymer-template';
     IronControl,
     PolymerDirective,
     PolymerTemplateDirective
+  ],
+  providers: [
+    CustomStyleService
   ],
   exports: [
     IronControl,

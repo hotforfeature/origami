@@ -3,4 +3,5 @@ export * from './events/polymer-property';
 export * from './events/polymer.directive';
 export * from './forms/iron-control';
 export * from './polymer.module';
+export * from './style/custom-style.service';
 export * from './templates/polymer-template';
