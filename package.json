@@ -28,7 +28,8 @@
     "prepush": "npm test",
     "prebuild": "npm run clean",
     "build": "ngc -p tsconfig.json",
-    "release": "standard-version"
+    "release": "standard-version",
+    "prepublish": "npm run build"
   },
   "peerDependencies": {
     "@angular/core": "^4.0.0",
