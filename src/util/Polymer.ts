@@ -15,4 +15,4 @@ declare global {
   }
 }
 
-export const Polymer = window.Polymer;
+export { };

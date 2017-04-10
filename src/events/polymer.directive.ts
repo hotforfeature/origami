@@ -1,7 +1,7 @@
 import { Directive, ElementRef, OnInit } from '@angular/core';
 
 import { getCustomElementClass } from '../util/getCustomElementClass';
-import { Polymer } from '../util/Polymer';
+import '../util/Polymer';
 
 @Directive({
   selector: '[polymer]'
@@ -22,7 +22,7 @@ export class PolymerDirective implements OnInit {
       }
 
       notify.forEach(property => {
-        const eventName = `${Polymer.CaseMap.camelToDashCase(property)}-changed`;
+        const eventName = `${window.Polymer.CaseMap.camelToDashCase(property)}-changed`;
         this.elementRef.nativeElement.addEventListener(eventName, event => {
           this.elementRef.nativeElement.dispatchEvent(new CustomEvent(`${property}Change`, {
             detail: event.detail

@@ -12,26 +12,25 @@ import { Directive, TemplateRef, ViewContainerRef } from '@angular/core';
 })
 export class PolymerTemplateDirective {
   constructor(public view: ViewContainerRef, public templateRef: TemplateRef<any>) {
-    const parentElement: HTMLElement = view.element.nativeElement.parentElement;
+    const parentNode = (<HTMLElement>view.element.nativeElement).parentNode;
     const template = document.createElement('template');
     const viewRef = view.createEmbeddedView(templateRef);
     viewRef.rootNodes.forEach(rootNode => {
-      parentElement.removeChild(rootNode);
+      parentNode.removeChild(rootNode);
       template.content.appendChild(rootNode);
     });
 
-    parentElement.appendChild(template);
+    parentNode.appendChild(template);
 
     // Detach and re-attach the parent element. This will trigger any template attaching logic
     // that a custom elements needs which Angular skipped when using <ng-template>
-    const hostElement = parentElement.parentElement;
-    const parentElementIndex = Array.from(hostElement.children).indexOf(parentElement);
-    const parentSibling = parentElement.nextSibling;
-    hostElement.removeChild(parentElement);
+    const hostNode = parentNode.parentNode;
+    const parentSibling = parentNode.nextSibling;
+    hostNode.removeChild(parentNode);
     if (parentSibling) {
-      hostElement.insertBefore(parentSibling, parentElement);
+      hostNode.insertBefore(parentSibling, parentNode);
     } else {
-      hostElement.appendChild(parentElement);
+      hostNode.appendChild(parentNode);
     }
   }
 }
