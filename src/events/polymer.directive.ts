@@ -28,13 +28,6 @@ export class PolymerDirective implements OnInit {
             detail: event.detail
           }));
         });
-
-        // Fire an initial event to set the properties to their correct starting value
-        this.elementRef.nativeElement.dispatchEvent(new CustomEvent(`${property}Change`, {
-          detail: {
-            value: this.elementRef.nativeElement[property]
-          }
-        }));
       });
     }
   }
