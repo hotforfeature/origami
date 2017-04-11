@@ -1,51 +1,46 @@
 import { OnPolymerChange } from './on-polymer-change';
 
-export function createPolymerPropertyDecorator(): PropertyDecorator {
+export function PolymerProperty(): PropertyDecorator {
   return (target: any, propertyKey: string) => {
     const desc = Object.getOwnPropertyDescriptor(target, propertyKey);
-    if (desc) {
-      if (desc.set) {
-        console.warn(`${propertyKey} has a setter. Use "value = PolymerProperty.unwrap(value)" ` +
-          'instead of @PolymerProperty()');
-      } else if (desc.get) {
-        console.warn(`${propertyKey} is readonly. @PolymerProperty() is not needed`);
-      }
-    } else {
-      let value: any;
-      Object.defineProperty(target, propertyKey, {
-        configurable: true,
-        enumerable: true,
-        get() {
-          return value;
-        },
-        set(event: CustomEvent|any) {
-          let newValue = PolymerProperty.unwrap(event);
-          if (newValue !== value) {
-            value = newValue;
+    if (desc && desc.get && !desc.set) {
+      console.warn(`${propertyKey} is readonly. @PolymerProperty() is not needed`);
+    }
 
-            if ((<OnPolymerChange>this).onPolymerChange && event instanceof CustomEvent) {
-              (<OnPolymerChange>this).onPolymerChange(propertyKey, event, event.detail);
-            }
+    let value: any;
+    return {
+      configurable: desc ? desc.configurable : true,
+      enumerable: desc ? desc.enumerable : true,
+      get() {
+        if (desc && desc.get) {
+          return desc.get();
+        } else {
+          return value;
+        }
+      },
+      set(valueOrEvent: any|CustomEvent) {
+        let newValue = unwrapPolymerEvent(valueOrEvent);
+        if (desc && desc.set) {
+          desc.set(newValue);
+        }
+
+        if (newValue !== value) {
+          // Even if there is a setter, we still keep a copy to determine if a change happens
+          value = newValue;
+
+          if ((<OnPolymerChange>this).onPolymerChange && valueOrEvent instanceof CustomEvent) {
+            (<OnPolymerChange>this).onPolymerChange(propertyKey, valueOrEvent, valueOrEvent.detail);
           }
         }
-      });
-    }
+      }
+    };
   };
 }
 
 export function unwrapPolymerEvent<T>(value: T): T {
   if (value instanceof CustomEvent) {
-    return PolymerProperty.unwrap(<T>value.detail.value);
+    return unwrapPolymerEvent(<T>value.detail.value);
   } else {
     return value;
   }
 }
-
-export interface PolymerPropertyDecorator {
-  (): PropertyDecorator;
-  unwrap<T>(value: T): T;
-}
-
-// tslint:disable-next-line:variable-name
-export const PolymerProperty = <PolymerPropertyDecorator>createPolymerPropertyDecorator;
-PolymerProperty.unwrap = unwrapPolymerEvent;

@@ -136,11 +136,11 @@ export class PolyComponent {
 
 Now `isDisabled` changes to the correct boolean value when changed from Polymer!
 
-`@PolymerProperty()` works under the hood by replacing the property with custom getters and setters. What if the property already has a setter?
+`@PolymerProperty()` works under the hood by replacing the property with custom getters and setters. What if the property already has a getter or setter?
 
 ## Two-Way + Setters + Origami
 
-TypeScript compiles in such a way that a class getter/setter take priority over anything that a property decorator might define.
+Simply add `@PolymerProperty()` to either the getter or setter (not both) and the value provided will always be unwrapped.
 
 ```ts
 import { Component, ViewChild } from '@angular/core';
@@ -164,7 +164,6 @@ export class PolyComponent {
   }
 
   @PolymerProperty() set isDisabled(value: boolean) {
-    // value is still a CustomEvent when fired from Polymer!
     this._isDisabled = value;
   }
 
@@ -176,42 +175,7 @@ export class PolyComponent {
 }
 ```
 
-Instead of using the decorator, we can use `PolymerProperty.unwrap()` in the setter.
-
-```ts
-import { Component, ViewChild } from '@angular/core';
-import { PolymerProperty } from '@codebakery/origami';
-
-@Component({
-  selector: 'app-poly',
-  template: `
-    <label>Disabled</label>
-    <input type="checkbox" [(ngModel)]="isDisabled">
-    <button (click)="toggleDisabled()">Update from Polymer</button>
-
-    <paper-button #paperButton polymer [(disabled)]="isDisabled"></paper-button>
-  `
-})
-export class PolyComponent {
-  private _isDisabled: boolean;
-
-  get isDisabled(): boolean {
-    return this._isDisabled;
-  }
-
-  set isDisabled(value: boolean) {
-    value = PolymerProperty.unwrap(value);
-    // Value will always be a boolean now
-    this._isDisabled = value;
-  }
-
-  @ViewChild('paperButton') paperButton: any;
-
-  toggleDisabled() {
-    this.paperButton.disabled = !this.paperButton.disabled;
-  }
-}
-```
+Remember that `@PolymerProperty()` unwraps events coming from Polymer, so it only affects a property's setter. The decorator is not needed if the property is readonly with a getter and no setter. Origami will issue a warning if `@PolymerProperty()` is not needed.
 
 ## Collection Modules
 
