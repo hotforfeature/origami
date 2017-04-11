@@ -1,4 +1,4 @@
-import { Directive, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Directive, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 
 // TODO: Deprecate this in favor of enableLegacyTemplate: false Angular compiler option.
 // At the moment, this option doesn't seem to be working correctly
@@ -10,17 +10,22 @@ import { Directive, TemplateRef, ViewContainerRef } from '@angular/core';
 @Directive({
   selector: '[polymer-template]'
 })
-export class PolymerTemplateDirective {
-  constructor(public view: ViewContainerRef, public templateRef: TemplateRef<any>) {
+export class PolymerTemplateDirective implements OnInit {
+  @Input() methodHost: any;
+
+  private template: HTMLTemplateElement;
+
+  constructor(view: ViewContainerRef, templateRef: TemplateRef<any>) {
     const parentNode = (<HTMLElement>view.element.nativeElement).parentNode;
-    const template = document.createElement('template');
+    this.template = document.createElement('template');
+
     const viewRef = view.createEmbeddedView(templateRef);
     viewRef.rootNodes.forEach(rootNode => {
       parentNode.removeChild(rootNode);
-      template.content.appendChild(rootNode);
+      this.template.content.appendChild(rootNode);
     });
 
-    parentNode.appendChild(template);
+    parentNode.appendChild(this.template);
 
     // Detach and re-attach the parent element. This will trigger any template attaching logic
     // that a custom elements needs which Angular skipped when using <ng-template>
@@ -32,5 +37,9 @@ export class PolymerTemplateDirective {
     } else {
       hostNode.appendChild(parentNode);
     }
+  }
+
+  ngOnInit() {
+    this.template['__dataHost'] = this.methodHost; // tslint:disable-line:no-string-literal
   }
 }

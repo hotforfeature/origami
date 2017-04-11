@@ -114,6 +114,38 @@ export class PolyComponent {
 }
 ```
 
+## Method Host
+
+When `<template>`s are used inside a Polymer element, method bindings in the template refer to methods of the host element. An Angular component does not automatically set this, which can be problematic for computed properties inside templates.
+
+To get around this, `[polymer-template]` has a `methodHost` input to specify what should be used as the host for template methods.
+
+```ts
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-poly',
+  template: `
+    <iron-list [items]="items" as="item">
+      <ng-template polymer-template [methodHost]="this">
+        <my-item item="[[item]]" color="[[getColor(item)]]"></my-item>
+      </ng-template>
+    </iron-list>
+  `
+})
+export class PolyComponent {
+  items = [
+    'one',
+    'two',
+    'three'
+  ];
+
+  getColor(item: string) {
+    return item === 'one' ? 'blue' : 'red';
+  }
+}
+```
+
 ## Broken Templates
 
 `enableLegacyTemplate` and `<template>` elements are not currently working.
