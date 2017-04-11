@@ -19,11 +19,11 @@ Origami bridges gaps between the Angular framework and Polymer-built custom elem
 - [Polymer Templates (`<iron-list>`) ✅](docs/polymer-templates.md)
 - Angular Components in Polymer Templates ❌
 - [OnPush Change Detection ✅](docs/change-detection.md)
+- Object/Array mutation detection ❌
+- [CSS custom property/mixin support](docs/custom-style.md) ✅
 - Ahead-of-Time Compilation ✅
-- [`<custom-style>` in Component HTML](docs/custom-style.md) ✅
-- [CSS custom property support](docs/custom-style.md) ✅
-- [SASS custom property support](docs/custom-style.md) ✅
-- Vulcanized builds ❌
+- Bundled builds ❌
+- ES5 compilation (IE11 and Safari 9 support) ❌
 
 ## Support
 
@@ -50,6 +50,8 @@ Polymer is built off of WebComponents, which is comprised of
 - Firefox
 - Safari 7+
 - Edge/IE11+
+
+Note that at the moment, Polymer 2 does not support IE11 or Safari 9 out of the box. Code must be compiled to ES5. Origami will soon offer documentation and/or tools to ease the process.
 
 ## Installation
 
