@@ -1,4 +1,11 @@
-app-toolbar {
+app-header {
+  @apply --shadow-elevation-4dp;
+
   background: var(--primary-color);
   color: var(--dark-theme-text-color);
+}
+
+paper-tabs {
+  --paper-tabs-selection-bar-color: var(--accent-color);
+  --paper-tab-ink: var(--accent-color);
 }

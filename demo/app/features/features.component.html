@@ -1,0 +1,15 @@
+<h3 padding-horizontal>Features</h3>
+
+<iron-list [items]="features | async" as="feature">
+  <ng-template polymer-template [methodHost]="this">
+    <paper-icon-item>
+      <iron-icon class-name="[[getIconClass(feature)]]"
+          icon="[[getIcon(feature)]]"
+          slot="item-icon"></iron-icon>
+      <paper-item-body two-line>
+        <div>[[feature.name]]</div>
+        <div secondary>[[feature.description]]</div>
+      </paper-item-body>
+    </paper-icon-item>
+  </ng-template>
+</iron-list>

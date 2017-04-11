@@ -1,1 +1,64 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+  @apply --paper-font-body1;
+
+  --primary-color: var(--paper-deep-purple-500);
+  --primary-light-color: var(--paper-deep-purple-100);
+  --primary-dark-color: var(--paper-deep-purple-700);
+
+  --accent-color: var(--paper-amber-a200);
+  --accent-light-color: var(--paper-amber-a100);
+  --accent-dark-color: var(--paper-amber-a400);
+}
+
+h1 {
+  @apply --paper-font-display1;
+}
+
+h2 {
+  @apply --paper-font-headline;
+}
+
+h3 {
+  @apply --paper-font-title;
+}
+
+h4 {
+  @apply --paper-font-subhead;
+}
+
+h5 {
+  @apply --paper-font-body2;
+}
+
+h6 {
+  @apply --paper-font-caption;
+}
+
+[padding] {
+  padding: 16px;
+}
+
+[padding-horizontal] {
+  padding: 0 16px;
+}
+
+[padding-vertical] {
+  padding: 16px 0;
+}
+
+[padding-top] {
+  padding-top: 16px;
+}
+
+[padding-right] {
+  padding-right: 16px;
+}
+
+[padding-bottom] {
+  padding-bottom: 16px;
+}
+
+[padding-left] {
+  padding-left: 16px;
+}

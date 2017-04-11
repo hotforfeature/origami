@@ -1,13 +1,18 @@
-<style>
-  app-toolbar {
-    @apply --shadow-elevation-4dp;
-  }
-</style>
-
 <app-header-layout fullbleed>
-  <app-header>
+  <app-header slot="header" condenses fixed>
     <app-toolbar>
       <div main-title>Origami</div>
     </app-toolbar>
+    <paper-tabs sticky [(selected)]="selectedTab">
+      <paper-tab>Kitchen Sink</paper-tab>
+      <paper-tab>Features</paper-tab>
+    </paper-tabs>
   </app-header>
+
+  <div>
+    <div *ngIf="selectedTab === 0" padding-horizontal>
+      <h1>Kitchen Sink (Soon!)</h1>
+    </div>
+    <app-features *ngIf="selectedTab === 1"></app-features>
+  </div>
 </app-header-layout>

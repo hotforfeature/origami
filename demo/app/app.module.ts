@@ -4,9 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { PolymerModule } from '../../src/origami';
-import { AppElementsModule } from '../../src/collections';
+import { AppElementsModule, IronElementsModule, PaperElementsModule } from '../../src/collections';
 
 import { AppComponent } from './app.component';
+import { FeaturesComponent } from './features/features.component';
 
 @NgModule({
   imports: [
@@ -14,10 +15,13 @@ import { AppComponent } from './app.component';
     BrowserModule,
     CommonModule,
     FormsModule,
+    IronElementsModule,
+    PaperElementsModule,
     PolymerModule
   ],
   declarations: [
-    AppComponent
+    AppComponent,
+    FeaturesComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]
