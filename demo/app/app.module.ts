@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { PolymerModule } from '../../src/origami';
-import { AppElementsModule, IronElementsModule, PaperElementsModule } from '../../src/collections';
+import { PolymerModule } from '../origami/origami';
+import { AppElementsModule, IronElementsModule, PaperElementsModule } from '../origami/collections';
 
 import { AppComponent } from './app.component';
 import { FeaturesComponent } from './features/features.component';

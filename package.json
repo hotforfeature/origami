@@ -19,6 +19,7 @@
     "url": "https://github.com/hotforfeature/origami/issues"
   },
   "scripts": {
+    "demo": "ng serve",
     "clean": "rimraf lib/ bundles/",
     "lint": "tslint --project tsconfig.json",
     "test": "echo \"Error: no test specified\"",

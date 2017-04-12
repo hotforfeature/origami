@@ -3,7 +3,7 @@ import { DOCUMENT } from '@angular/platform-browser';
 
 @Injectable()
 export class CustomStyleService {
-  constructor(@Inject(DOCUMENT) private dom: Document) { }
+  constructor(@Inject(DOCUMENT) private dom: any) { }
 
   updateCustomStyles(nativeEncapsulatedHost?: ElementRef) {
     // TODO: Determine if head styles need wrapped more than once. I.e does Angular ever append

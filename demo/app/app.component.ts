@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewEncapsulation } from '@angular/core';
 
-import { CustomStyleService, PolymerProperty } from '../../src/origami';
+import { CustomStyleService, PolymerProperty } from '../origami/origami';
 
 @Component({
   selector: 'app-root',

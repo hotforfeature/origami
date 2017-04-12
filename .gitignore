@@ -1,6 +1,7 @@
 # compiled output
 /bundles
 /lib
+/dist
 
 # dependencies
 /node_modules
