@@ -1,3 +1,4 @@
+import { } from '../util/Polymer';
 import { OnPolymerChange } from './on-polymer-change';
 
 export function PolymerProperty(): PropertyDecorator {
@@ -18,18 +19,25 @@ export function PolymerProperty(): PropertyDecorator {
           return value;
         }
       },
-      set(valueOrEvent: any|CustomEvent) {
-        let newValue = unwrapPolymerEvent(valueOrEvent);
-        if (desc && desc.set) {
-          desc.set(newValue);
-        }
+      set(event: any|CustomEvent) {
+        if (event instanceof CustomEvent && event.detail.path) {
+          // Object or Array mutation, we need to tell Angular that things have changed
+          if ((<OnPolymerChange>this).onPolymerChange && event instanceof CustomEvent) {
+            (<OnPolymerChange>this).onPolymerChange(propertyKey, value, event.detail);
+          }
+        } else {
+          let newValue = unwrapPolymerEvent(event);
+          if (desc && desc.set) {
+            desc.set(newValue);
+          }
 
-        if (newValue !== value) {
-          // Even if there is a setter, we still keep a copy to determine if a change happens
-          value = newValue;
+          if (newValue !== value) {
+            // Even if there is a setter, we still keep a copy to determine if a change happens
+            value = newValue;
 
-          if ((<OnPolymerChange>this).onPolymerChange && valueOrEvent instanceof CustomEvent) {
-            (<OnPolymerChange>this).onPolymerChange(propertyKey, valueOrEvent, valueOrEvent.detail);
+            if ((<OnPolymerChange>this).onPolymerChange && event instanceof CustomEvent) {
+              (<OnPolymerChange>this).onPolymerChange(propertyKey, event, event.detail);
+            }
           }
         }
       }

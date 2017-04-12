@@ -12,16 +12,24 @@ export class PolymerDirective implements OnInit {
   ngOnInit() {
     const klass = getCustomElementClass(this.elementRef);
     if (klass) {
-      // Setup Polymer to Angular event mapping
-      let notify = [];
-      notify = notify.concat(...this.getNotifyProperties(klass.prototype.properties || {}));
+      const properties = {};
+      this.copyKeysFrom(klass.prototype.properties, properties);
       if (klass.prototype.behaviors) {
-        klass.prototype.behaviors.forEach(behavior => {
-          notify = notify.concat(...this.getNotifyProperties(behavior.properties || {}));
+        klass.prototype.behaviors.map(behavior => {
+          return behavior.properties || [];
+        }).forEach(property => {
+          this.copyKeysFrom(property, properties);
         });
       }
 
-      notify.forEach(property => {
+      // Listen for notify properties and Object/Array properties which may issue path changes
+      const changeable = Object.keys(properties).filter(propertyName => {
+        const property = properties[propertyName];
+        return property.notify || property === Object || property.type === Object ||
+          property === Array || property.type === Array;
+      });
+
+      changeable.forEach(property => {
         const eventName = `${window.Polymer.CaseMap.camelToDashCase(property)}-changed`;
         this.elementRef.nativeElement.addEventListener(eventName, event => {
           this.elementRef.nativeElement.dispatchEvent(new CustomEvent(`${property}Change`, {
@@ -32,9 +40,12 @@ export class PolymerDirective implements OnInit {
     }
   }
 
-  private getNotifyProperties(properties: any): string[] {
-    return Object.keys(properties).filter(property => {
-      return properties[property].notify;
+  private copyKeysFrom(from: any, to: any): any {
+    Object.keys(from || {}).forEach(key => {
+      if (key[0] !== '_') {
+        // Only copy public properties
+        to[key] = from[key];
+      }
     });
   }
 }

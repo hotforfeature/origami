@@ -5,3 +5,5 @@ export * from './forms/iron-control';
 export * from './polymer.module';
 export * from './style/custom-style.service';
 export * from './templates/polymer-template';
+export * from './util/customElements';
+export * from './util/Polymer';
