@@ -19,7 +19,7 @@ Origami bridges gaps between the Angular framework and Polymer-built custom elem
 - [Polymer Templates (`<iron-list>`) ✅](docs/polymer-templates.md)
 - Angular Components in Polymer Templates ❌
 - [OnPush Change Detection ✅](docs/change-detection.md)
-- Object/Array mutation detection ❌
+- [Object/Array mutation detection ✅](docs/object-array-mutation.md)
 - [CSS custom property/mixin support](docs/custom-style.md) ✅
 - Ahead-of-Time Compilation ✅
 - Bundled builds ❌

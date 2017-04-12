@@ -62,3 +62,11 @@ h6 {
 [padding-left] {
   padding-left: 16px;
 }
+
+[primary] {
+  color: var(--primary-color);
+}
+
+[accent] {
+  color: var(--accent-color);
+}

@@ -1,15 +1,33 @@
-<h3 padding-horizontal>Features</h3>
+<div padding-horizontal>
+  <h3>Features</h3>
+  <p>The following features are supported in Origami. Use the buttons to demonstrate Object / Array
+  mutation.</p>
 
-<iron-list [items]="features | async" as="feature">
-  <ng-template polymer-template [methodHost]="this">
-    <paper-icon-item>
-      <iron-icon class-name="[[getIconClass(feature)]]"
-          icon="[[getIcon(feature)]]"
-          slot="item-icon"></iron-icon>
-      <paper-item-body two-line>
-        <div>[[feature.name]]</div>
-        <div secondary>[[feature.description]]</div>
-      </paper-item-body>
-    </paper-icon-item>
-  </ng-template>
-</iron-list>
+  <paper-button primary (click)="reset()">Reset</paper-button>
+  <paper-button primary (click)="modifyFromAngular()">Modify Object (Angular)</paper-button>
+  <paper-button primary (click)="modifyFromPolymer()">Modify Object (Polymer)</paper-button>
+  <paper-button primary (click)="spliceFromAngular()">Modify Array (Angular)</paper-button>
+  <paper-button primary (click)="spliceFromPolymer()">Modify Array (Polymer)</paper-button>
+</div>
+
+<div class="layout horizontal">
+  <iron-list #ironList class="flex" [(items)]="features" as="feature">
+    <ng-template polymer-template [methodHost]="this">
+      <paper-icon-item>
+        <iron-icon class-name="[[getIconClass(feature)]]"
+            icon="[[getIcon(feature)]]"
+            slot="item-icon"></iron-icon>
+        <paper-item-body two-line>
+          <div>[[feature.name]]</div>
+          <div secondary>[[feature.description]]</div>
+        </paper-item-body>
+      </paper-icon-item>
+    </ng-template>
+  </iron-list>
+  <div class="flex">
+    <div *ngFor="let feature of features">
+      <div><strong>{{feature.name}}</strong></div>
+      <div>{{feature.description}}</div>
+    </div>
+  </div>
+</div>

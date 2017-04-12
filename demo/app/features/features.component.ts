@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
-import { CustomStyleService } from '../../../src/origami';
+import { CustomStyleService, Polymer, PolymerProperty } from '../../../src/origami';
 
 import { Feature } from './Feature';
+import { getFeatures } from './features';
 
 @Component({
   selector: 'app-features',
@@ -11,68 +11,19 @@ import { Feature } from './Feature';
   styleUrls: ['./features.component.css']
 })
 export class FeaturesComponent implements OnInit {
-  features: Observable<Feature[]>;
+  @PolymerProperty() features;
+  @ViewChild('ironList') ironListRef: ElementRef;
+
+  private ironList: Polymer.PropertyEffects;
+  private modifyAngular;
+  private modifyPolymer;
 
   constructor(private customStyle: CustomStyleService) { }
 
   ngOnInit() {
     this.customStyle.updateCustomStyles();
-
-    // Simulate async data retrieval
-    this.features = Observable.from(<Feature[][]>[
-      [
-        {
-          name: 'Two-Way Databinding',
-          description: 'Support Angular-Polymer databinding via [( )] syntax',
-          supported: true
-        },
-        {
-          name: 'Template/Reactive Form Support',
-          description: 'Polymer form elements work with ngModel and formControl directives',
-          supported: true
-        },
-        {
-          name: 'Polymer Templates',
-          description: '<template> elements can be used by Polymer elements',
-          supported: true
-        },
-        {
-          name: 'Angular Components in Polymer Templates',
-          description: 'Support Angular components within a Polymer <template>',
-          supported: false
-        },
-        {
-          name: 'OnPush Change Detection',
-          description: 'Notify Angular of changes from Polymer when using ChangeDetection.OnPush',
-          supported: true
-        },
-        {
-          name: 'Object/Array mutation detection',
-          description: 'Notify Polymer of deep changes to object and array properties from Angular',
-          supported: false
-        },
-        {
-          name: 'CSS custom property/mixin support',
-          description: 'Allow custom properties and @apply mixins in CSS, SASS, and HTML',
-          supported: true
-        },
-        {
-          name: 'Ahead-of-Time Compilation',
-          description: 'Fully support AoT compilation',
-          supported: true
-        },
-        {
-          name: 'Bundled Builds',
-          description: 'Generate bundled and unbundled builds for HTTP1/HTTP2 support',
-          supported: false
-        },
-        {
-          name: 'ES5 Compilation',
-          description: 'Compile Polymer components to ES5 to support IE11 and Safari 9',
-          supported: false
-        }
-      ]
-    ]);
+    this.ironList = this.ironListRef.nativeElement;
+    this.reset();
   }
 
   getIcon(feature: Feature): string {
@@ -81,5 +32,38 @@ export class FeaturesComponent implements OnInit {
 
   getIconClass(feature: Feature): string {
     return feature.supported ? 'green' : 'red';
+  }
+
+  reset() {
+    this.features = getFeatures();
+    this.modifyAngular = 0;
+    this.modifyPolymer = 0;
+  }
+
+  modifyFromAngular() {
+    // If an object mutation occurs, use notifyPath() on the element to update Polymer
+    this.features[0].description = `Modified from Angular ${++this.modifyAngular}`;
+    this.ironList.notifyPath('items.0.description');
+  }
+
+  modifyFromPolymer() {
+    // Polymer will update Angular automatically via @PolymerProperty()
+    // This is the preferred way to mutate objects from Angular
+    this.ironList.set('items.0.description',
+      `Modified from Polymer ${++this.modifyPolymer}`);
+  }
+
+  spliceFromAngular() {
+    // If an array mutation occurs, use notifySplices() on the element to update Polymer
+    this.features.splice(0, 1);
+    this.ironList.notifySplices('items', [
+      { index: 0, removed: [], addedCount: 0, object: this.features, type: 'splice' }
+    ]);
+  }
+
+  spliceFromPolymer() {
+    // Polymer will update Angular automatically via @PolymerProperty()
+    // This is the preferred way to mutate arrays from Angular
+    this.ironList.splice('items', 0, 1);
   }
 }
