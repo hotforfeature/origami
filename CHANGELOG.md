@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.5.0"></a>
+# [0.5.0](https://github.com/hotforfeature/origami/compare/v0.4.0...v0.5.0) (2017-04-13)
+
+
+### Bug Fixes
+
+* **aot:** AoT compile issue ([a5328e3](https://github.com/hotforfeature/origami/commit/a5328e3))
+
+
+### Features
+
+* **docs:** add documentation and demo for production builds ([e904a4e](https://github.com/hotforfeature/origami/commit/e904a4e)), closes [#8](https://github.com/hotforfeature/origami/issues/8)
+
+
+
 <a name="0.4.0"></a>
 # [0.4.0](https://github.com/hotforfeature/origami/compare/v0.3.0...v0.4.0) (2017-04-12)
 
