@@ -2,6 +2,7 @@
 /bundles
 /lib
 /dist
+/build
 
 # dependencies
 /node_modules

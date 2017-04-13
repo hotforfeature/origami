@@ -21,9 +21,8 @@ Origami bridges gaps between the Angular framework and Polymer-built custom elem
 - [OnPush Change Detection ✅](docs/change-detection.md)
 - [Object/Array mutation detection ✅](docs/object-array-mutation.md)
 - [CSS custom property/mixin support](docs/custom-style.md) ✅
-- Ahead-of-Time Compilation ✅
-- Bundled builds ❌
-- ES5 compilation (IE11 and Safari 9 support) ❌
+- Ahead-of-Time Compliant ✅
+- [Bundled production-ready builds ✅](docs/production-build)
 
 ## Support
 

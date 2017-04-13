@@ -1,0 +1,25 @@
+{
+  "entrypoint": "dist/assets/elements.html",
+  "sources": [
+    "dist/*.js",
+    "dist/*.html",
+    "dist/*.css"
+  ],
+  "extraDependencies": [
+    "dist/assets/bower_components/webcomponentsjs/*.js"
+  ],
+  "builds": [
+    {
+      "name": "bundled",
+      "bundle": true
+    },
+    {
+      "name": "unbundled"
+    },
+    {
+      "name": "es5",
+      "bundle": true,
+      "js": { "compile": true }
+    }
+  ]
+}
