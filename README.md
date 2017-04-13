@@ -50,8 +50,6 @@ Polymer is built off of WebComponents, which is comprised of
 - Safari 7+
 - Edge/IE11+
 
-Note that at the moment, Polymer 2 does not support IE11 or Safari 9 out of the box. Code must be compiled to ES5. Origami will soon offer documentation and/or tools to ease the process.
-
 ## Installation
 
 ```
