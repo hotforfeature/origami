@@ -1,40 +1,9 @@
-/* You can add global styles to this file, and also import other style files */
-body {
-  @apply --paper-font-body1;
-
-  --primary-color: var(--paper-deep-purple-500);
-  --primary-light-color: var(--paper-deep-purple-100);
-  --primary-dark-color: var(--paper-deep-purple-700);
-
-  --accent-color: var(--paper-amber-a200);
-  --accent-light-color: var(--paper-amber-a100);
-  --accent-dark-color: var(--paper-amber-a400);
-}
-
-h1 {
-  @apply --paper-font-display1;
-}
-
-h2 {
-  @apply --paper-font-headline;
-}
-
-h3 {
-  @apply --paper-font-title;
-}
-
-h4 {
-  @apply --paper-font-subhead;
-}
-
-h5 {
-  @apply --paper-font-body2;
-}
-
-h6 {
-  @apply --paper-font-caption;
-}
-
+/*
+Angular CLI stylesheets will be linked as external stylesheets in production builds.
+Avoid using @apply mixins (and custom CSS variables if targeting browsers that do not support them)
+in these stylesheets. They will not be <custom-style> wrapped, which means ShadyCSS will not apply
+the variables/mixins correctly.
+ */
 [padding] {
   padding: 16px;
 }
@@ -61,12 +30,4 @@ h6 {
 
 [padding-left] {
   padding-left: 16px;
-}
-
-[primary] {
-  color: var(--primary-color);
-}
-
-[accent] {
-  color: var(--accent-color);
 }

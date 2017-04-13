@@ -1,3 +1,7 @@
+iron-list {
+  position: relative; /* Fixes Safari/IE11 */
+}
+
 iron-icon.green {
   color: var(--paper-green-500);
 }

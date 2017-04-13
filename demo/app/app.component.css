@@ -1,3 +1,47 @@
+html {
+  @apply --paper-font-body1;
+
+  --primary-color: var(--paper-deep-purple-500);
+  --primary-light-color: var(--paper-deep-purple-100);
+  --primary-dark-color: var(--paper-deep-purple-700);
+
+  --accent-color: var(--paper-amber-a200);
+  --accent-light-color: var(--paper-amber-a100);
+  --accent-dark-color: var(--paper-amber-a400);
+}
+
+[primary] {
+  color: var(--primary-color);
+}
+
+[accent] {
+  color: var(--accent-color);
+}
+
+h1 {
+  @apply --paper-font-display1;
+}
+
+h2 {
+  @apply --paper-font-headline;
+}
+
+h3 {
+  @apply --paper-font-title;
+}
+
+h4 {
+  @apply --paper-font-subhead;
+}
+
+h5 {
+  @apply --paper-font-body2;
+}
+
+h6 {
+  @apply --paper-font-caption;
+}
+
 app-header {
   @apply --shadow-elevation-4dp;
 
