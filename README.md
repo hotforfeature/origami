@@ -22,7 +22,7 @@ Origami bridges gaps between the Angular framework and Polymer-built custom elem
 - [Object/Array mutation detection ✅](docs/object-array-mutation.md)
 - [CSS custom property/mixin support](docs/custom-style.md) ✅
 - Ahead-of-Time Compliant ✅
-- [Bundled production-ready builds ✅](docs/production-build)
+- [Bundled production-ready builds ✅](docs/production-build.md)
 
 ## Support
 
