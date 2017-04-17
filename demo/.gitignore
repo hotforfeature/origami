@@ -1,9 +1,10 @@
 # compiled output
-/bundles
-/lib
+/dist
+/build
 
 # dependencies
 /node_modules
+/src/assets/bower_components
 
 # IDEs and editors
 /.idea

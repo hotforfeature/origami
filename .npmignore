@@ -1,6 +1,4 @@
 demo/
-dist/
-build/
 docs/
 src/
 .editorconfig

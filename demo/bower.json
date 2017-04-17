@@ -1,5 +1,5 @@
 {
-  "name": "demo",
+  "name": "origami-demo",
   "dependencies": {
     "polymer": "Polymer/polymer#^2.0.0-rc.4",
     "paper-tabs": "PolymerElements/paper-tabs#2.0-preview",

@@ -1,0 +1,33 @@
+{
+  "name": "origami-demo",
+  "main": "index.html",
+  "scripts": {
+    "start": "ng serve",
+    "clean:bundled": "cpr build/bundled/dist/ build/bundled/ && rimraf build/bundled/dist/",
+    "clean:unbundled": "cpr build/unbundled/dist/ build/unbundled/ && rimraf build/unbundled/dist/",
+    "clean:es5": "cpr build/es5/dist/ build/es5/ && rimraf build/es5/dist/",
+    "clean": "npm run clean:bundled && npm run clean:unbundled && npm run clean:es5",
+    "build": "ng build --prod && polymer build && rimraf dist/",
+    "postbuild": "npm run clean"
+  },
+  "author": "Andrew Mitchell <abmitchell77@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@angular/cli": "^1.0.0",
+    "@angular/common": "^4.0.2",
+    "@angular/compiler": "^4.0.2",
+    "@angular/compiler-cli": "^4.0.2",
+    "@angular/core": "^4.0.2",
+    "@angular/forms": "^4.0.2",
+    "@angular/platform-browser": "^4.0.2",
+    "@angular/platform-browser-dynamic": "^4.0.2",
+    "@angular/router": "^4.0.2",
+    "rxjs": "^5.3.0",
+    "zone.js": "^0.8.5"
+  },
+  "devDependencies": {
+    "cpr": "^2.0.2",
+    "rimraf": "^2.6.1",
+    "typescript": "^2.2.2"
+  }
+}
