@@ -52,4 +52,6 @@ declare global {
   }
 }
 
-export { };
+export function getPolymer(): Polymer {
+  return window.Polymer;
+}

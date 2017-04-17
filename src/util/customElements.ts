@@ -14,4 +14,6 @@ declare global {
   }
 }
 
-export { };
+export function getCustomElements(): CustomElementRegistry {
+  return window.customElements;
+}

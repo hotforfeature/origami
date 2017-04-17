@@ -1,4 +1,3 @@
-import { } from '../util/Polymer';
 import { OnPolymerChange } from './on-polymer-change';
 
 export function PolymerProperty(): PropertyDecorator {
