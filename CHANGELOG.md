@@ -8,7 +8,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Code Refactoring
 
-* **events:** rename [polymer], [@PolymerProperty](https://github.com/PolymerProperty), and polymer-template ([7d91f89](https://github.com/hotforfeature/origami/commit/7d91f89)), closes [#7](https://github.com/hotforfeature/origami/issues/7)
+* **events:** rename [polymer], @PolymerProperty, and polymer-template ([7d91f89](https://github.com/hotforfeature/origami/commit/7d91f89)), closes [#7](https://github.com/hotforfeature/origami/issues/7)
 
 
 ### BREAKING CHANGES
