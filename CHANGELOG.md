@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.6.0"></a>
+# [0.6.0](https://github.com/hotforfeature/origami/compare/v0.5.0...v0.6.0) (2017-04-17)
+
+
+### Code Refactoring
+
+* **events:** rename [polymer], [@PolymerProperty](https://github.com/PolymerProperty), and polymer-template ([7d91f89](https://github.com/hotforfeature/origami/commit/7d91f89)), closes [#7](https://github.com/hotforfeature/origami/issues/7)
+
+
+### BREAKING CHANGES
+
+* **events:** the [polymer] selector has changed to [emitChanges], and [polymer-template] selector has changed to [polymer] to better reflect their purposes. The @PolymerProperty decorator has also changed to @PolymerChanges
+
+
+
 <a name="0.5.0"></a>
 # [0.5.0](https://github.com/hotforfeature/origami/compare/v0.4.0...v0.5.0) (2017-04-13)
 
