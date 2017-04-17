@@ -1,8 +1,8 @@
 import { Directive } from '@angular/core';
 
-import { PolymerDirective } from '../../events/polymer.directive';
+import { EmitChangesDirective } from '../../events/emit-changes.directive';
 
 @Directive({
   selector: `marked-element, prism-element`
 })
-export class MoleculeElement extends PolymerDirective { }
+export class MoleculeElement extends EmitChangesDirective { }

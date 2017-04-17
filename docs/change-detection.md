@@ -4,11 +4,11 @@ Angular automagically fires rounds of change detection constantly in an app. A q
 
 What if Polymer updates a property? How does Angular know to re-run change detection?
 
-Properties decorated with `@PolymerProperty()` will notify a component of the change if the component implements `OnPolymerChange`. Then the component can determine if it needs to run change detection.
+Properties decorated with `@PolymerChanges()` will notify a component of the change if the component implements `OnPolymerChange`. Then the component can determine if it needs to run change detection.
 
 ```ts
 import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { PolymerProperty, OnPolymerChange } from '@codebakery/origami';
+import { PolymerChanges, OnPolymerChange } from '@codebakery/origami';
 
 @Component({
   selector: 'app-poly',
@@ -21,7 +21,7 @@ import { PolymerProperty, OnPolymerChange } from '@codebakery/origami';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PolyComponent implements OnPolymerChange {
-  @PolymerProperty() isDisabled: boolean;
+  @PolymerChanges() isDisabled: boolean;
 
   constructor(private changeRef: ChangeDetectorRef) { }
 

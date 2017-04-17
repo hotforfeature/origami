@@ -1,7 +1,7 @@
 import { Directive, Provider, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { IronControl } from '../../forms/iron-control';
+import { IronControlDirective } from '../../forms/iron-control.directive';
 
 export const PAPER_INPUT_CONTROL_VALUE_ACCESSOR: Provider = {
   provide: NG_VALUE_ACCESSOR,
@@ -14,4 +14,4 @@ export const PAPER_INPUT_CONTROL_VALUE_ACCESSOR: Provider = {
     paper-toggle-button`,
   providers: [PAPER_INPUT_CONTROL_VALUE_ACCESSOR]
 })
-export class PaperInputControl extends IronControl { }
+export class PaperInputControl extends IronControlDirective { }

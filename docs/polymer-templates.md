@@ -27,7 +27,7 @@ import { Component } from '@angular/core';
   selector: 'app-poly',
   template: `
     <iron-list [items]="items" as="item">
-      <ng-template polymer-template> <!-- Will be <template> when issues are fixed -->
+      <ng-template polymer> <!-- Will be <template> when issues are fixed -->
         <div>[[item]]</div>
       </ng-template>
     </iron-list>
@@ -99,7 +99,7 @@ import { Component } from '@angular/core';
   selector: 'app-poly',
   template: `
     <iron-list [items]="items" as="item">
-      <ng-template polymer-template>
+      <ng-template polymer>
         <my-item item="[[item]]"></my-item>
       </ng-template>
     </iron-list>
@@ -118,7 +118,7 @@ export class PolyComponent {
 
 When `<template>`s are used inside a Polymer element, method bindings in the template refer to methods of the host element. An Angular component does not automatically set this, which can be problematic for computed properties inside templates.
 
-To get around this, `[polymer-template]` has a `methodHost` input to specify what should be used as the host for template methods.
+To get around this, `template[polymer]` has a `methodHost` input to specify what should be used as the host for template methods.
 
 ```ts
 import { Component } from '@angular/core';
@@ -127,7 +127,7 @@ import { Component } from '@angular/core';
   selector: 'app-poly',
   template: `
     <iron-list [items]="items" as="item">
-      <ng-template polymer-template [methodHost]="this">
+      <ng-template polymer [methodHost]="this">
         <my-item item="[[item]]" color="[[getColor(item)]]"></my-item>
       </ng-template>
     </iron-list>
@@ -150,7 +150,7 @@ export class PolyComponent {
 
 `enableLegacyTemplate` and `<template>` elements are not currently working.
 
-This documentation refers to Polymer `<template>` elements. Until the below issues are resolved, use `<ng-template polymer-template>` instead of `<template>`.
+This documentation refers to Polymer `<template>` elements. Until the below issues are resolved, use `<ng-template polymer>` instead of `<template>`.
 
 See
 - https://github.com/angular/angular/issues/15555

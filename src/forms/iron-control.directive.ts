@@ -18,7 +18,7 @@ import { getTagName } from '../util/getTagName';
 
 export const IRON_CONTROL_VALUE_ACCESSOR: Provider = {
   provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => IronControl),
+  useExisting: forwardRef(() => IronControlDirective),
   multi: true
 };
 
@@ -26,7 +26,8 @@ export const IRON_CONTROL_VALUE_ACCESSOR: Provider = {
   selector: '[ironControl]',
   providers: [IRON_CONTROL_VALUE_ACCESSOR]
 })
-export class IronControl implements ControlValueAccessor, OnInit, AfterViewInit, OnDestroy {
+export class IronControlDirective implements ControlValueAccessor, OnInit, AfterViewInit,
+    OnDestroy {
   @Input() ironSelector: any;
 
   protected ngControl: NgControl;

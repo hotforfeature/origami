@@ -1,7 +1,7 @@
 import { Directive, Provider, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { IronControl } from '../../forms/iron-control';
+import { IronControlDirective } from '../../forms/iron-control.directive';
 
 export const GOLD_CONTROL_VALUE_ACCESSOR: Provider = {
   provide: NG_VALUE_ACCESSOR,
@@ -14,4 +14,4 @@ export const GOLD_CONTROL_VALUE_ACCESSOR: Provider = {
     gold-phone-input, gold-zip-input`,
   providers: [GOLD_CONTROL_VALUE_ACCESSOR]
 })
-export class GoldControl extends IronControl { }
+export class GoldControl extends IronControlDirective { }

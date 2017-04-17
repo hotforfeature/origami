@@ -4,9 +4,9 @@ import { getCustomElementClass } from '../util/getCustomElementClass';
 import { getPolymer } from '../util/Polymer';
 
 @Directive({
-  selector: '[polymer]'
+  selector: '[emitChanges]'
 })
-export class PolymerDirective implements OnInit {
+export class EmitChangesDirective implements OnInit {
   constructor(private elementRef: ElementRef) { }
 
   ngOnInit() {

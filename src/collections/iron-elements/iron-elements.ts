@@ -1,6 +1,6 @@
 import { Directive } from '@angular/core';
 
-import { PolymerDirective } from '../../events/polymer.directive';
+import { EmitChangesDirective } from '../../events/emit-changes.directive';
 
 @Directive({
   selector: `iron-a11y-announcer, iron-a11y-keys, iron-ajax, iron-autogrow-textarea, iron-collapse,
@@ -9,4 +9,4 @@ import { PolymerDirective } from '../../events/polymer.directive';
     iron-list, iron-location, iron-media-query, iron-pages, iron-swipeable-container,
     iron-text-helpers`
 })
-export class IronElement extends PolymerDirective { }
+export class IronElement extends EmitChangesDirective { }

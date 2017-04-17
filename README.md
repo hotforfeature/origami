@@ -8,14 +8,14 @@ Angular + Polymer
 
 ## Intro
 
-Origami bridges gaps between the Angular framework and Polymer-built custom elements. Origami also works with _any_ v1 Custom Element that follows Polymer's event naming conventions.
+Origami bridges gaps between the Angular framework and Polymer-built custom elements.
 
 [Check out the Quick Start](#quick-start) for a quick overview of how to import and use Origami.
 
 ### Features
 
 - [Two-Way `[( )]` Databinding ✅](docs/data-binding.md)
-- [Angular Template/Reactive Form Support ✅](#ocs/forms.md)
+- [Angular Template/Reactive Form Support ✅](docs/forms.md)
 - [Polymer Templates (`<iron-list>`) ✅](docs/polymer-templates.md)
 - Angular Components in Polymer Templates ❌
 - [OnPush Change Detection ✅](docs/change-detection.md)
@@ -76,7 +76,7 @@ Make sure bower components are installed to a directory that is included in the 
 Next install Polymer and any other custom elements.
 
 ```
-$ bower install --save Polymer/polymer#2.0-preview
+$ bower install --save Polymer/polymer#2.0.0-rc.5
 ```
 
 Projects should add the `bower_components/` directory to their `.gitignore` file.
@@ -146,7 +146,7 @@ Remember to use `<ng-template>` for Angular templates, and `<template>` for Poly
 
 `enableLegacyTemplate` and `<template>` elements are not currently working in Angular 4.0.1. See https://github.com/angular/angular/issues/15555 and https://github.com/angular/angular/issues/15557.
 
-Origami includes a `[polymer-template]` attribute directive to compensate. Use it on an `<ng-template>` to convert it to a Polymer `<template>` at runtime.
+Origami includes an `ng-template[polymer]` directive to compensate. Use it on an `<ng-template>` to convert it to a Polymer `<template>` at runtime.
 
 ```html
 <iron-list [items]="items">
@@ -156,13 +156,13 @@ Origami includes a `[polymer-template]` attribute directive to compensate. Use i
   </template>
   -->
 
-  <ng-template polymer-template>
+  <ng-template polymer>
     <div>[[item]]</div>
   </ng-template>
 </iron-list>
 ```
 
-`[polymer-template]` will be deprecated as soon as the above issues are fixed. Remember that anytime Origami's documentation mentions using a `<template>`, the app should use `<ng-template polymer-template>` instead.
+`ng-template[polymer]` will be deprecated as soon as the above issues are fixed. Remember that anytime Origami's documentation mentions using a `<template>`, the app should use `<ng-template polymer>` instead.
 
 ## Quick Start
 
@@ -171,7 +171,6 @@ Origami includes a `[polymer-template]` attribute directive to compensate. Use i
 Import the `PolymerModule` from Origami into the app's main module and enable custom element support. That's it!
 
 Optionally, the app can also import selectors from Origami for Polymer's collections. This is highly recommended (+10 to sanity), but is not required.
-
 
 ```ts
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -199,26 +198,27 @@ import { IronElementsModule, PaperElementsModule } from '@codebakery/origami/lib
 export class AppModule { }
 ```
 
-For non-Polymer collection elements, the app will need to use the `[polymer]` and `[ironControl]` attributes.
+For non-Polymer collection elements, the app will need to use the `[emitChanges]` and `[ironControl]` attributes.
 
 ### Markup
 
-Add the `[polymer]` directive to all custom elements. Optionally add `[ironControl]` to elements that should work in Angular forms.
+Add the `[emitChanges]` directive to all custom elements using two-way data binding. Optionally add `[ironControl]` to control elements that should work in Angular forms.
 
 ```html
-<my-custom-checkbox label="Check me out" polymer></my-custom-checkbox>
+<my-custom-checkbox [(checked)]="isChecked" emitChanges></my-custom-checkbox>
 
 <form #ngForm="ngForm">
-  <paper-input label="Name" polymer ironControl required [(ngModel)]="name"></paper-input>
+  <paper-input label="Name" emitChanges ironControl required [(ngModel)]="name"></paper-input>
 
-  <paper-button polymer [disabled]="!ngForm.form.valid" (click)="onSubmit()">Submit</paper-button>
+  <!-- No two-way binding, [emitChanges] is not needed -->
+  <paper-button [disabled]="!ngForm.form.valid" (click)="onSubmit()">Submit</paper-button>
 </form>
 ```
 
-If the app imported `PaperElementsModule`, `[polymer]` and `[ironControl]` are not needed for paper elements. They are still required for elements that do not have a collections module.
+If the app imported `PaperElementsModule`, `[emitChanges]` and `[ironControl]` are not needed for paper elements. They are still required for elements that do not have a collections module.
 
 ```html
-<my-custom-checkbox label="Check me out" polymer></my-custom-checkbox>
+<my-custom-checkbox [(checked)]="isChecked" emitChanges></my-custom-checkbox>
 
 <form #ngForm="ngForm">
   <paper-input label="Name" required [(ngModel)]="name"></paper-input>

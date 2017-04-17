@@ -66,5 +66,3 @@ index.html
 </body>
 </html>
 ```
-
-While there is no vulcanize-like tool that works with Angular (yet!), this is likely where such a build task would start. From here, it would be easy to concatenate all imports into a single `elements-vulcanized.html` file for `index.html` to import.

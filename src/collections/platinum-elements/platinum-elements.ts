@@ -1,8 +1,8 @@
 import { Directive } from '@angular/core';
 
-import { PolymerDirective } from '../../events/polymer.directive';
+import { EmitChangesDirective } from '../../events/emit-changes.directive';
 
 @Directive({
   selector: `platinum-bluetooth, platinum-https-redirect, platinum-push-messaging, platinum-sw`
 })
-export class PlatinumElement extends PolymerDirective { }
+export class PlatinumElement extends EmitChangesDirective { }

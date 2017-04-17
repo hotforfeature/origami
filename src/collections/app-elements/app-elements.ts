@@ -1,9 +1,9 @@
 import { Directive } from '@angular/core';
 
-import { PolymerDirective } from '../../events/polymer.directive';
+import { EmitChangesDirective } from '../../events/emit-changes.directive';
 
 @Directive({
   selector: `app-box, app-drawer, app-drawer-layout, app-header, app-header-layout,
     app-scrollpos-control, app-toolbar, app-localize-behavior, app-pouchdb, app-route, app-storage`
 })
-export class AppElement extends PolymerDirective { }
+export class AppElement extends EmitChangesDirective { }

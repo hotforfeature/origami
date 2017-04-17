@@ -1,10 +1,10 @@
 import { OnPolymerChange } from './on-polymer-change';
 
-export function PolymerProperty(): PropertyDecorator {
+export function PolymerChanges(): PropertyDecorator {
   return (target: any, propertyKey: string) => {
     const desc = Object.getOwnPropertyDescriptor(target, propertyKey);
     if (desc && desc.get && !desc.set) {
-      console.warn(`${propertyKey} is readonly. @PolymerProperty() is not needed`);
+      console.warn(`${propertyKey} is readonly. @PolymerChanges() is not needed`);
     }
 
     let value: any;

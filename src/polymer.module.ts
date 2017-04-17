@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { PolymerElementsModule } from './collections/polymer-elements/polymer-elements.module';
-import { PolymerDirective } from './events/polymer.directive';
-import { IronControl } from './forms/iron-control';
+import { EmitChangesDirective } from './events/emit-changes.directive';
+import { IronControlDirective } from './forms/iron-control.directive';
 import { CustomStyleService } from './style/custom-style.service';
-import { PolymerTemplateDirective } from './templates/polymer-template';
+import { PolymerTemplateDirective } from './templates/polymer-template.directive';
 
 @NgModule({
   imports: [
@@ -13,16 +13,16 @@ import { PolymerTemplateDirective } from './templates/polymer-template';
     PolymerElementsModule
   ],
   declarations: [
-    IronControl,
-    PolymerDirective,
+    EmitChangesDirective,
+    IronControlDirective,
     PolymerTemplateDirective
   ],
   providers: [
     CustomStyleService
   ],
   exports: [
-    IronControl,
-    PolymerDirective,
+    EmitChangesDirective,
+    IronControlDirective,
     PolymerElementsModule,
     PolymerTemplateDirective
   ]

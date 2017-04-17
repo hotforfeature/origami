@@ -2,7 +2,7 @@
 
 Before starting, it is good to understand [how Polymer works with object and array data](https://www.polymer-project.org/2.0/docs/devguide/model-data).
 
-Most properties bound between Angular and Polymer using `@PolymerProperty()` are primitive types, such as strings or numbers, and are passed by value. However, objects and arrays are passed by reference in JavaScript.
+Most properties bound between Angular and Polymer using `@PolymerChanges()` are primitive types, such as strings or numbers, and are passed by value. However, objects and arrays are passed by reference in JavaScript.
 
 ```js
 let primitive = 'Hello World';
@@ -24,7 +24,7 @@ Polymer is more conservative, and will only update its bindings when it has been
 
 ## Polymer -> Angular
 
-Luckily, `@PolymerProperty()` already listens to object and array mutation events from Polymer.
+Luckily, `@PolymerChanges()` already listens to object and array mutation events from Polymer.
 
 Usually, properties are mutated by a user interaction, such as a click. By default, Angular will run change detection on these key events, and no further work is required.
 
@@ -32,7 +32,7 @@ However, if a mutation occurs in Polymer programmatically, or if a component is 
 
 ```ts
 import { Component, ChangeDetectorRef } from '@angular/core';
-import { PolymerProperty, OnPolymerChange } from '@codebakery/origami';
+import { PolymerChanges, OnPolymerChange } from '@codebakery/origami';
 
 @Component({
   selector: 'app-poly',
@@ -41,7 +41,7 @@ import { PolymerProperty, OnPolymerChange } from '@codebakery/origami';
   `
 })
 export class PolyComponent implements OnPolymerChange {
-  @PolymerProperty() myItems = [1, 2, 3, 4];
+  @PolymerChanges() myItems = [1, 2, 3, 4];
 
   constructor(private changeRef: ChangeDetectorRef) { }
 
@@ -59,7 +59,7 @@ Polymer will not automatically check for mutations like Angular does. This means
 
 ```ts
 import { Component, ChangeDetectorRef, ElementRef, ViewChild } from '@angular/core';
-import { PolymerProperty, OnPolymerChange } from '@codebakery/origami';
+import { PolymerChanges, OnPolymerChange } from '@codebakery/origami';
 
 @Component({
   selector: 'app-poly',
@@ -69,7 +69,7 @@ import { PolymerProperty, OnPolymerChange } from '@codebakery/origami';
   `
 })
 export class PolyComponent implements OnPolymerChange {
-  @PolymerProperty() myItems = [1, 2, 3, 4];
+  @PolymerChanges() myItems = [1, 2, 3, 4];
   @ViewChild('myList') myListRef: ElementRef;
 
   constructor(private changeRef: ChangeDetectorRef) { }
@@ -97,7 +97,7 @@ Origami provides the `Polymer.PropertyEffects` interface to assist in correctly 
 
 ```ts
 import { Component, ChangeDetectorRef, ElementRef, ViewChild } from '@angular/core';
-import { Polymer, PolymerProperty, OnPolymerChange } from '@codebakery/origami';
+import { Polymer, PolymerChanges, OnPolymerChange } from '@codebakery/origami';
 
 @Component({
   selector: 'app-poly',
@@ -107,7 +107,7 @@ import { Polymer, PolymerProperty, OnPolymerChange } from '@codebakery/origami';
   `
 })
 export class PolyComponent implements OnPolymerChange {
-  @PolymerProperty() myItems = [1, 2, 3, 4];
+  @PolymerChanges() myItems = [1, 2, 3, 4];
   @ViewChild('myList') myListRef: ElementRef;
 
   constructor(private changeRef: ChangeDetectorRef) { }
@@ -134,7 +134,7 @@ Elements using `MutableData` can using `notifyPath()` to invoke their property e
 
 ```ts
 import { Component, ChangeDetectorRef, ElementRef, ViewChild } from '@angular/core';
-import { Polymer, PolymerProperty, OnPolymerChange } from '@codebakery/origami';
+import { Polymer, PolymerChanges, OnPolymerChange } from '@codebakery/origami';
 
 @Component({
   selector: 'app-poly',
@@ -144,7 +144,7 @@ import { Polymer, PolymerProperty, OnPolymerChange } from '@codebakery/origami';
   `
 })
 export class PolyComponent implements OnPolymerChange {
-  @PolymerProperty() myItems = [1, 2, 3, 4];
+  @PolymerChanges() myItems = [1, 2, 3, 4];
   @ViewChild('myList') myListRef: ElementRef;
 
   constructor(private changeRef: ChangeDetectorRef) { }
@@ -168,7 +168,7 @@ class MyListElement extends Polymer.OptionalMutableData(Polymer.Element)
 
 ```ts
 import { Component, ChangeDetectorRef, ElementRef, ViewChild } from '@angular/core';
-import { Polymer, PolymerProperty, OnPolymerChange } from '@codebakery/origami';
+import { Polymer, PolymerChanges, OnPolymerChange } from '@codebakery/origami';
 
 @Component({
   selector: 'app-poly',
@@ -178,7 +178,7 @@ import { Polymer, PolymerProperty, OnPolymerChange } from '@codebakery/origami';
   `
 })
 export class PolyComponent implements OnPolymerChange {
-  @PolymerProperty() myItems = [1, 2, 3, 4];
+  @PolymerChanges() myItems = [1, 2, 3, 4];
   @ViewChild('myList') myListRef: ElementRef;
 
   constructor(private changeRef: ChangeDetectorRef) { }

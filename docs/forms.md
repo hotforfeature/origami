@@ -12,7 +12,7 @@ By default, `<paper-checkbox>` has a `checked` attribute that we can bind to.
 
 ```ts
 import { Component } from '@angular/core';
-import { PolymerProperty } from '@codebakery/origami';
+import { PolymerChanges } from '@codebakery/origami';
 
 @Component({
   selector: 'app-poly',
@@ -24,7 +24,7 @@ import { PolymerProperty } from '@codebakery/origami';
   `
 })
 export class PolyComponent {
-  @PolymerProperty() isChecked: boolean;
+  @PolymerChanges() isChecked: boolean;
 }
 ```
 
@@ -32,7 +32,7 @@ Our property is bound correctly, but `NgForm`'s validity is incorrect when the c
 
 ## IronControl
 
-Similar to the `[polymer]` attribute, Origami provides the `[ironControl]` directive.
+Similar to the `[emitChanges]` attribute, Origami provides the `[ironControl]` directive.
 
 `[ironControl]` will connect an element to an Angular `NgControl`, provided the element implements one of the following Polymer behaviors:
 
@@ -44,7 +44,7 @@ A warning will be generated in the console if `[ironControl]` can't support the 
 
 ```ts
 import { Component } from '@angular/core';
-import { PolymerProperty } from '@codebakery/origami';
+import { PolymerChanges } from '@codebakery/origami';
 
 @Component({
   selector: 'app-poly',
@@ -56,7 +56,7 @@ import { PolymerProperty } from '@codebakery/origami';
   `
 })
 export class PolyComponent {
-  @PolymerProperty() isChecked: boolean;
+  @PolymerChanges() isChecked: boolean;
 }
 ```
 
@@ -96,7 +96,7 @@ In these cases, add `[ironControl]` to the parent element and specify an `[ironS
 
 ```ts
 import { Component } from '@angular/core';
-import { PolymerProperty } from '@codebakery/origami';
+import { PolymerChanges } from '@codebakery/origami';
 
 @Component({
   selector: 'app-poly',
@@ -117,7 +117,7 @@ import { PolymerProperty } from '@codebakery/origami';
   `
 })
 export class PolyComponent {
-  @PolymerProperty() selectedItem: string;
+  @PolymerChanges() selectedItem: string;
 }
 ```
 
@@ -148,7 +148,7 @@ IronValidatableBehavior emits a single result (true or false) for validation. It
 
 ## Collection Modules
 
-Just like `[polymer]`, it is simple to write a directive that provides the `[ironControl]` for known custom elements.
+Just like `[emitChanges]`, it is simple to write a directive that provides the `[ironControl]` for known custom elements.
 
 Origami's collection modules include the proper control selectors for Polymer's collections. Importing `PaperElementsModule` for the above example removes the need for extra `[ironControl]` attribuets.
 
@@ -176,8 +176,7 @@ export class AppModule { }
 app.component.ts
 ```ts
 import { Component } from '@angular/core';
-// TODO: Package angular-polymer separately
-import { PolymerProperty } from 'angular-polymer';
+import { PolymerChanges } from '@codebakery/origami';
 
 @Component({
   selector: 'app-poly',
@@ -200,8 +199,8 @@ import { PolymerProperty } from 'angular-polymer';
   `
 })
 export class PolyComponent {
-  @PolymerProperty() isChecked: boolean;
-  @PolymerProperty() selectedItem: string;
+  @PolymerChanges() isChecked: boolean;
+  @PolymerChanges() selectedItem: string;
 }
 ```
 

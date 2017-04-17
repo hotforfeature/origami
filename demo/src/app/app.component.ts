@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
-import { CustomStyleService, PolymerProperty } from '../origami/origami';
+import { CustomStyleService, PolymerChanges } from '../origami/origami';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +9,7 @@ import { CustomStyleService, PolymerProperty } from '../origami/origami';
   encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit {
-  @PolymerProperty() selectedTab: number = 1;
+  @PolymerChanges() selectedTab: number = 1;
 
   constructor(private customStyle: CustomStyleService) { }
 

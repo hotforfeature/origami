@@ -1,14 +1,7 @@
 import { Directive, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 
-// TODO: Deprecate this in favor of enableLegacyTemplate: false Angular compiler option.
-// At the moment, this option doesn't seem to be working correctly
-// https://github.com/angular/angular/issues/15555
-// Even when this option is set (hardcode to false in @angular/compiler source code), the
-// resulting <template> has children appended to it instead of its #document-fragment
-// https://github.com/angular/angular/issues/15557
-
 @Directive({
-  selector: '[polymer-template]'
+  selector: 'ng-template[polymer], template[polymer]'
 })
 export class PolymerTemplateDirective implements OnInit {
   @Input() methodHost: any;
@@ -16,6 +9,12 @@ export class PolymerTemplateDirective implements OnInit {
   private template: HTMLTemplateElement;
 
   constructor(view: ViewContainerRef, templateRef: TemplateRef<any>) {
+    // TODO: Deprecate detach/attach in favor of enableLegacyTemplate: false Angular compiler
+    // option. At the moment, this option doesn't seem to be working correctly
+    // https://github.com/angular/angular/issues/15555
+    // Even when this option is set (hardcode to false in @angular/compiler source code), the
+    // resulting <template> has children appended to it instead of its #document-fragment
+    // https://github.com/angular/angular/issues/15557
     const parentNode = (<HTMLElement>view.element.nativeElement).parentNode;
     this.template = document.createElement('template');
 

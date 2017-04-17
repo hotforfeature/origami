@@ -8,7 +8,7 @@ Angular consumes all `<style>` elements, so it is impossible to create a compone
 
 ```ts
 import { Component } from '@angular/core';
-import { PolymerProperty } from '@codebakery/origami';
+import { PolymerChanges } from '@codebakery/origami';
 
 @Component({
   selector: 'app-poly',
@@ -28,7 +28,7 @@ import { PolymerProperty } from '@codebakery/origami';
   `
 })
 export class PolyComponent {
-  @PolymerProperty() isDisabled: boolean;
+  @PolymerChanges() isDisabled: boolean;
 }
 ```
 
@@ -42,7 +42,7 @@ Any Angular component that uses custom CSS variables and mixins should import `C
 
 ```ts
 import { Component, OnInit } from '@angular/core';
-import { CustomStyleService, PolymerProperty } from '@codebakery/origami';
+import { CustomStyleService, PolymerChanges } from '@codebakery/origami';
 
 @Component({
   selector: 'app-poly',
@@ -61,7 +61,7 @@ import { CustomStyleService, PolymerProperty } from '@codebakery/origami';
   `
 })
 export class PolyComponent implements OnInit {
-  @PolymerProperty() isDisabled: boolean;
+  @PolymerChanges() isDisabled: boolean;
 
   constructor(private customStyle: CustomStyleService) { }
 
@@ -81,7 +81,7 @@ By default, Angular will add attributes to styles to achieve an emulated view en
 
 ```ts
 import { Component, ElementRef, OnInit, ViewEncapsulation } from '@angular/core';
-import { CustomStyleService, PolymerProperty } from '@codebakery/origami';
+import { CustomStyleService, PolymerChanges } from '@codebakery/origami';
 
 @Component({
   selector: 'app-poly',
@@ -100,7 +100,7 @@ import { CustomStyleService, PolymerProperty } from '@codebakery/origami';
   encapsulation: ViewEncapsulation.Native
 })
 export class PolyComponent implements OnInit {
-  @PolymerProperty() isDisabled: boolean;
+  @PolymerChanges() isDisabled: boolean;
 
   constructor(private customStyle: CustomStyleService, private elementRef: ElementRef) { }
 
