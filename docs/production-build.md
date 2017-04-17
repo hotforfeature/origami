@@ -131,4 +131,4 @@ Remember, only use `"js": { "compile": true }` for IE11 and Safari 9 (browsers t
 
 You may notice that the app's repository now has both a `dist/` and `build/` folder, and each build folder includes a `dist/` directory. With [`rimraf`](https://github.com/isaacs/rimraf) and [`cpr`](https://github.com/davglass/cpr), it is easy to include a post build script to clean up.
 
-Look at the Origami's [`package.json`](../package.json) `build:demo` and `postbuild:demo` run scripts for reference.
+Look at the Origami's demo [`package.json`](../demo/package.json) `build` and `postbuild` run scripts for reference.
