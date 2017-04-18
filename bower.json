@@ -1,0 +1,13 @@
+{
+  "name": "origami",
+  "description": "Angular + Polymer",
+  "authors": [
+    "Andrew Mitchell <abmitchell77@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/hotforfeature/origami",
+  "private": true,
+  "dependencies": {
+    "polymer": "Polymer/polymer#^2.0.0-rc.6"
+  }
+}

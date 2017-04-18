@@ -13,6 +13,9 @@ require('zone.js/dist/fake-async-test');
 
 require('rxjs/Rx');
 
+// Prevent Karma from running until Polymer loaded
+__karma__.loaded = function () {};
+
 const testing = require('@angular/core/testing');
 const browser = require('@angular/platform-browser-dynamic/testing');
 
@@ -23,3 +26,7 @@ testing.TestBed.initTestEnvironment(
 
 const context = require.context('../src', true, /\.spec\.ts$/);
 context.keys().map(context);
+
+window.addEventListener('WebComponentsReady', function() {
+  __karma__.start();
+});

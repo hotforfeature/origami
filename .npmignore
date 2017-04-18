@@ -1,8 +1,11 @@
+bower_components/
 demo/
 docs/
 src/
 .editorconfig
 .gitignore
+.travis.yml
+bower.json
 tsconfig.json
 tslint.json
 yarn.lock

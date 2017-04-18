@@ -19,9 +19,10 @@
     "url": "https://github.com/hotforfeature/origami/issues"
   },
   "scripts": {
+    "postinstall": "bower install",
     "clean": "rimraf lib/ coverage/",
     "lint": "tslint --project tsconfig.json",
-    "test": "karma start --browsers PhantomJS --single-run",
+    "test": "karma start --single-run",
     "test:watch": "karma start",
     "precommit": "npm run lint",
     "commitmsg": "validate-commit-msg",
@@ -48,6 +49,7 @@
     "@types/jasmine": "^2.5.47",
     "@types/node": "^7.0.12",
     "awesome-typescript-loader": "^3.1.2",
+    "bower": "^1.8.0",
     "codelyzer": "^2.1.1",
     "commitizen": "^2.9.6",
     "cz-conventional-changelog": "^2.0.0",
@@ -62,6 +64,7 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "karma-mocha-reporter": "^2.2.3",
     "karma-phantomjs-launcher": "^1.0.4",
+    "karma-sauce-launcher": "^1.1.0",
     "karma-webpack": "^2.0.3",
     "rimraf": "^2.6.1",
     "rxjs": "^5.0.1",
