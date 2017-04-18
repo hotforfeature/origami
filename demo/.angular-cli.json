@@ -1,8 +1,8 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "project": {
-    "version": "1.0.0-beta.32.3",
-    "name": "angular-polymer-sink"
+    "version": "1.0.0",
+    "name": "origami-demo"
   },
   "apps": [
     {
