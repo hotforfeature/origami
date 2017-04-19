@@ -43,13 +43,15 @@ Polymer is built off of WebComponents, which is comprised of
 - [HTML imports](http://caniuse.com/#feat=imports)
 - [Shadow DOM](http://caniuse.com/#feat=shadowdomv1)
 
-[Polyfills are available](https://www.webcomponents.org/polyfills) and support the following browsers:
+[Polyfills are available](https://www.webcomponents.org/polyfills) and Origami supports the latest 2 versions of the following browsers:
 
 - Chrome
-- Opera
 - Firefox
-- Safari 7+
-- Edge/IE11+
+- Safari
+- Microsoft Edge
+- Internet Explorer (11 only)
+
+Origami may work on older versions or different browsers (such as Opera), but they are not officially supported.
 
 ## Installation
 
