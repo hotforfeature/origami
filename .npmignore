@@ -1,7 +1,7 @@
-bower_components/
 demo/
 docs/
 src/
+test/
 .editorconfig
 .gitignore
 .travis.yml

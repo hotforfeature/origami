@@ -1,0 +1,9 @@
+{
+  "entrypoint": "bower_components/polymer/polymer.html",
+  "builds": [
+    {
+      "name": "es5",
+      "js": { "compile": true }
+    }
+  ]
+}

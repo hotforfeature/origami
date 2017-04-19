@@ -1,10 +1,11 @@
 # compiled output
 /bundles
 /lib
+/test/build
 
 # dependencies
 /node_modules
-/bower_components
+/test/bower_components
 
 # IDEs and editors
 /.idea
