@@ -27,6 +27,8 @@ testing.TestBed.initTestEnvironment(
 const context = require.context('../src', true, /\.spec\.ts$/);
 context.keys().map(context);
 
+const Promise = window.Promise;
 window.addEventListener('WebComponentsReady', function() {
+  window.Promise = Promise;
   __karma__.start();
 });

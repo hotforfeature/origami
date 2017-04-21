@@ -33,7 +33,7 @@ module.exports = function(config) {
     logLevel: config.LOG_INFO,
     autoWatch: false,
     browsers: ['Chrome'],
-    browserNoActivityTimeout: 30000,
+    browserNoActivityTimeout: 60000,
     singleRun: true
   };
 
