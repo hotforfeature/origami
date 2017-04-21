@@ -2,7 +2,7 @@ import {} from 'jasmine';
 
 import { getTagName } from './getTagName';
 
-describe('getTagName', () => {
+describe('getTagName()', () => {
   it('should return ElementRef native element tag name', () => {
     expect(getTagName({
       nativeElement: document.createElement('div')

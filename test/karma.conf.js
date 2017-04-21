@@ -27,7 +27,6 @@ module.exports = function(config) {
       stats: 'errors-only'
     },
     reporters: ['mocha', 'kjhtml'],
-    reportSlowerThan: 200,
     port: 9876,
     colors: true,
     concurrency: 5,
@@ -38,10 +37,11 @@ module.exports = function(config) {
     singleRun: true
   };
 
-  const bowerDirectory = ES5 ? './test/build/es5/bower_components' : './test/bower_components';
+  const directory = ES5 ? './test/build/es5' : './test';
+  const bowerDirectory = directory + '/bower_components';
   configuration.files.push(
     { pattern: bowerDirectory + '/webcomponentsjs/webcomponents-loader.js', watched: false },
-    { pattern: bowerDirectory + '/polymer/polymer.html', watched: false },
+    { pattern: directory + '/elements.html', watched: false },
     { pattern: bowerDirectory + '/**/*', watched: false, included: false, served: true }
   );
 

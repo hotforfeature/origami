@@ -1,5 +1,5 @@
 {
-  "entrypoint": "bower_components/polymer/polymer.html",
+  "entrypoint": "elements.html",
   "builds": [
     {
       "name": "es5",

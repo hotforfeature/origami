@@ -42,6 +42,7 @@ export namespace Polymer {
 }
 
 export interface Polymer {
+  (info?: any): any;
   CaseMap: Polymer.CaseMap;
   Path: Polymer.Path;
 }

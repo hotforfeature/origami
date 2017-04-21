@@ -29,13 +29,8 @@ export class PolymerTemplateDirective implements OnInit {
     // Detach and re-attach the parent element. This will trigger any template attaching logic
     // that a custom elements needs which Angular skipped when using <ng-template>
     const hostNode = parentNode.parentNode;
-    const parentSibling = parentNode.nextSibling;
     hostNode.removeChild(parentNode);
-    if (parentSibling) {
-      hostNode.insertBefore(parentSibling, parentNode);
-    } else {
-      hostNode.appendChild(parentNode);
-    }
+    hostNode.appendChild(parentNode);
   }
 
   ngOnInit() {
