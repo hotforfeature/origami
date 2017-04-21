@@ -37,6 +37,9 @@ export class IronControlDirective implements ControlValueAccessor, OnInit, After
   protected ironMultiSelectable = false;
   protected ironValidatable = false;
 
+  private isWritingValue = false;
+  private boundSelectedChanged: Function;
+
   constructor(protected elementRef: ElementRef,
       protected injector: Injector,
       protected renderer: Renderer) { }
@@ -49,6 +52,12 @@ export class IronControlDirective implements ControlValueAccessor, OnInit, After
     this.ironMultiSelectable = 'multi' in this.ironSelector;
     this.ironValidatable = typeof this.elementRef.nativeElement.validate === 'function';
 
+    // IronSelector may be a different element, and default changed events do not bubble.
+    // Therefore it's important to add listeners to the element itself rather than the host
+    this.boundSelectedChanged = this.onSelectedChanged.bind(this);
+    this.ironSelector.addEventListener('selected-changed', this.boundSelectedChanged);
+    this.ironSelector.addEventListener('selected-values-changed', this.boundSelectedChanged);
+
     if (!ironFormElement && !this.ironCheckedElement && !this.ironSelectable) {
       console.warn(`${getTagName(this.elementRef)} does not implement IronFormElementBehavior, ` +
         `IronCheckedElementBehavior, or IronSelectableBehavior. If this element wraps an ` +
@@ -58,7 +67,9 @@ export class IronControlDirective implements ControlValueAccessor, OnInit, After
 
   ngAfterViewInit() {
     this.ngControl = this.injector.get(NgControl, null); // tslint:disable-line:no-null-keyword
+    /* istanbul ignore else */
     if (this.ngControl) {
+      /* istanbul ignore else */
       if (this.ironValidatable) {
         // Custom validators should update native element's validity
         this.statusSub = this.ngControl.statusChanges.subscribe(() => {
@@ -86,12 +97,20 @@ export class IronControlDirective implements ControlValueAccessor, OnInit, After
   }
 
   ngOnDestroy() {
+    /* istanbul ignore next */
     if (this.statusSub) {
       this.statusSub.unsubscribe();
     }
+
+    this.ironSelector.removeEventListener('selected-changed', this.boundSelectedChanged);
+    this.ironSelector.removeEventListener('selected-values-changed', this.boundSelectedChanged);
   }
 
   writeValue(obj: any) {
+    // When a control is reset, it will write the default value to the control. A Polymer element
+    // will also fire a changed event, but we don't need to inform NgControl of this change.
+    this.isWritingValue = true;
+
     if (this.ironCheckedElement) {
       this.renderer.setElementProperty(this.elementRef.nativeElement, 'checked', Boolean(obj));
     } else if (this.ironSelectable || this.ironMultiSelectable) {
@@ -103,6 +122,8 @@ export class IronControlDirective implements ControlValueAccessor, OnInit, After
     } else {
       this.renderer.setElementProperty(this.elementRef.nativeElement, 'value', obj);
     }
+
+    this.isWritingValue = false;
   }
 
   registerOnChange(fn: any) {
@@ -117,17 +138,23 @@ export class IronControlDirective implements ControlValueAccessor, OnInit, After
     this.renderer.setElementProperty(this.elementRef.nativeElement, 'disabled', isDisabled);
   }
 
+  /* istanbul ignore next */
   protected onChange = (_: any) => { /* noop */ };
+  /* istanbul ignore next */
   protected onTouched = () => { /* noop */ };
 
-  @HostListener('input', ['$event'])
+  @HostListener('value-changed', ['$event'])
   protected onInput(event: Event) {
-    this.onChange((<any>event.target).value);
+    if (!this.isWritingValue) {
+      this.onChange((<any>event.target).value);
+    }
   }
 
   @HostListener('checked-changed', ['$event'])
   protected onCheckedChanged(event: CustomEvent) {
-    this.onChange(event.detail.value);
+    if (!this.isWritingValue) {
+      this.onChange(event.detail.value);
+    }
   }
 
   @HostListener('blur')
@@ -136,21 +163,13 @@ export class IronControlDirective implements ControlValueAccessor, OnInit, After
     this.onTouched();
   }
 
-  @HostListener('iron-select')
-  protected onIronSelect() {
-    if (this.elementRef.nativeElement.multi) {
-      this.onChange(this.ironSelector.selectedValues);
-    } else {
-      this.onChange(this.ironSelector.selected);
-    }
-  }
-
-  @HostListener('iron-deselect')
-  protected onIronDeselect() {
-    if (this.ngControl && this.ngControl.dirty) {
-      this.onIronSelect();
-    } else {
-      // Control was reset, do not fire a change event which would mark it as dirty
+  protected onSelectedChanged() {
+    if (!this.isWritingValue) {
+      if (this.ironSelector.multi) {
+        this.onChange(this.ironSelector.selectedValues);
+      } else {
+        this.onChange(this.ironSelector.selected);
+      }
     }
   }
 }
