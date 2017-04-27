@@ -1,7 +1,7 @@
 module.exports = function(config) {
   const IS_CI = Boolean(process.env.TRAVIS);
   const ES5 = Boolean(process.env.ES5);
-  const COVERAGE = !IS_CI;
+  const COVERAGE = !IS_CI && !ES5;
 
   const configuration = {
     basePath: '',
@@ -33,7 +33,6 @@ module.exports = function(config) {
     logLevel: config.LOG_INFO,
     autoWatch: false,
     browsers: ['Chrome'],
-    browserNoActivityTimeout: 60000,
     singleRun: true
   };
 
@@ -67,6 +66,8 @@ module.exports = function(config) {
     };
 
     if (ES5) {
+      // IE11 takes a while and doesn't respond
+      configuration.browserNoActivityTimeout = 5 * 60 * 1000;
       configuration.customLaunchers = {
         // Safari 9 support will drop when Safari 11 is released
         SL_Safari_9: {
