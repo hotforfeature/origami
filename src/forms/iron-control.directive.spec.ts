@@ -1,19 +1,10 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, ViewChild } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  FormsModule,
-  NgControl,
-  NgModel,
-  NgForm,
-  ReactiveFormsModule,
-  Validators,
-  NG_VALUE_ACCESSOR
-} from '@angular/forms';
+// tslint:disable:max-classes-per-file no-access-missing-member
+import { CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { FormsModule, NgControl, Validators } from '@angular/forms';
 import {} from 'jasmine';
 
-import { IronControlDirective, IRON_CONTROL_VALUE_ACCESSOR } from './iron-control.directive';
+import { IronControlDirective } from './iron-control.directive';
 
 class FormComponent {
   @ViewChild(IronControlDirective) ironControl: IronControlDirective;
@@ -23,7 +14,7 @@ class FormComponent {
   }
 
   get ngControl(): NgControl {
-    return (<any>this.ironControl)['ngControl'];
+    return (<any>this.ironControl)['ngControl']; // tslint:disable-line:no-string-literal
   }
 
   model = {
@@ -124,7 +115,7 @@ describe('IronControlDirective', () => {
           return fixture.whenStable();
         }).then(() => {
           expect(fixture.componentInstance.element.invalid).toBe(false);
-          fixture.componentInstance.model.input = null;
+          fixture.componentInstance.model.input = null; // tslint:disable-line:no-null-keyword
           fixture.detectChanges();
           return fixture.whenStable();
         }).then(() => {
@@ -149,7 +140,8 @@ describe('IronControlDirective', () => {
         fixture.whenStable().then(() => {
           spyOn(fixture.componentInstance.element, 'validate').and.returnValue(false);
           fixture.componentInstance.ngControl.control.updateValueAndValidity();
-          expect(fixture.componentInstance.ngControl.control.hasError('ironValidatable')).toBe(true);
+          expect(fixture.componentInstance.ngControl.control.hasError('ironValidatable'))
+            .toBe(true);
         });
       }));
     });

@@ -1,4 +1,4 @@
-import { Component, ElementRef, CUSTOM_ELEMENTS_SCHEMA, ViewChild } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import {} from 'jasmine';
 
@@ -39,7 +39,7 @@ describe('EmitChangesDirective', () => {
   let fixture: ComponentFixture<TestComponent>;
 
   beforeAll(() => {
-    const Polymer = getPolymer();
+    const Polymer = getPolymer(); // tslint:disable-line:variable-name
     Polymer({
       is: 'emit-changes-element',
       properties: {

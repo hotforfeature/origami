@@ -74,7 +74,9 @@ describe('PolymerTemplateDirective', () => {
     it('should set template.__dataHost to methodHost', async(() => {
       fixture.whenStable().then(() => {
         fixture.detectChanges();
+        // tslint:disable-next-line:no-string-literal
         expect(template['__dataHost']).toBe(fixture.componentInstance);
+        // tslint:disable-next-line:no-string-literal
         expect(firstSiblingTemplate['__dataHost']).toBeUndefined();
       });
     }));

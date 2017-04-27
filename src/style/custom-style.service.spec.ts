@@ -1,3 +1,4 @@
+// tslint:disable:max-classes-per-file
 import { Component, ElementRef, OnInit, ViewEncapsulation } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { BrowserModule } from '@angular/platform-browser';
@@ -55,8 +56,7 @@ class NativeComponent {
 }
 
 describe('CustomStyleService', () => {
-  let CustomElement: any;
-  let fixture: ComponentFixture<TestComponent>
+  let fixture: ComponentFixture<TestComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -70,7 +70,7 @@ describe('CustomStyleService', () => {
 
   afterEach(() => {
     const customStyles = document.head.querySelectorAll('custom-style');
-    for (let i = 0; i < customStyles.length; i++) {
+    for (let i = 0; i < customStyles.length; i++) { // tslint:disable-line:prefer-for-of
       document.head.removeChild(customStyles[i]);
     }
   });
@@ -83,7 +83,7 @@ describe('CustomStyleService', () => {
       });
     }));
 
-    if (HTMLElement.prototype['createShadowRoot']) {
+    if (HTMLElement.prototype['createShadowRoot']) { // tslint:disable-line:no-string-literal
       it('should wrap <style>s with <custom-style> in shadow DOM', async(() => {
         fixture = TestBed.createComponent(NativeComponent);
         fixture.whenStable().then(() => {

@@ -6,7 +6,7 @@ import { getPolymer } from './Polymer';
 
 describe('getCustomElementClass()', () => {
   it('should return constructor function for the element', () => {
-    const CustomElement = getPolymer()({
+    const CustomElement = getPolymer()({ // tslint:disable-line:variable-name
       is: 'custom-element'
     });
 
