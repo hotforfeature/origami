@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.0"></a>
+# [1.0.0](https://github.com/hotforfeature/origami/compare/v0.6.0...v1.0.0) (2017-04-27)
+
+
+### Bug Fixes
+
+* **events:** fix bug where value for decorator was cached across all components ([507ac23](https://github.com/hotforfeature/origami/commit/507ac23))
+* **forms:** fix ironControl not updating from selector and incorrectly marking control as dirty ([6012359](https://github.com/hotforfeature/origami/commit/6012359))
+
+
+
 <a name="0.6.0"></a>
 # [0.6.0](https://github.com/hotforfeature/origami/compare/v0.5.0...v0.6.0) (2017-04-17)
 
