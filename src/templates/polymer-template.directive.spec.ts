@@ -62,9 +62,12 @@ describe('PolymerTemplateDirective', () => {
   });
 
   it('should add <ng-template> children to <template> content', () => {
+    // IE11/Edge do not implement ParentNode interface for DocumentFragment, which provides the
+    // children property
     expect(template.content).toBeDefined();
-    expect(template.content.children[0].id).toBe('first');
-    expect(template.content.children[1].id).toBe('second');
+    const first = template.content.querySelector('#first');
+    expect(first).toBeDefined();
+    expect(first.nextElementSibling.id).toBe('second');
   });
 
   describe('ngOnInit()', () => {

@@ -15,6 +15,7 @@ require('rxjs/Rx');
 
 // Prevent Karma from running until Polymer loaded
 __karma__.loaded = function () {};
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
 
 const testing = require('@angular/core/testing');
 const browser = require('@angular/platform-browser-dynamic/testing');

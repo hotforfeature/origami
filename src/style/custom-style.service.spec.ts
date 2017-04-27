@@ -55,8 +55,6 @@ class NativeComponent {
 }
 
 describe('CustomStyleService', () => {
-  const SHADY_CSS_TIMEOUT = 20;
-
   let CustomElement: any;
   let fixture: ComponentFixture<TestComponent>
 
@@ -85,26 +83,6 @@ describe('CustomStyleService', () => {
       });
     }));
 
-    it('should ensure CSS variables work', async(() => {
-      fixture.whenStable().then(() => {
-        fixture.detectChanges();
-        setTimeout(() => {
-          const h1 = fixture.nativeElement.querySelector('h1');
-          expect(getComputedStyle(h1).color).toBe('rgb(255, 0, 0)');
-        }, SHADY_CSS_TIMEOUT);
-      });
-    }));
-
-    it('should ensure CSS mixins work', async(() => {
-      fixture.whenStable().then(() => {
-        fixture.detectChanges();
-        setTimeout(() => {
-          const h1 = fixture.nativeElement.querySelector('h1');
-          expect(getComputedStyle(h1).fontSize).toBe('10px');
-        }, SHADY_CSS_TIMEOUT);
-      });
-    }));
-
     if (HTMLElement.prototype['createShadowRoot']) {
       it('should wrap <style>s with <custom-style> in shadow DOM', async(() => {
         fixture = TestBed.createComponent(NativeComponent);
@@ -112,28 +90,6 @@ describe('CustomStyleService', () => {
           fixture.detectChanges();
           expect(fixture.nativeElement.shadowRoot.querySelectorAll('custom-style').length)
             .toBeGreaterThan(0);
-        });
-      }));
-
-      it('should ensure CSS variables work in shadow DOM', async(() => {
-        fixture = TestBed.createComponent(NativeComponent);
-        fixture.whenStable().then(() => {
-          fixture.detectChanges();
-          setTimeout(() => {
-            const h1 = fixture.nativeElement.shadowRoot.querySelector('h1');
-            expect(getComputedStyle(h1).color).toBe('rgb(0, 0, 255)');
-          }, SHADY_CSS_TIMEOUT);
-        });
-      }));
-
-      it('should ensure CSS mixins work in shadow DOM', async(() => {
-        fixture = TestBed.createComponent(NativeComponent);
-        fixture.whenStable().then(() => {
-          fixture.detectChanges();
-          setTimeout(() => {
-            const h1 = fixture.nativeElement.shadowRoot.querySelector('h1');
-            expect(getComputedStyle(h1).fontSize).toBe('8px');
-          }, SHADY_CSS_TIMEOUT);
         });
       }));
     }

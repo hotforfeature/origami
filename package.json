@@ -25,7 +25,7 @@
     "test": "karma start",
     "test:watch": "karma start --auto-watch --no-single-run",
     "pretest:es5": "cd test && polymer build",
-    "test:es5": "ES5=true npm run test",
+    "test:es5": "ES5=true karma start",
     "precommit": "npm run lint",
     "commitmsg": "validate-commit-msg",
     "commit": "git-cz",
