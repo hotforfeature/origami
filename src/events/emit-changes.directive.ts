@@ -16,7 +16,8 @@ export class EmitChangesDirective implements OnInit {
       this.copyKeysFrom(klass.prototype.properties, properties);
       if (klass.prototype.behaviors) {
         klass.prototype.behaviors.map(behavior => {
-          return behavior.properties || [];
+          return behavior.properties ||
+            /* istanbul ignore next */ [];
         }).forEach(property => {
           this.copyKeysFrom(property, properties);
         });
@@ -41,7 +42,8 @@ export class EmitChangesDirective implements OnInit {
   }
 
   private copyKeysFrom(from: any, to: any): any {
-    Object.keys(from || {}).forEach(key => {
+    Object.keys(from ||
+        /* istanbul ignore next */ {}).forEach(key => {
       if (key[0] !== '_') {
         // Only copy public properties
         to[key] = from[key];

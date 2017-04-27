@@ -1,0 +1,16 @@
+{
+  "name": "origami",
+  "description": "Angular + Polymer",
+  "authors": [
+    "Andrew Mitchell <abmitchell77@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/hotforfeature/origami",
+  "private": true,
+  "dependencies": {
+    "polymer": "Polymer/polymer#^2.0.0-rc.6",
+    "paper-input": "PolymerElements/paper-input#2.0-preview",
+    "paper-checkbox": "PolymerElements/paper-checkbox#2.0-preview",
+    "iron-selector": "PolymerElements/iron-selector#2.0-preview"
+  }
+}

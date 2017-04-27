@@ -9,7 +9,7 @@
     ],
     "module": "es2015",
     "moduleResolution": "node",
-    "noUnusedLocals": false,
+    "noUnusedLocals": true,
     "noUnusedParameters": true,
     "outDir": "lib",
     "sourceMap": true,
@@ -19,14 +19,10 @@
       "node_modules/@types/jasmine"
     ]
   },
-  "angularCompilerOptions": {
-    "skipTemplateCodegen": true
-  },
   "include": [
     "src/**/*"
   ],
   "exclude": [
-    "node_modules",
-    "src/**/*.spec.*"
+    "node_modules"
   ]
 }
