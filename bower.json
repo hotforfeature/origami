@@ -13,5 +13,5 @@
     "paper-checkbox": "PolymerElements/paper-checkbox#2.0-preview",
     "iron-selector": "PolymerElements/iron-selector#2.0-preview"
   },
-  "version": "1.0.0"
+  "version": "1.0.1"
 }

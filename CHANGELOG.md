@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/hotforfeature/origami/compare/v1.0.0...v1.0.1) (2017-04-28)
+
+
+### Bug Fixes
+
+* remove bower install as postinstall action ([81a8804](https://github.com/hotforfeature/origami/commit/81a8804))
+
+
+
 <a name="1.0.0"></a>
 # [1.0.0](https://github.com/hotforfeature/origami/compare/v0.6.0...v1.0.0) (2017-04-27)
 
