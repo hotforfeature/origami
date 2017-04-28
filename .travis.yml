@@ -9,5 +9,6 @@ env:
     # SAUCE_ACCESS_KEY
     - secure: "B3ZilHiNjOHxNvO/813QFTkWTjmkMiEKgnpdECG+XKR0+D10RnmIFoWj/h9H4ae5ky9UdNH7s9Wh1mu7C6mkBNn0w6bLdnT+dBuMwuJ7x09u+B/4MQ6BhHyVJZLp0cJatfYFMrMEJO2D5SnvtdSJfDEgSUagWAokdJCGNvg4hdj+A28hmXZIVyojhb41B5KKVZmxgX94p16SONjwzkejfkJm87L0MiXMtAb/njXhxeAJGvJGojBUXK5k9xFy1beQn+lhUki43X/O8Q73VNAG7WKQb54VOfOclfrd5xCOBNdnDm5ZzzHt8fOD3gU1fZXuFAMlqnmuNulSxPFDGTYWlrJ9JqbhzX+o2a5TKaPaXjCnjCnL90rL/0ld875NYm88za0Y8NFBdYVDHGLtrKPYsfqjWaofIMnVYo/ieVVyGRFj5fj2m8XrK0yCPF/UfUELuXJdw8hJI7/Z/WKs+wS3w6SqEFw05ylyEZmiMj4AleLyb/a88TqM7DtruBlFPJoYxw1aevtrVpUuJLrPi69woDflWtKfoZxBcRiZyPaf+of7MOVlQq87gyiPTOhiNCMf+9Oy8MXZSK5lsRCy1AS7rkWnSTn5YHrkly+EAuajOe4yr9ekOGAmc3IDfR86z7ERNx5JoLi1koA3NuiAyu1reYloJgjaByc+Y+zqdZq9On0="
 script:
+  - npm run bower
   - npm run test
   - npm run test:es5

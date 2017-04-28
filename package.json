@@ -19,9 +19,9 @@
     "url": "https://github.com/hotforfeature/origami/issues"
   },
   "scripts": {
-    "postinstall": "bower install",
     "clean": "rimraf lib/ coverage/ test/build/",
     "lint": "tslint --project tsconfig.lint.json",
+    "bower": "bower install",
     "test": "karma start",
     "test:watch": "karma start --auto-watch --no-single-run",
     "pretest:es5": "cd test && polymer build",
