@@ -29,13 +29,11 @@ index.html
 
 `<link>`s in Angular templates will not work since Angular pre-processes those templates.
 
-## Vulcanize?
-
-At the moment there is no build tool like vulcanize to concatenate all imports into a single HTML file. The app must include the `bower_components/` directory in its build.
-
 ## Element Bundles
 
 The app's `index.html` will start to get pretty crowded importing all the needed elements. Origami suggests defining an `elements.html` file to organize imports.
+
+You can then use this single `elements.html` to [create a bundled production-ready import](production-build.md).
 
 src/assets/elements.html
 ```html
