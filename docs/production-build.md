@@ -61,12 +61,6 @@ index.html
 </head>
 <body>
   <app-root>Loading...</app-root>
-  <script>
-    window.webComponentsReady = false;
-    window.addEventListener('WebComponentsReady', function() {
-      window.webComponentsReady = true;
-    });
-  </script>
 </body>
 </html>
 ```

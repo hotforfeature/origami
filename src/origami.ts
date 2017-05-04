@@ -7,3 +7,4 @@ export * from './style/custom-style.service';
 export * from './templates/polymer-template.directive';
 export * from './util/customElements';
 export * from './util/Polymer';
+export * from './util/webcomponents';

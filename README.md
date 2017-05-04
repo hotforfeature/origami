@@ -79,14 +79,15 @@ Make sure bower components are installed to a directory that is included in the 
 Next install Polymer and any other custom elements.
 
 ```
-$ bower install --save Polymer/polymer#2.0.0-rc.5
+$ bower install --save Polymer/polymer#^2.0.0-rc.7
+$ bower install --save webcomponents/webcomponentsjs#^1.0.0-rc.11
 ```
 
 Projects should add the `bower_components/` directory to their `.gitignore` file.
 
 ### Polyfills
 
-When targeting browsers that do not natively support WebComponents, polyfills are required. The app must wait for the `WebComponentsReady` event before bootstrapping.
+When targeting browsers that do not natively support WebComponents, polyfills are required. The app must wait for the polyfills before bootstrapping.
 
 Origami recommends using the `webcomponents-loader.js` polyfill. This script will check for native browser support before loading the required polyfills.
 
@@ -96,20 +97,10 @@ index.html
 <head>
   <title>Paper Crane</title>
 
-  <!-- webcomponentsjs is included when installing Polymer -->
   <script src="assets/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
 </head>
 <body>
   <app-root>Loading...</app-root>
-  <script>
-    // For browsers that support webcomponents, the loader will immediately fire the ready event
-    // before Angular bootstraps. This flag will let main.ts know to continue rather than wait for
-    // the event.
-    window.webComponentsReady = false;
-    window.addEventListener('WebComponentsReady', function() {
-      window.webComponentsReady = true;
-    });
-  </script>
 </body>
 </html>
 ```
@@ -117,18 +108,14 @@ index.html
 main.ts
 ```ts
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { webcomponentsReady } from '@codebakery/origami';
 
-function bootstrap() {
+webcomponentsReady().then(() => {
   platformBrowserDynamic().bootstrapModule(AppModule);
-}
-
-if ((<any>window).webComponentsReady) {
-  // Polyfills not needed
-  bootstrap();
-} else {
-  // Wait for polyfills before bootstrapping
-  window.addEventListener('WebComponentsReady', bootstrap);
-}
+}).catch(error => {
+  // No WebComponent support and webcomponentsjs is not loaded
+  console.error(error);
+});
 ```
 
 ### Templates
