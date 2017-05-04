@@ -10,6 +10,35 @@ All notable changes to this project will be documented in this file. See [standa
 
 * **util:** add webcomponentsReady function to help bootstrap apps ([aa093a1](https://github.com/hotforfeature/origami/commit/aa093a1))
 
+webcomponentsjs 1.0.0-rc.11 added `window.WebComponents` to indicate whether or not polyfills are being loaded. To take advantage of this and reduce complexity, Origami provides `webcomponentsReady()`. Instead of adding listeners for WebComponentsReady, just bootstrap the app when the function resolves.
+
+Before:
+```ts
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+
+function bootstrap() {
+  platformBrowserDynamic().bootstrapModule(AppModule);
+}
+
+if (window.webcomponentsReady) {
+  bootstrap();
+} else {
+  window.addEventListener('WebComponentsReady', bootstrap);
+}
+```
+
+After:
+```ts
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { webcomponentsReady } from '@codebakery/origami';
+
+webcomponentsReady().then(() => {
+  platformBrowserDynamic().bootstrapModule(AppModule);
+});
+```
+
+Make sure you update webcomponentsjs! Either explicitly install it, or remove `bower_components` and reinstall to get the latest version.
+
 
 
 <a name="1.0.1"></a>
