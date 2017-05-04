@@ -7,27 +7,24 @@ declare global {
   }
 }
 
+/* istanbul ignore next */
 export function webcomponentsSupported(): boolean {
   // HTML imports
-  /* istanbul ignore if */
   if (!('import' in document.createElement('link'))) {
     return false;
   }
 
   // Shadow DOM
-  /* istanbul ignore if */
   if (!('attachShadow' in Element.prototype && 'getRootNode' in Element.prototype)) {
     return false;
   }
 
   // Custom elements
-  /* istanbul ignore if */
   if (!window.customElements) {
     return false;
   }
 
   // Templates
-  /* istanbul ignore if */
   if (!('content' in document.createElement('template')) ||
       // Edge has broken fragment cloning which means you cannot clone template.content
       !(document.createDocumentFragment().cloneNode() instanceof DocumentFragment)) {
