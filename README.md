@@ -79,8 +79,7 @@ Make sure bower components are installed to a directory that is included in the 
 Next install Polymer and any other custom elements.
 
 ```
-$ bower install --save Polymer/polymer#^2.0.0-rc.7
-$ bower install --save webcomponents/webcomponentsjs#^1.0.0-rc.11
+$ bower install --save Polymer/polymer#^2.0.0-rc.8
 ```
 
 Projects should add the `bower_components/` directory to their `.gitignore` file.

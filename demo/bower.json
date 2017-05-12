@@ -1,8 +1,8 @@
 {
   "name": "origami-demo",
   "dependencies": {
-    "polymer": "Polymer/polymer#^2.0.0-rc.5",
-    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0-rc.11",
+    "polymer": "Polymer/polymer#^2.0.0-rc.8",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
     "paper-tabs": "PolymerElements/paper-tabs#2.0-preview",
     "app-layout": "PolymerElements/app-layout#2.0-preview",
     "paper-styles": "PolymerElements/paper-styles#2.0-preview",
