@@ -13,6 +13,9 @@ export class EmitChangesDirective implements OnInit {
     const klass = getCustomElementClass(this.elementRef);
     if (klass) {
       const properties = {};
+      this.copyKeysFrom((<any>klass).properties, properties);
+
+      // Hybrid element properties and behaviors
       this.copyKeysFrom(klass.prototype.properties, properties);
       if (klass.prototype.behaviors) {
         klass.prototype.behaviors.map(behavior => {

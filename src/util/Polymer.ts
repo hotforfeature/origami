@@ -45,6 +45,10 @@ export interface Polymer {
   (info?: any): any;
   CaseMap: Polymer.CaseMap;
   Path: Polymer.Path;
+  Element: {
+    prototype: HTMLElement;
+    new(): HTMLElement;
+  };
 }
 
 declare global {
