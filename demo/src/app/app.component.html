@@ -12,6 +12,15 @@
   <div>
     <div *ngIf="selectedTab === 0" padding-horizontal>
       <h1>Kitchen Sink (Soon!)</h1>
+
+      <div padding-horizontal>
+        <h3>Elements Defined in Angular Project</h3>
+        <div>
+          <label>Angular Model</label>
+          <input [(ngModel)]="model">
+        </div>
+        <angular-polymer emitChanges [(model)]="model"></angular-polymer>
+      </div>
     </div>
     <app-features *ngIf="selectedTab === 1"></app-features>
   </div>

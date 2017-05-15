@@ -10,6 +10,7 @@ import { CustomStyleService, PolymerChanges } from '../origami/origami';
 })
 export class AppComponent implements OnInit {
   @PolymerChanges() selectedTab: number = 1;
+  @PolymerChanges() model: string;
 
   constructor(private customStyle: CustomStyleService) { }
 
