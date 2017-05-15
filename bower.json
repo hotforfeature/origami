@@ -8,8 +8,7 @@
   "homepage": "https://github.com/hotforfeature/origami",
   "private": true,
   "dependencies": {
-    "polymer": "Polymer/polymer#^2.0.0-rc.8",
-    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
+    "polymer": "Polymer/polymer#^2.0.0",
     "paper-input": "PolymerElements/paper-input#2.0-preview",
     "paper-checkbox": "PolymerElements/paper-checkbox#2.0-preview",
     "iron-selector": "PolymerElements/iron-selector#2.0-preview"
