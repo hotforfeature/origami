@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "cpr": "^2.0.2",
+    "polymer-cli": "^0.18.4",
     "rimraf": "^2.6.1",
     "typescript": "^2.2.2"
   }
