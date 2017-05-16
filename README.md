@@ -155,6 +155,28 @@ Origami includes an `ng-template[polymer]` directive to compensate. Use it on an
 
 ## Quick Start
 
+### Install bower dependencies
+To actually use a polymer element you need to install it with bower:
+```
+bower install --save PolymerElements/paper-input
+bower install --save PolymerElements/paper-button
+```
+And add them to your `index.html`:
+```html
+<html>
+<head>
+  <title>Paper Crane</title>
+
+  <script src="assets/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+  <link rel="import" href="assets/bower_components/paper-input/paper-input.html">
+  <link rel="import" href="assets/bower_components/paper-button/paper-button.html">
+</head>
+<body>
+  <app-root>Loading...</app-root>
+</body>
+</html>
+```
+
 ### Import
 
 Import the `PolymerModule` from Origami into the app's main module and enable custom element support. That's it!
