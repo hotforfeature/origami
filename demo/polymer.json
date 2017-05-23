@@ -1,9 +1,9 @@
 {
-  "entrypoint": "dist/assets/elements.html",
+  "entrypoint": "dist/index.html",
+  "shell": "dist/assets/elements.html",
   "sources": [
-    "dist/*.js",
-    "dist/*.html",
-    "dist/*.css"
+    "dist/**/*",
+    "!dist/assets/bower_components/**/*"
   ],
   "extraDependencies": [
     "dist/assets/bower_components/webcomponentsjs/*.js"
@@ -11,15 +11,17 @@
   "builds": [
     {
       "name": "bundled",
-      "bundle": true
+      "preset": "es6-bundled",
+      "js": { "minify": false }
     },
     {
-      "name": "unbundled"
+      "name": "unbundled",
+      "preset": "es6-unbundled",
+      "js": { "minify": false }
     },
     {
       "name": "es5",
-      "bundle": true,
-      "js": { "compile": true }
+      "preset": "es5-bundled"
     }
   ]
 }

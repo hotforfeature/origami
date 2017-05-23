@@ -29,15 +29,21 @@ Building Polymer accomplishes a few primary goals:
 - Bundle HTML imports for HTTP1 effeciency
 - Compile Polymer to ES5 for IE11 and Safari 9 support
 
-We will accomplish these goals using the `polymer` CLI. Configuration options can be specified in [`polymer.json`](https://www.polymer-project.org/2.0/docs/tools/polymer-json).
+We will accomplish these goals using the Polymer CLI. Configuration options can be specified in [`polymer.json`](https://www.polymer-project.org/2.0/docs/tools/polymer-json).
 
 ### polymer.json
 
-#### entrypoint
+#### `"entrypoint": "dist/index.html"`
 
-`polymer` takes an entrypoint HTML file where all imports reside. There are several issues when using an Angular app's `index.html` as the entrypoint, such as `polymer` loading Angular and polyfills twice.
+`polymer` takes an entrypoint HTML file. This entrypoint is a small file that imports the application shell. `index.html` is the typical entrypoint for most Angular applications,.
 
-As mentioned in [importing elements](importing-elements.md), a good strategy is to create a single separate `elements.html` file where we include our imports.
+#### `"shell": "dist/assets/elements.html"`
+
+Unlike Polymer, Angular applications do not have a separate shell HTML file. The application shell is bootstrapped from the included JavaScript.
+
+However, in an Angular CLI project if we just include `index.html` as our entrypoint with no shell, Polymer build struggles with finding the right directory. It is not expecting our `dist/` folder.
+
+Luckily, there's an easy workaround that fits nicely into our structure. As mentioned in [importing elements](importing-elements.md), a good strategy is to create a single separate `elements.html` file where we include our imports.
 
 assets/elements.html
 ```html
@@ -65,25 +71,31 @@ index.html
 </html>
 ```
 
-#### sources
+We can use `elements.html` as our shell, and Polymer build is happy with that!
 
-`polymer` includes `src/**/*` files by default for its sources. This is not the desired behavior, since our `src/` directory contains Angular's TypeScript files, not the compiled app.
+#### `"sources": ["dist/**/*", "!dist/assets/bower_components"]`
 
-We need to include all `.js`, `.css`, and `.html` files in the Angular compiled directory as our sources. Remember that `elements.html` is our entrypoint, so we must tell `polymer` to include `index.html` as a source.
+The default sources for `polymer build` is `src/**/*`. This is not the desired behavior, since our `src/` directory contains Angular's TypeScript files, not the compiled app.
 
-#### extraDependencies
+We need to instruct the CLI to include all files in the ng-built `dist/` folder, except for the `bower_components/` that Angular copied.
 
-If the app links to any scripts or HTML files in `index.html` that are not present in `elements.html`, they must be declared as extra dependencies. This will usually just be the `bower_components/webcomponentsjs/*.js` files.
+#### `"extraDependencies": ["dist/assets/bower_components/webcomponentsjs/*.js"]`
+
+The `sources` will include all files except for loose files in `bower_components/`. Therefore, any dynamic links to files in `bower_components/` should be added as dependencies.
+
+`webcomponents-loader.js` will dynamically add scripts from its folder at runtime, so we need to include all the `.js` files in our build.
 
 #### builds
 
-The last step to configuring `polymer` is specifying what build types to generate.
+The last step to configuring `polymer` is specifying what build types to generate. Only one build is needed, though it's recommended to create multiple builds and have a smart server serve a different built based on browser capabilities.
 
-- For fewer imports, include a bundled build
-- Optionally, include an unbundled build if the server supports HTTP2
-- For IE11 and Safari 9, include a JS compiled build
+Polymer build [includes a few presets](https://www.polymer-project.org/2.0/docs/tools/polymer-cli#build).
 
-The app server will need to dynamically serve the correct build to a browser depending on its capabilities.
+- **es5-bundled** to support browsers without ES6 classes
+- **es6-bundled** for ES6-capable browsers
+- **es6-unbundled** for ES6-capable browsers and servers with HTTP2
+
+Some build options (such as `--js-minify`) will apply to all JS files, including those already processed and built by Angular. Angular will minify JS by default, so you may want to turn that option off to speed up build times.
 
 #### Sample polymer.json
 
@@ -91,38 +103,33 @@ This JSON file assumes the Angular app was built to the `dist/` directory. It wi
 
 ```json
 {
-  "entrypoint": "dist/assets/elements.html",
+  "entrypoint": "dist/index.html",
+  "shell": "dist/assets/elements.html",
   "sources": [
-    "dist/*.js",
-    "dist/*.html",
-    "dist/*.css"
+    "dist/**/*",
+    "!dist/assets/bower_components/**/*"
   ],
   "extraDependencies": [
     "dist/assets/bower_components/webcomponentsjs/*.js"
   ],
   "builds": [
     {
-      "name": "bundled",
-      "bundle": true
+      "preset": "es6-bundled",
+      "js": { "minify": false }
     },
     {
-      "name": "unbundled"
+      "preset": "es6-unbundled",
+      "js": { "minify": false }
     },
     {
-      "name": "es5",
-      "bundle": true,
-      "js": { "compile": true }
+      "preset": "es5-bundled"
     }
   ]
 }
 ```
 
-This is the bare minimum configuration needed. Additional options, such as minifying HTML and CSS, can be included in each build.
-
-Remember, only use `"js": { "compile": true }` for IE11 and Safari 9 (browsers that do not support ES6 classes). Custom Elements v1 requires that elements are ES6 classes that extend `HTMLElement`. An error will be thrown if a Custom Element v1-compliant browser attempts to load a JS compiled build.
-
 ### Cleanup
 
 You may notice that the app's repository now has both a `dist/` and `build/` folder, and each build folder includes a `dist/` directory. With [`rimraf`](https://github.com/isaacs/rimraf) and [`cpr`](https://github.com/davglass/cpr), it is easy to include a post build script to clean up.
 
-Look at the Origami's demo [`package.json`](../demo/package.json) `build` and `postbuild` run scripts for reference.
+Look at the Origami demo [`package.json`](../demo/package.json) `build` and `postbuild` run scripts for reference.
