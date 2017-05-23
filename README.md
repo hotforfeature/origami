@@ -155,21 +155,28 @@ Origami includes an `ng-template[polymer]` directive to compensate. Use it on an
 
 ## Quick Start
 
-### Install bower dependencies
-To actually use a polymer element you need to install it with bower:
+### Bower
+
+Origami bridges the gap between Angular and Polymer. It does not download elements for you. First you need to install them with bower.
+
 ```
-bower install --save PolymerElements/paper-input
-bower install --save PolymerElements/paper-button
+$ bower install --save Polymer/polymer
+$ bower install --save PolymerElements/paper-input
+$ bower install --save PolymerElements/paper-button
+...
 ```
-And add them to your `index.html`:
+
+Next, import elements and polyfills in `index.html`. Elements cannot be imported from within an Angular template.
+
+index.html
 ```html
 <html>
 <head>
   <title>Paper Crane</title>
 
   <script src="assets/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
-  <link rel="import" href="assets/bower_components/paper-input/paper-input.html">
-  <link rel="import" href="assets/bower_components/paper-button/paper-button.html">
+  <link href="assets/bower_components/paper-input/paper-input.html" rel="import">
+  <link href="assets/bower_components/paper-button/paper-button.html" rel="import">
 </head>
 <body>
   <app-root>Loading...</app-root>
@@ -177,11 +184,36 @@ And add them to your `index.html`:
 </html>
 ```
 
+### Bootstrap
+
+Our app should wait for polyfills to be ready before bootstrapping the main module. Additionally, we must instruct Angular not to consume `<template>` elements.
+
+main.ts
+```ts
+import { enableProdMode } from '@angular/core';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { webcomponentsReady } from '@codebakery/origami';
+
+import { AppModule } from './app/app.module';
+import { environment } from './environments/environment';
+
+if (environment.production) {
+  enableProdMode();
+}
+
+webcomponentsReady().then(() => {
+  platformBrowserDynamic().bootstrapModule(AppModule, {
+    enableLegacyTemplate: false
+  });
+});
+```
+
+
 ### Import
 
-Import the `PolymerModule` from Origami into the app's main module and enable custom element support. That's it!
+Import the `PolymerModule` from Origami into the app's main module and enable custom element schema support. That's it!
 
-Optionally, the app can also import selectors from Origami for Polymer's collections. This is highly recommended (+10 to sanity), but is not required.
+Optionally, the app can import selectors from Origami for Polymer's collections. This is highly recommended (+10 to sanity), but is not required.
 
 ```ts
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -211,28 +243,32 @@ export class AppModule { }
 
 For non-Polymer collection elements, the app will need to use the `[emitChanges]` and `[ironControl]` attributes.
 
+### Bootstrap
+
 ### Markup
 
-Add the `[emitChanges]` directive to all custom elements using two-way data binding. Optionally add `[ironControl]` to control elements that should work in Angular forms.
+Add the `[emitChanges]` directive to all custom elements using two-way data binding. Add `[ironControl]` to control elements that should work in Angular forms.
 
 ```html
 <my-custom-checkbox [(checked)]="isChecked" emitChanges></my-custom-checkbox>
 
 <form #ngForm="ngForm">
-  <paper-input label="Name" emitChanges ironControl required [(ngModel)]="name"></paper-input>
+  <paper-input label="Name" name="name" emitChanges ironControl required [(ngModel)]="name"></paper-input>
 
   <!-- No two-way binding, [emitChanges] is not needed -->
   <paper-button [disabled]="!ngForm.form.valid" (click)="onSubmit()">Submit</paper-button>
 </form>
 ```
 
-If the app imported `PaperElementsModule`, `[emitChanges]` and `[ironControl]` are not needed for paper elements. They are still required for elements that do not have a collections module.
+#### Collection Modules
+
+If the app imported collection modules, such as `PaperElementsModule`, `[emitChanges]` and `[ironControl]` *must not be added* to elements that the collection provides selectors for. They are still required for elements that do not have a collections module.
 
 ```html
 <my-custom-checkbox [(checked)]="isChecked" emitChanges></my-custom-checkbox>
 
 <form #ngForm="ngForm">
-  <paper-input label="Name" required [(ngModel)]="name"></paper-input>
+  <paper-input label="Name" name="name" required [(ngModel)]="name"></paper-input>
 
   <paper-button [disabled]="!ngForm.form.valid" (click)="onSubmit()">Submit</paper-button>
 </form>
