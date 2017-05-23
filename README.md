@@ -117,7 +117,9 @@ webcomponentsReady().then(() => {
     enableProdMode();
   }
 
-  platformBrowserDynamic().bootstrapModule(AppModule);
+  platformBrowserDynamic().bootstrapModule(AppModule, {
+    enableLegacyTemplate: false
+  });
 }).catch(error => {
   // No WebComponent support and webcomponentsjs is not loaded
   console.error(error);
