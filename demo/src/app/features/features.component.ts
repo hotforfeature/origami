@@ -1,6 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-
-import { CustomStyleService, Polymer, PolymerChanges } from '../../origami/origami';
+import { CustomStyleService, Polymer, PolymerChanges } from '@codebakery/origami';
 
 import { Feature } from './Feature';
 import { getFeatures } from './features';

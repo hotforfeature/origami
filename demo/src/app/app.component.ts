@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-
-import { CustomStyleService, PolymerChanges } from '../origami/origami';
+import { CustomStyleService, PolymerChanges } from '@codebakery/origami';
 
 @Component({
   selector: 'app-root',
