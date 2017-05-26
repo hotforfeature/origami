@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.1.2"></a>
+## [1.1.2](https://github.com/hotforfeature/origami/compare/v1.1.1...v1.1.2) (2017-05-26)
+
+
+### Bug Fixes
+
+* **templates:** shim Polymer.TemplateStamp on method host to allow Polymer event bindings ([48319bd](https://github.com/hotforfeature/origami/commit/48319bd))
+
+
+
 <a name="1.1.1"></a>
 ## [1.1.1](https://github.com/hotforfeature/origami/compare/v1.1.0...v1.1.1) (2017-05-24)
 
