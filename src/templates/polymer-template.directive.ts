@@ -1,3 +1,4 @@
+// tslint:disable:no-string-literal
 import { Directive, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 
 @Directive({
@@ -34,6 +35,20 @@ export class PolymerTemplateDirective implements OnInit {
   }
 
   ngOnInit() {
-    this.template['__dataHost'] = this.methodHost; // tslint:disable-line:no-string-literal
+    if (this.methodHost) {
+      // Shim Polymer.TemplateStamp mixin. This allows event bindings in Polymer to be used, such
+      // as on-click
+      this.methodHost['_addEventListenerToNode'] = (node: HTMLElement, eventName: string,
+          handler: any) => {
+        node.addEventListener(eventName, handler);
+      };
+
+      this.methodHost['_removeEventListenerFromNode'] = (node: HTMLElement, eventName: string,
+          handler: any) => {
+        node.removeEventListener(eventName, handler);
+      };
+
+      this.template['__dataHost'] = this.methodHost;
+    }
   }
 }

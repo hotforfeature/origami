@@ -140,6 +140,36 @@ export class PolyComponent {
 }
 ```
 
+### Events
+
+Angular will parse attribute event bindings, such as `on-click` or `on-tap` and remove them from the template. If you are trying to bind an event to an Angular component method host, be sure to instruct Angular *not* to perform binding.
+
+```ts
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-poly',
+  template: `
+    <iron-list [items]="items" as="item">
+      <ng-template polymer [methodHost]="this">
+        <my-item item="[[item]]" on-click="alertClick" ngNonBindable></my-item>
+      </ng-template>
+    </iron-list>
+  `
+})
+export class PolyComponent {
+  items = [
+    'one',
+    'two',
+    'three'
+  ];
+
+  alertClick(e: MouseEvent) {
+    alert('Clicked on ' + e.target.item);
+  }
+}
+```
+
 ## Broken Templates
 
 `enableLegacyTemplate` and `<template>` elements are not currently working.

@@ -1,3 +1,4 @@
+// tslint:disable:no-string-literal
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import {} from 'jasmine';
@@ -74,10 +75,35 @@ describe('PolymerTemplateDirective', () => {
     it('should set template.__dataHost to methodHost', async(() => {
       fixture.whenStable().then(() => {
         fixture.detectChanges();
-        // tslint:disable-next-line:no-string-literal
-        expect(template['__dataHost']).toBe(fixture.componentInstance);
-        // tslint:disable-next-line:no-string-literal
+        const host = fixture.componentInstance;
+        expect(template['__dataHost']).toBe(host);
         expect(firstSiblingTemplate['__dataHost']).toBeUndefined();
+      });
+    }));
+
+    it('should shim _addEventListenerToNode', async(() => {
+      fixture.whenStable().then(() => {
+        fixture.detectChanges();
+        const host = fixture.componentInstance;
+        expect(host['_addEventListenerToNode']).toEqual(jasmine.any(Function));
+        const node = document.createElement('div');
+        const handler = () => { /* noop */ };
+        spyOn(node, 'addEventListener');
+        host['_addEventListenerToNode'](node, 'click', handler);
+        expect(node.addEventListener).toHaveBeenCalledWith('click', handler);
+      });
+    }));
+
+    it('should shim _removeEventListenerFromNode', async(() => {
+      fixture.whenStable().then(() => {
+        fixture.detectChanges();
+        const host = fixture.componentInstance;
+        expect(host['_removeEventListenerFromNode']).toEqual(jasmine.any(Function));
+        const node = document.createElement('div');
+        const handler = () => { /* noop */ };
+        spyOn(node, 'removeEventListener');
+        host['_removeEventListenerFromNode'](node, 'click', handler);
+        expect(node.removeEventListener).toHaveBeenCalledWith('click', handler);
       });
     }));
   });
