@@ -1,3 +1,4 @@
+[![NPM Package](https://badge.fury.io/js/%40codebakery%2Forigami.svg)](https://www.npmjs.com/package/@codebakery/origami)
 [![Build Status](https://travis-ci.org/hotforfeature/origami.svg?branch=master)](https://travis-ci.org/hotforfeature/origami)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
@@ -9,16 +10,21 @@ Angular + Polymer
 
 ## Intro
 
-Origami bridges gaps between the Angular framework and Polymer-built custom elements.
+Origami bridges gaps between the Angular platform and Polymer web components. It works with Angular 2 and Polymer 2.
 
-[Check out the Quick Start](#quick-start) for a quick overview of how to import and use Origami.
+For first-time users, go through the [installation](#installation) process to understand how to set up Origami for your project.
+
+Installed and need a reference on how to do something? [Check out the Quick Start](#quick-start) for a quick overview of the main Origami features.
 
 ### Features
+
+There's a lot to talk about with Angular and Polymer. These are all the gaps Origami helps to bridge between the two. Click on a feature to go to an in-depth tutorial.
 
 - [Two-Way `[( )]` Databinding ✅](docs/data-binding.md)
 - [Angular Template/Reactive Form Support ✅](docs/forms.md)
 - [Polymer Templates (`<iron-list>`) ✅](docs/polymer-templates.md)
 - Angular Components in Polymer Templates ❌
+- [New Polymer elements defined in-project ✅](docs/new-elements.md)
 - [OnPush Change Detection ✅](docs/change-detection.md)
 - [Object/Array mutation detection ✅](docs/object-array-mutation.md)
 - [CSS custom property/mixin support](docs/custom-style.md) ✅
@@ -110,7 +116,9 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { webcomponentsReady } from '@codebakery/origami';
 
 webcomponentsReady().then(() => {
-  platformBrowserDynamic().bootstrapModule(AppModule);
+  platformBrowserDynamic().bootstrapModule(AppModule, {
+    enableLegacyTemplate: false
+  });
 }).catch(error => {
   // No WebComponent support and webcomponentsjs is not loaded
   console.error(error);
@@ -242,8 +250,6 @@ export class AppModule { }
 ```
 
 For non-Polymer collection elements, the app will need to use the `[emitChanges]` and `[ironControl]` attributes.
-
-### Bootstrap
 
 ### Markup
 
