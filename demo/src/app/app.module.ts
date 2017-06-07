@@ -1,5 +1,5 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { PolymerModule } from '@codebakery/origami';
@@ -20,7 +20,7 @@ import { FeaturesComponent } from './features/features.component';
     FormsModule,
     IronElementsModule,
     PaperElementsModule,
-    PolymerModule
+    PolymerModule.forRoot()
   ],
   declarations: [
     AppComponent,
