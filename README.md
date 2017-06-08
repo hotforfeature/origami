@@ -219,9 +219,13 @@ webcomponentsReady().then(() => {
 
 ### Import
 
-Import the `PolymerModule` from Origami into the app's main module and enable custom element schema support. That's it!
+Import `PolymerModule.forRoot()` from Origami into the app's main module. You may import `PolymerModule` in additional separate modules, but it is not necessary. Make sure you only import `PolymerModule.forRoot()` once and at the highest module level!
+
+Next, we need to tell Angular not to worry about these custom elements and properties it doesn't know about. We do that by adding `schema: [CUSTOM_ELEMENTS_SCHEMA]` to our modules.
 
 Optionally, the app can import selectors from Origami for Polymer's collections. This is highly recommended (+10 to sanity), but is not required.
+
+> Collections are extremely light and slim modules. All they do is automatically apply [emitChanges] and [ironControl] to known Polymer elements.
 
 ```ts
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -237,7 +241,7 @@ import { IronElementsModule, PaperElementsModule } from '@codebakery/origami/lib
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     FormsModule, // Required to connect elements to Angular forms
-    PolymerModule,
+    PolymerModule.forRoot(), // Only import .forRoot() once and at the highest level
 
     // Optional modules to help reduce markup complexity
     IronElementsModule,

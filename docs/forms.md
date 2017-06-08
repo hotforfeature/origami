@@ -164,7 +164,7 @@ import { PaperElementsModule } from '@codebakery/origami/lib/collections';
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
-    PolymerModule,
+    PolymerModule.forRoot(),
     PaperElementsModule
   ],
   providers: [],
