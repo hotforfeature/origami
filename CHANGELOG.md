@@ -10,7 +10,9 @@ All notable changes to this project will be documented in this file. See [standa
 
 * **styles:** automatically handle custom-styles and fix CSS mixin support ([#31](https://github.com/hotforfeature/origami/issues/31)) ([138da23](https://github.com/hotforfeature/origami/commit/138da23)), closes [#29](https://github.com/hotforfeature/origami/issues/29)
 
-`CustomStyleService` has been deprecated in favor of `PolymerDomSharedStyles` and will be removed in 2.0.0. Custom styles are handled automatically now, so remove any references to `CustomStyleService.updateCustomStyles()`.
+`CustomStyleService` has been deprecated in favor of `PolymerDomSharedStyles` and will be removed in 2.0.0.
+
+A warning will be given when using `CustomStyleService.updateCustomStyles()`. Remove it and import `PolymerModule.forRoot()` in your application's root module to enable the new automatic custom style handling.
 
 
 
