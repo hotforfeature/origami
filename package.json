@@ -35,9 +35,10 @@
     "prepublish": "npm run build"
   },
   "peerDependencies": {
-    "@angular/core": "^4.0.2",
-    "@angular/forms": "^4.0.2",
-    "@angular/platform-browser": "^4.0.2"
+    "@angular/core": ">=4.0.0 <5.0.0",
+    "@angular/forms": ">=4.0.0 <5.0.0",
+    "@angular/platform-browser": ">=4.0.0 <5.0.0",
+    "rxjs": "^5.0.1"
   },
   "devDependencies": {
     "@angular/common": "^4.0.2",
