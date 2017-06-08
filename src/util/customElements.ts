@@ -3,6 +3,7 @@ export interface ElementDefinitionOptions {
 }
 
 export interface CustomElementRegistry {
+  // tslint:disable-next-line:ban-types
   define(name: string, constructor: Function, options?: ElementDefinitionOptions): void;
   get(name: string): any;
   whenDefined(name: string): PromiseLike<void>;

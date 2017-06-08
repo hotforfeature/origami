@@ -5,6 +5,7 @@ export function PolymerChanges(): PropertyDecorator {
     const desc = Object.getOwnPropertyDescriptor(target, propertyKey);
     /* istanbul ignore if */
     if (desc && desc.get && !desc.set) {
+      // tslint:disable-next-line:no-console
       console.warn(`${propertyKey} is readonly. @PolymerChanges() is not needed`);
     }
 
@@ -33,7 +34,7 @@ export function PolymerChanges(): PropertyDecorator {
             properties.set(this, props);
           }
 
-          let newValue = unwrapPolymerEvent(event);
+          const newValue = unwrapPolymerEvent(event);
           if (desc && desc.set) {
             desc.set.apply(this, [newValue]);
           }

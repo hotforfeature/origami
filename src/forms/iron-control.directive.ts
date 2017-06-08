@@ -38,7 +38,7 @@ export class IronControlDirective implements ControlValueAccessor, OnInit, After
   protected ironValidatable = false;
 
   private isWritingValue = false;
-  private boundSelectedChanged: Function;
+  private boundSelectedChanged: Function; // tslint:disable-line:ban-types
 
   constructor(protected elementRef: ElementRef,
       protected injector: Injector,
@@ -59,6 +59,7 @@ export class IronControlDirective implements ControlValueAccessor, OnInit, After
     this.ironSelector.addEventListener('selected-values-changed', this.boundSelectedChanged);
 
     if (!ironFormElement && !this.ironCheckedElement && !this.ironSelectable) {
+      // tslint:disable-next-line:no-console
       console.warn(`${getTagName(this.elementRef)} does not implement IronFormElementBehavior, ` +
         `IronCheckedElementBehavior, or IronSelectableBehavior. If this element wraps an ` +
         `element with IronSelectableBehavior, add [ironSelector]="elementRef"`);

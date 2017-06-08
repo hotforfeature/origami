@@ -32,7 +32,6 @@ class TestComponent {
 
 describe('PolymerTemplateDirective', () => {
   let fixture: ComponentFixture<TestComponent>;
-  let component: TestComponent;
   let template: HTMLTemplateElement;
   let firstSiblingTemplate: HTMLTemplateElement;
   let lastSiblingTemplate: HTMLTemplateElement;

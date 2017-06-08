@@ -6,6 +6,7 @@ export class CustomStyleService {
   constructor(@Inject(DOCUMENT) private dom: any) { }
 
   updateCustomStyles(nativeEncapsulatedHost?: ElementRef) {
+    // tslint:disable-next-line:no-console
     console.warn('CustomStyleService is deprecated. Remove calls to updateCustomStyles() and ' +
       'import PolymerModule.forRoot() instead.');
 

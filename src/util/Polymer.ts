@@ -28,7 +28,7 @@ export namespace Polymer {
   }
 
   export interface PropertyEffects {
-    setProperties(props: Object);
+    setProperties(props: any);
     notifySplices<T>(path: PathLike, splices: Array<Splice<T>>);
     get(path: PathLike, root?: any): any;
     set(path: PathLike, value: any, root?: any);
