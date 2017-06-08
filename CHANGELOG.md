@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.2.0"></a>
+# [1.2.0](https://github.com/hotforfeature/origami/compare/v1.1.2...v1.2.0) (2017-06-08)
+
+
+### Features
+
+* **styles:** automatically handle custom-styles and fix CSS mixin support ([#31](https://github.com/hotforfeature/origami/issues/31)) ([138da23](https://github.com/hotforfeature/origami/commit/138da23)), closes [#29](https://github.com/hotforfeature/origami/issues/29)
+
+
+
 <a name="1.1.2"></a>
 ## [1.1.2](https://github.com/hotforfeature/origami/compare/v1.1.1...v1.1.2) (2017-05-26)
 
