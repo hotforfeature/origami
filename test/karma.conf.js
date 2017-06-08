@@ -29,11 +29,14 @@ module.exports = function(config) {
     reporters: ['mocha', 'kjhtml'],
     port: 9876,
     colors: true,
-    concurrency: 5,
+    concurrency: 2,
     logLevel: config.LOG_INFO,
     autoWatch: false,
     browsers: ['Chrome'],
-    browserNoActivityTimeout: 60000,
+    browserNoActivityTimeout: 4 * 60 * 1000,
+    browserDisconnectTimeout: 10000,
+    browserDisconnectTolerance: 2,
+    captureTimeout: 4 * 60 * 1000,
     singleRun: true
   };
 

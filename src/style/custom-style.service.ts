@@ -6,8 +6,9 @@ export class CustomStyleService {
   constructor(@Inject(DOCUMENT) private dom: any) { }
 
   updateCustomStyles(nativeEncapsulatedHost?: ElementRef) {
-    // TODO: Determine if head styles need wrapped more than once. I.e does Angular ever append
-    // <style>s to head dynamically.
+    console.warn('CustomStyleService is deprecated. Remove calls to updateCustomStyles() and ' +
+      'import PolymerModule.forRoot() instead.');
+
     this.wrapHeadStyles();
     if (nativeEncapsulatedHost && nativeEncapsulatedHost.nativeElement.shadowRoot) {
       this.wrapStyles(nativeEncapsulatedHost.nativeElement.shadowRoot.querySelectorAll('style'));
