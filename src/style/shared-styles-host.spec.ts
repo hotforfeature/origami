@@ -7,7 +7,7 @@ import {
 } from '@angular/platform-browser';
 import {} from 'jasmine';
 
-import { DomSharedCustomStylesHost } from './shared-styles-host';
+import { PolymerDomSharedStylesHost } from './shared-styles-host';
 
 @Component({
   selector: 'test-component',
@@ -58,7 +58,7 @@ describe('DomSharedCustomStylesHost', () => {
       imports: [BrowserModule],
       declarations: [TestComponent, NativeComponent],
       providers: [{
-        provide: DomSharedStylesHost, useClass: DomSharedCustomStylesHost
+        provide: DomSharedStylesHost, useClass: PolymerDomSharedStylesHost
       }]
     });
 

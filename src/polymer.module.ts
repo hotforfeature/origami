@@ -6,7 +6,7 @@ import { PolymerElementsModule } from './collections/polymer-elements/polymer-el
 import { EmitChangesDirective } from './events/emit-changes.directive';
 import { IronControlDirective } from './forms/iron-control.directive';
 import { CustomStyleService } from './style/custom-style.service';
-import { DomSharedCustomStylesHost } from './style/shared-styles-host';
+import { PolymerDomSharedStylesHost } from './style/shared-styles-host';
 import { PolymerTemplateDirective } from './templates/polymer-template.directive';
 
 @NgModule({
@@ -34,7 +34,7 @@ export class PolymerModule {
     return {
       ngModule: PolymerModule,
       providers: [
-        { provide: DomSharedStylesHost, useClass: DomSharedCustomStylesHost }
+        { provide: DomSharedStylesHost, useClass: PolymerDomSharedStylesHost }
       ]
     };
   }

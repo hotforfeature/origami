@@ -4,7 +4,7 @@ import { DOCUMENT, ɵDomSharedStylesHost as DomSharedStylesHost } from '@angular
 // First group is incorrect escape backslash, second group is rest of mixin detection
 const MIXIN_REGEX = /(\\)(--\w[\w-_]*:\s*{)/g;
 
-export class DomSharedCustomStylesHost extends DomSharedStylesHost {
+export class PolymerDomSharedStylesHost extends DomSharedStylesHost {
   protected hostNodes = new Set<Node>();
   protected customStyleNodes = new Set<Node>();
 
