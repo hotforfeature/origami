@@ -31,7 +31,13 @@ if (VERSION.major === '4' && VERSION.minor < '2' && isDevMode()) {
   selector: 'ng-template[polymer], template[polymer]'
 })
 export class PolymerTemplateDirective implements OnInit {
-  @Input() methodHost: any;
+  @Input('polymer') host: any; // tslint:disable-line:no-input-rename
+  @Input() set methodHost(host: any) {
+    // tslint:disable-next-line:no-console
+    console.warn('<template polymer [methodHost]="host"> is deprecated. Use ' +
+      '<template [polymer]="host"> instead.');
+    this.host = host;
+  }
 
   private template: HTMLTemplateElement;
 
@@ -42,7 +48,7 @@ export class PolymerTemplateDirective implements OnInit {
     if (elementRef.nativeElement.nodeType === Node.COMMENT_NODE) {
       if (VERSION.major >= '4' && VERSION.minor >= '2') {
         // tslint:disable-next-line:no-console
-        console.warn('<ng-template polymer> is deprecated. Use <template polymer> and ' +
+        console.warn('<ng-template polymer> is deprecated. Use <template> and ' +
           'enableLegacyTemplate: false');
       }
 
@@ -68,20 +74,20 @@ export class PolymerTemplateDirective implements OnInit {
   }
 
   ngOnInit() {
-    if (this.methodHost) {
+    if (this.host) {
       // Shim Polymer.TemplateStamp mixin. This allows event bindings in Polymer to be used, such
       // as on-click
-      this.methodHost['_addEventListenerToNode'] = (node: HTMLElement, eventName: string,
+      this.host['_addEventListenerToNode'] = (node: HTMLElement, eventName: string,
           handler: any) => {
         node.addEventListener(eventName, handler);
       };
 
-      this.methodHost['_removeEventListenerFromNode'] = (node: HTMLElement, eventName: string,
+      this.host['_removeEventListenerFromNode'] = (node: HTMLElement, eventName: string,
           handler: any) => {
         node.removeEventListener(eventName, handler);
       };
 
-      this.template['__dataHost'] = this.methodHost;
+      this.template['__dataHost'] = this.host;
     }
   }
 }

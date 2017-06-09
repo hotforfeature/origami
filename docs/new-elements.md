@@ -1,8 +1,8 @@
 # New Elements
 
-Consuming Polymer elements is great, but what if a project needs to define its own web component? Sometimes this may be required. `<iron-list>` is a good example.
+Consuming Polymer elements is great, but what if a project needs to define its own web component? Sometimes this may be required. `<iron-list>` and `<vaadin-grid>` are good examples.
 
-When using a Polymer `<template>` inside `<iron-list>`, it is not possible to use Angular data binding. List templates may be complex, and you may find yourself wanting to create a component.
+When using a Polymer `<template>`, it is not possible to use Angular data binding. We can, however, use Polymer's data binding features. Don't forget to add `[ngNonBindable]` to the `<template>` when using Polymer's binding syntax to make sure Angular doesn't try and parse the bindings.
 
 ```ts
 import { Component } from '@angular/core';
@@ -11,25 +11,25 @@ import { Component } from '@angular/core';
   selector: 'app-poly',
   template: `
     <iron-list [items]="items" as="item">
-      <ng-template polymer> <!-- Will be <template> when issues are fixed -->
+      <template ngNonBindable>
         <div><strong>[[item.name]]</strong></div>
         <div>[[item.folds]] folds</div>
-      </ng-template>
+      </template>
     </iron-list>
   `
 })
 export class PolyComponent {
   items = [
     {
-      name: "Crane",
+      name: 'Crane',
       folds: 23
     },
     {
-      name: "Frog",
+      name: 'Frog',
       folds: 29
     },
     {
-      name: "Flower",
+      name: 'Flower',
       folds: 18
     }
   ];
@@ -42,9 +42,9 @@ It makes more sense to use an element.
 
 ```html
 <iron-list [items]="items" as="item">
-  <ng-template polymer> <!-- Will be <template> when issues are fixed -->
+  <template ngNonBindable>
     <app-item item="[[item]]"></app-item>
-  </ng-template>
+  </template>
 </iron-list>
 ```
 

@@ -129,7 +129,7 @@ webcomponentsReady().then(() => {
 
 Angular 4 consumes all `<template>` elements instead of letting Polymer use them. The app should set `enableLegacyTemplate` to false when bootstrapping to prevent this.
 
-Angular 5+ defaults this value to false, so no additional steps are needed.
+Angular 5+ will default this value to false.
 
 ```ts
 platformBrowserDynamic().bootstrapModule(AppModule, {
@@ -137,29 +137,39 @@ platformBrowserDynamic().bootstrapModule(AppModule, {
 });
 ```
 
-Remember to use `<ng-template>` for Angular templates, and `<template>` for Polymer templates.
+Always use `<ng-template>` for Angular templates, and `<template>` for Polymer templates.
 
-#### Broken Templates
+### Host Events
 
-`enableLegacyTemplate` and `<template>` elements are not currently working in Angular 4.0.1. See https://github.com/angular/angular/issues/15555 and https://github.com/angular/angular/issues/15557.
+When using a Polymer `<template>`, you can bind events to the host Angular element using the `[polymer]` directive.
 
-Origami includes an `ng-template[polymer]` directive to compensate. Use it on an `<ng-template>` to convert it to a Polymer `<template>` at runtime.
+```ts
+import { Component } from '@angular/core';
 
-```html
-<iron-list [items]="items">
-  <!-- This is the correct way that doesn't work
-  <template>
-    <div>[[item]]</div>
-  </template>
-  -->
+@Component({
+  selector: 'app-poly',
+  template: `
+    <iron-list [items]="items" as="item">
+      <template [polymer]="this" ngNonBindable>
+        <my-item item="[[item]]" color="[[getColor(item)]]"></my-item>
+      </template>
+    </iron-list>
+  `
+})
+export class PolyComponent {
+  items = [
+    'one',
+    'two',
+    'three'
+  ];
 
-  <ng-template polymer>
-    <div>[[item]]</div>
-  </ng-template>
-</iron-list>
+  getColor(item: string) {
+    return item === 'one' ? 'blue' : 'red';
+  }
+}
 ```
 
-`ng-template[polymer]` will be deprecated as soon as the above issues are fixed. Remember that anytime Origami's documentation mentions using a `<template>`, the app should use `<ng-template polymer>` instead.
+Currently Origami only supports event binding, not data binding. Make sure to add `[ngNonBindable]` to Polymer templates that you use in Angular with binding syntax so that Angular does not try to parse the bindings!
 
 ## Quick Start
 
@@ -215,7 +225,6 @@ webcomponentsReady().then(() => {
   });
 });
 ```
-
 
 ### Import
 

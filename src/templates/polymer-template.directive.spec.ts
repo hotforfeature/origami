@@ -9,7 +9,7 @@ import { PolymerTemplateDirective } from './polymer-template.directive';
   selector: 'test-component',
   template: `
     <div #template>
-      <ng-template polymer [methodHost]="this">
+      <ng-template [polymer]="this">
         <div id="first"></div>
         <div id="second"></div>
       </ng-template>
@@ -71,7 +71,7 @@ describe('PolymerTemplateDirective', () => {
   });
 
   describe('ngOnInit()', () => {
-    it('should set template.__dataHost to methodHost', async(() => {
+    it('should set template.__dataHost to host', async(() => {
       fixture.whenStable().then(() => {
         fixture.detectChanges();
         const host = fixture.componentInstance;
