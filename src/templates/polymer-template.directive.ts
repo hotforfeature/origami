@@ -1,5 +1,31 @@
 // tslint:disable:no-string-literal
-import { Directive, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  Input,
+  OnInit,
+  Optional,
+  TemplateRef,
+  VERSION,
+  ViewContainerRef,
+  isDevMode
+} from '@angular/core';
+
+if ('content' in document.createElement('template')) {
+  // Even when this enableLegacyTemplate is false, the resulting <template> has childNodes
+  // appended to it instead of its #document-fragment
+  // https://github.com/angular/angular/issues/15557
+  const nativeAppend = HTMLTemplateElement.prototype.appendChild;
+  HTMLTemplateElement.prototype.appendChild = function(childNode: Node) {
+    return this.content.appendChild(childNode);
+  };
+}
+
+if (VERSION.major === '4' && VERSION.minor < '2' && isDevMode()) {
+  // tslint:disable-next-line:no-console
+  console.warn('Angular 4.2.0 has fixed enableLegacyTemplate. Origami strongly recommends to ' +
+    'update to this version so that <template> elements work across all web components.');
+}
 
 @Directive({
   selector: 'ng-template[polymer], template[polymer]'
@@ -9,29 +35,36 @@ export class PolymerTemplateDirective implements OnInit {
 
   private template: HTMLTemplateElement;
 
-  constructor(view: ViewContainerRef, templateRef: TemplateRef<any>) {
-    // TODO: Deprecate detach/attach in favor of enableLegacyTemplate: false Angular compiler
-    // option. At the moment, this option doesn't seem to be working correctly
-    // https://github.com/angular/angular/issues/15555
-    // Even when this option is set (hardcode to false in @angular/compiler source code), the
-    // resulting <template> has children appended to it instead of its #document-fragment
-    // https://github.com/angular/angular/issues/15557
-    const parentNode = (<HTMLElement>view.element.nativeElement).parentNode;
-    this.template = document.createElement('template');
+  constructor(elementRef: ElementRef,
+      @Optional() view: ViewContainerRef,
+      @Optional() templateRef: TemplateRef<any>) {
+    // enableLegacyTemplate is working since 4.2.0
+    if (elementRef.nativeElement.nodeType === Node.COMMENT_NODE) {
+      if (VERSION.major >= '4' && VERSION.minor >= '2') {
+        // tslint:disable-next-line:no-console
+        console.warn('<ng-template polymer> is deprecated. Use <template polymer> and ' +
+          'enableLegacyTemplate: false');
+      }
 
-    const viewRef = view.createEmbeddedView(templateRef);
-    viewRef.rootNodes.forEach(rootNode => {
-      parentNode.removeChild(rootNode);
-      this.template.content.appendChild(rootNode);
-    });
+      const parentNode = (<HTMLElement>view.element.nativeElement).parentNode;
+      this.template = document.createElement('template');
 
-    parentNode.appendChild(this.template);
+      const viewRef = view.createEmbeddedView(templateRef);
+      viewRef.rootNodes.forEach(rootNode => {
+        parentNode.removeChild(rootNode);
+        this.template.content.appendChild(rootNode);
+      });
 
-    // Detach and re-attach the parent element. This will trigger any template attaching logic
-    // that a custom elements needs which Angular skipped when using <ng-template>
-    const hostNode = parentNode.parentNode;
-    hostNode.removeChild(parentNode);
-    hostNode.appendChild(parentNode);
+      parentNode.appendChild(this.template);
+
+      // Detach and re-attach the parent element. This will trigger any template attaching logic
+      // that a custom elements needs which Angular skipped when using <ng-template>
+      const hostNode = parentNode.parentNode;
+      hostNode.removeChild(parentNode);
+      hostNode.appendChild(parentNode);
+    } else {
+      this.template = elementRef.nativeElement;
+    }
   }
 
   ngOnInit() {
