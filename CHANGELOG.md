@@ -8,7 +8,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Bug Fixes
 
-* **templates:** add warning to use enableLegacyTemplate and shim to fix angular/angular[#15557](https://github.com/hotforfeature/origami/issues/15557) ([137807f](https://github.com/hotforfeature/origami/commit/137807f)), closes [#27](https://github.com/hotforfeature/origami/issues/27)
+* **templates:** add warning to use enableLegacyTemplate and shim to fix [angular/angular#15557](https://github.com/angular/angular/issues/15557) ([137807f](https://github.com/hotforfeature/origami/commit/137807f)), closes [#27](https://github.com/hotforfeature/origami/issues/27)
 
 
 
