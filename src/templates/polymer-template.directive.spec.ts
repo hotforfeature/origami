@@ -1,5 +1,5 @@
 // tslint:disable:no-string-literal
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import {} from 'jasmine';
 
@@ -8,7 +8,7 @@ import { PolymerTemplateDirective } from './polymer-template.directive';
 @Component({
   selector: 'test-component',
   template: `
-    <div #template>
+    <div #ngTemplate>
       <ng-template [polymer]="this">
         <div id="first"></div>
         <div id="second"></div>
@@ -25,18 +25,20 @@ import { PolymerTemplateDirective } from './polymer-template.directive';
   `
 })
 class TestComponent {
-  @ViewChild('template') templateDiv: ElementRef;
+  @ViewChild('ngTemplate') ngTemplateDiv: ElementRef;
   @ViewChild('firstSibling') firstSiblingDiv: ElementRef;
   @ViewChild('lastSibling') lastSiblingDiv: ElementRef;
+  @ViewChildren(PolymerTemplateDirective) polymerDirectives: QueryList<PolymerTemplateDirective>;
 }
 
 describe('PolymerTemplateDirective', () => {
   let fixture: ComponentFixture<TestComponent>;
-  let template: HTMLTemplateElement;
+  let ngTemplate: HTMLTemplateElement;
   let firstSiblingTemplate: HTMLTemplateElement;
   let lastSiblingTemplate: HTMLTemplateElement;
 
   beforeEach(() => {
+    spyOn(console, 'warn');
     TestBed.configureTestingModule({
       declarations: [
         PolymerTemplateDirective,
@@ -45,13 +47,13 @@ describe('PolymerTemplateDirective', () => {
     });
 
     fixture = TestBed.createComponent(TestComponent);
-    template = fixture.componentInstance.templateDiv.nativeElement.children[0];
+    ngTemplate = fixture.componentInstance.ngTemplateDiv.nativeElement.children[0];
     firstSiblingTemplate = fixture.componentInstance.firstSiblingDiv.nativeElement.children[0];
     lastSiblingTemplate = fixture.componentInstance.lastSiblingDiv.nativeElement.children[1];
   });
 
   it('should replace <ng-template> with <template>', () => {
-    expect(template.tagName).toEqual('TEMPLATE');
+    expect(ngTemplate.tagName).toEqual('TEMPLATE');
   });
 
   it('should replace <ng-template> in correct position from parent', () => {
@@ -64,10 +66,33 @@ describe('PolymerTemplateDirective', () => {
   it('should add <ng-template> children to <template> content', () => {
     // IE11/Edge do not implement ParentNode interface for DocumentFragment, which provides the
     // children property
-    expect(template.content).toBeDefined();
-    const first = template.content.querySelector('#first');
+    expect(ngTemplate.content).toBeDefined();
+    const first = ngTemplate.content.querySelector('#first');
     expect(first).toBeDefined();
     expect(first.nextElementSibling.id).toBe('second');
+  });
+
+  describe('host', () => {
+    it('should be [polymer] input', async(() => {
+      fixture.whenStable().then(() => {
+        fixture.detectChanges();
+        const directive = fixture.componentInstance.polymerDirectives.first;
+        expect(directive.host).toBe(fixture.componentInstance);
+      });
+    }));
+  });
+
+  describe('methodHost', () => {
+    it('should set host and give deprecation warning', async(() => {
+      fixture.whenStable().then(() => {
+        fixture.detectChanges();
+        const directive = fixture.componentInstance.polymerDirectives.first;
+        const host = {};
+        directive.methodHost = host;
+        expect(directive.host).toBe(host);
+        expect(console.warn).toHaveBeenCalledWith(jasmine.stringMatching('deprecated'));
+      });
+    }));
   });
 
   describe('ngOnInit()', () => {
@@ -75,7 +100,7 @@ describe('PolymerTemplateDirective', () => {
       fixture.whenStable().then(() => {
         fixture.detectChanges();
         const host = fixture.componentInstance;
-        expect(template['__dataHost']).toBe(host);
+        expect(ngTemplate['__dataHost']).toBe(host);
         expect(firstSiblingTemplate['__dataHost']).toBeUndefined();
       });
     }));
