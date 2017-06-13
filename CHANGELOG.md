@@ -8,7 +8,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Bug Fixes
 
-* **styles:** prevent wrapping Polymer scoped styles in <custom-style> ([80775a6](https://github.com/hotforfeature/origami/commit/80775a6)), closes [#33](https://github.com/hotforfeature/origami/issues/33)
+* **styles:** prevent wrapping Polymer scoped styles in &lt;custom-style&gt; ([80775a6](https://github.com/hotforfeature/origami/commit/80775a6)), closes [#33](https://github.com/hotforfeature/origami/issues/33)
 
 
 
