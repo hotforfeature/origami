@@ -36,10 +36,11 @@ export class PolymerDomSharedStylesHost extends DomSharedStylesHost {
   private wrapStyleNodes() {
     this.hostNodes.forEach(hostNode => {
       Array.from(hostNode.childNodes).forEach(childNode => {
-        if ((<Element>childNode).tagName === 'STYLE') {
+        const childEle = childNode as Element;
+        if (childEle.tagName === 'STYLE' && !childEle.hasAttribute('scope')) {
           const customStyleEl = this.document.createElement('custom-style');
           hostNode.removeChild(childNode);
-          (<Element>childNode).setAttribute('is', 'custom-style');
+          childEle.setAttribute('is', 'custom-style');
           customStyleEl.appendChild(childNode);
           hostNode.appendChild(customStyleEl);
         }

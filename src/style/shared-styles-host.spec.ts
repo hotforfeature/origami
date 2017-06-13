@@ -50,7 +50,7 @@ class TestComponent { }
 })
 class NativeComponent { }
 
-describe('DomSharedCustomStylesHost', () => {
+describe('PolymerDomSharedStylesHost', () => {
   let fixture: ComponentFixture<TestComponent>;
 
   beforeEach(() => {
@@ -88,4 +88,16 @@ describe('DomSharedCustomStylesHost', () => {
       });
     }));
   }
+
+  it('should ignore <style> elements with scope attribute from Polymer', async(() => {
+    const scopeStyle = document.createElement('style');
+    scopeStyle.setAttribute('scope', 'my-element');
+    document.head.appendChild(scopeStyle);
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      expect(document.head.querySelectorAll('custom-style').length).toBeGreaterThan(0);
+      expect(scopeStyle.parentElement).toBe(document.head);
+      document.head.removeChild(scopeStyle);
+    });
+  }));
 });
