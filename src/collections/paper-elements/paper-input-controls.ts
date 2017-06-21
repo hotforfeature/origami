@@ -10,8 +10,8 @@ export const PAPER_INPUT_CONTROL_VALUE_ACCESSOR: Provider = {
 };
 
 @Directive({
-  selector: `paper-checkbox, paper-input, paper-listbox, paper-radio-button, paper-radio-group,
-    paper-toggle-button`,
+  selector: `paper-checkbox, paper-input, paper-textarea, paper-listbox, paper-radio-button,
+    paper-radio-group, paper-toggle-button`,
   providers: [PAPER_INPUT_CONTROL_VALUE_ACCESSOR]
 })
 export class PaperInputControl extends IronControlDirective { }

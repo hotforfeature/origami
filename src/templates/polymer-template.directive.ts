@@ -16,6 +16,7 @@ if ('content' in document.createElement('template')) {
   // appended to it instead of its #document-fragment
   // https://github.com/angular/angular/issues/15557
   const nativeAppend = HTMLTemplateElement.prototype.appendChild;
+  // tslint:disable-next-line:only-arrow-functions
   HTMLTemplateElement.prototype.appendChild = function(childNode: Node) {
     return this.content.appendChild(childNode);
   };
