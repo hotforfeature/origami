@@ -59,6 +59,7 @@ describe('CustomStyleService', () => {
   let fixture: ComponentFixture<TestComponent>;
 
   beforeEach(() => {
+    spyOn(console, 'warn');
     TestBed.configureTestingModule({
       imports: [BrowserModule],
       declarations: [TestComponent, NativeComponent],
@@ -76,6 +77,13 @@ describe('CustomStyleService', () => {
   });
 
   describe('updateCustomStyles()', () => {
+    it('should give deprecation warning', async(() => {
+      fixture.whenStable().then(() => {
+        fixture.detectChanges();
+        expect(console.warn).toHaveBeenCalledWith(jasmine.stringMatching('deprecated'));
+      });
+    }));
+
     it('should wrap <head> <style>s with <custom-style>', async(() => {
       fixture.whenStable().then(() => {
         fixture.detectChanges();

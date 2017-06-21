@@ -11,6 +11,7 @@ import {
   isDevMode
 } from '@angular/core';
 
+/* istanbul ignore next */
 if ('content' in document.createElement('template')) {
   // Even when this enableLegacyTemplate is false, the resulting <template> has childNodes
   // appended to it instead of its #document-fragment
@@ -22,6 +23,7 @@ if ('content' in document.createElement('template')) {
   };
 }
 
+/* istanbul ignore next */
 if (VERSION.major === '4' && VERSION.minor < '2' && isDevMode()) {
   // tslint:disable-next-line:no-console
   console.warn('Angular 4.2.0 has fixed enableLegacyTemplate. Origami strongly recommends to ' +
@@ -47,6 +49,7 @@ export class PolymerTemplateDirective implements OnInit {
       @Optional() templateRef: TemplateRef<any>) {
     // enableLegacyTemplate is working since 4.2.0
     if (elementRef.nativeElement.nodeType === Node.COMMENT_NODE) {
+      /* istanbul ignore next */
       if (VERSION.major >= '4' && VERSION.minor >= '2') {
         // tslint:disable-next-line:no-console
         console.warn('<ng-template polymer> is deprecated. Use <template> and ' +
@@ -70,6 +73,7 @@ export class PolymerTemplateDirective implements OnInit {
       hostNode.removeChild(parentNode);
       hostNode.appendChild(parentNode);
     } else {
+      // TODO: Test this with enableLegacyTemplate: false
       this.template = elementRef.nativeElement;
     }
   }
