@@ -31,17 +31,21 @@
 <vaadin-date-picker emitChanges ironControl [(ngModel)]="date"></vaadin-date-picker>
 
 <h4>&lt;vaadin-grid&gt;</h4>
+<label>Select All (Two-Way binding not working...)</label>
 <input type="checkbox" [(ngModel)]="gridSelectAll" />
 <vaadin-grid [items]="items | async" id="material" size="200">
-
-  <vaadin-grid-selection-column [(selectAll)]="gridSelectAll" width="66px" flex="0" emitChanges>
-    <template class="header" ngNonBindable [polymer]="this">
-      <paper-checkbox checked="{{gridSelectAll}}"></paper-checkbox>
-    </template>
+  <dom-bind [selectAll]="gridSelectAll">
     <template ngNonBindable>
-      <paper-checkbox checked="{{selected}}"></paper-checkbox>
+      <vaadin-grid-selection-column select-all="{{selectAll}}" width="66px" flex="0">
+        <template class="header">
+          <paper-checkbox checked="{{selectAll}}"></paper-checkbox>
+        </template>
+        <template>
+          <paper-checkbox checked="{{selected}}"></paper-checkbox>
+        </template>
+      </vaadin-grid-selection-column>
     </template>
-  </vaadin-grid-selection-column>
+  </dom-bind>
 
   <vaadin-grid-column width="100px" flex="0">
     <template class="header">
@@ -84,7 +88,6 @@
   </vaadin-grid-column>
 
 </vaadin-grid>
-
 <h4>&lt;vaadin-split-layout&gt;</h4>
 <vaadin-split-layout>
   <vaadin-split-layout vertical>
