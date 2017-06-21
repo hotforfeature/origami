@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.2.3"></a>
+## [1.2.3](https://github.com/hotforfeature/origami/compare/v1.2.2...v1.2.3) (2017-06-21)
+
+
+### Bug Fixes
+
+* **collections:** add iron control to paper-textarea ([66a75da](https://github.com/hotforfeature/origami/commit/66a75da)), closes [#35](https://github.com/hotforfeature/origami/issues/35)
+
+
+
 <a name="1.2.2"></a>
 ## [1.2.2](https://github.com/hotforfeature/origami/compare/v1.2.1...v1.2.2) (2017-06-13)
 
