@@ -22,7 +22,7 @@
     "@angular/platform-browser": "^4.0.2",
     "@angular/platform-browser-dynamic": "^4.0.2",
     "@angular/router": "^4.0.2",
-    "@codebakery/origami": "^1.1.1",
+    "@codebakery/origami": "file:../dist",
     "rxjs": "^5.3.0",
     "zone.js": "^0.8.5"
   },

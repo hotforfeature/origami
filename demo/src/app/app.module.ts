@@ -7,7 +7,7 @@ import {
   AppElementsModule,
   IronElementsModule,
   PaperElementsModule
-} from '@codebakery/origami/lib/collections';
+} from '@codebakery/origami/collections';
 
 import { AppComponent } from './app.component';
 import { FeaturesComponent } from './features/features.component';

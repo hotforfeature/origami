@@ -1,7 +1,7 @@
 # compiled output
-/bundles
-/lib
+/dist
 /test/build
+/out-tsc
 
 # dependencies
 /node_modules

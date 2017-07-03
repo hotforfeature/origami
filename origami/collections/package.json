@@ -1,0 +1,7 @@
+{
+  "name": "@codebakery/origami/collections",
+  "main": "../bundles/origami-collections.umd.js",
+  "module": "../@codebakery/origami/collections.es5.js",
+  "es2015": "../@codebakery/origami/collections.js",
+  "typings": "./collections.d.ts"
+}
