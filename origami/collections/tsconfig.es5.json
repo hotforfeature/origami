@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../out-tsc/es5-collections",
+    "target": "es5",
+    "types": []
+  },
+  "angularCompilerOptions": {
+    "flatModuleId": "@codebakery/origami/collections",
+    "flatModuleOutFile": "collections.js",
+    "strictMetadataEmit": true,
+    "skipTemplateCodegen": true
+  },
+  "files": [
+    "public_api.ts"
+  ]
+}

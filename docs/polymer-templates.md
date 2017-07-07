@@ -150,3 +150,32 @@ export class PolyComponent {
   }
 }
 ```
+
+## Limitations
+
+Polymer provides a way to bind directly to an attribute using the `attribute$="[[value]]"` syntax. This is actually an invalid attribute name, and will throw an error when Angular attempts to set it via `element.setAttribute('attribute$', '[[value]]')`. Because of this, Polymer attribute bindings are not possible inside an Angular component.
+
+```ts
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-poly',
+  template: `
+    <iron-list [items]="items" as="item">
+      <ng-template ngNonBindable>
+        <!-- This will NOT work and throw an error -->
+        <my-item class$="[[item]]" item="[[item]]"></my-item>
+      </ng-template>
+    </iron-list>
+  `
+})
+export class PolyComponent {
+  items = [
+    'one',
+    'two',
+    'three'
+  ];
+}
+```
+
+As a workaround, other properites (such as `class-name="[[value]]"` to bind to the class attribute) may be used. If there is no workaround, consider pulling the Polymer template out of the Angular component and [declaring it in a new element](new-elements.md) and use the new element in the Angular component instead.

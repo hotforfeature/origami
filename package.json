@@ -1,6 +1,6 @@
 {
   "name": "@codebakery/origami",
-  "version": "1.2.1",
+  "version": "1.2.3",
   "description": "Angular + Polymer",
   "keywords": [
     "Angular",
@@ -8,8 +8,6 @@
   ],
   "author": "Andrew Mitchell <abmitchell77@gmail.com>",
   "license": "MIT",
-  "module": "lib/origami.js",
-  "types": "lib/origami.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hotforfeature/origami.git"
@@ -19,8 +17,8 @@
     "url": "https://github.com/hotforfeature/origami/issues"
   },
   "scripts": {
-    "clean": "rimraf lib/ coverage/ test/build/",
-    "lint": "tslint --project tsconfig.lint.json",
+    "clean": "rimraf out-tsc/ dist/ coverage/ test/build/",
+    "lint": "tslint --project origami/tsconfig.json",
     "bower": "bower install",
     "test": "karma start",
     "test:watch": "karma start --auto-watch --no-single-run",
@@ -29,15 +27,39 @@
     "precommit": "npm run lint",
     "commitmsg": "validate-commit-msg",
     "commit": "git-cz",
+    "ngc:es6": "ngc -p origami/tsconfig.json",
+    "ngc:es5": "ngc -p origami/tsconfig.es5.json",
+    "ngc": "npm run ngc:es6 && npm run ngc:es5",
+    "rollup:es6": "rollup -c origami/rollup.config.js -m --format es --output dist/@codebakery/origami.js -- out-tsc/es6/origami.js",
+    "rollup:es5": "rollup -c origami/rollup.config.js -m --format es --output dist/@codebakery/origami.es5.js -- out-tsc/es5/origami.js",
+    "rollup:umd": "rollup -c origami/rollup.config.js --format umd --output dist/bundles/origami.umd.js -- dist/@codebakery/origami.es5.js",
+    "rollup:umd:min": "rollup -c origami/rollup.config.js --format umd --output dist/bundles/origami.umd.min.js -- dist/@codebakery/origami.es5.js",
+    "rollup": "npm run rollup:es6 && npm run rollup:es5 && npm run rollup:umd && npm run rollup:umd:min",
+    "copy": "cpy '**/*.d.ts' '*.metadata.json' ../../dist/ --parents --cwd out-tsc/es6/ && node cp-package.js origami/package.json dist/package.json",
+    "ngc:c:es6": "ngc -p origami/collections/tsconfig.json",
+    "ngc:c:es5": "ngc -p origami/collections/tsconfig.es5.json",
+    "ngc:c": "npm run ngc:c:es6 && npm run ngc:c:es5",
+    "rollup:c:es6": "rollup -c origami/collections/rollup.config.js -m --format es --output dist/@codebakery/origami/collections.js -- out-tsc/es6-collections/collections.js",
+    "rollup:c:es5": "rollup -c origami/collections/rollup.config.js -m --format es --output dist/@codebakery/origami/collections.es5.js -- out-tsc/es5-collections/collections.js",
+    "rollup:c:umd": "rollup -c origami/collections/rollup.config.js --format umd --output dist/bundles/origami-collections.umd.js -- dist/@codebakery/origami/collections.es5.js",
+    "rollup:c:umd:min": "rollup -c origami/collections/rollup.config.js --format umd --output dist/bundles/origami-collections.umd.min.js -- dist/@codebakery/origami/collections.es5.js",
+    "rollup:c": "npm run rollup:c:es6 && npm run rollup:c:es5 && npm run rollup:c:umd && npm run rollup:c:umd:min",
+    "copy:c": "cpy '**/*.d.ts' '*.metadata.json' ../../dist/collections/ --parents --cwd out-tsc/es6-collections/ && node cp-package.js origami/collections/package.json dist/collections/package.json",
+    "legacy:c": "cpy origami/lib/collections/package.json dist/lib/collections/",
     "prebuild": "npm run clean",
-    "build": "ngc -p tsconfig.json",
+    "build:origami": "npm run ngc && npm run rollup && npm run copy",
+    "build:collections": "npm run ngc:c && npm run rollup:c && npm run copy:c && npm run legacy:c",
+    "build": "npm run build:origami && npm run build:collections",
     "release": "standard-version",
     "prepublish": "npm run build"
   },
+  "dependencies": {
+    "tslib": "^1.7.1"
+  },
   "peerDependencies": {
-    "@angular/core": ">=4.0.0 <5.0.0",
-    "@angular/forms": ">=4.0.0 <5.0.0",
-    "@angular/platform-browser": ">=4.0.0 <5.0.0",
+    "@angular/core": ">=4.0.0",
+    "@angular/forms": ">=4.0.0",
+    "@angular/platform-browser": ">=4.0.0",
     "rxjs": "^5.0.1"
   },
   "devDependencies": {
@@ -54,6 +76,7 @@
     "bower": "^1.8.0",
     "codelyzer": "^2.1.1",
     "commitizen": "^2.9.6",
+    "cpy-cli": "^1.0.1",
     "cz-conventional-changelog": "^2.0.0",
     "husky": "^0.13.3",
     "istanbul-instrumenter-loader": "^2.0.0",
@@ -70,11 +93,14 @@
     "karma-webpack": "^2.0.3",
     "polymer-cli": "^0.18.0",
     "rimraf": "^2.6.1",
+    "rollup": "^0.43.0",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-uglify": "^2.0.1",
     "rxjs": "^5.0.1",
     "source-map-loader": "^0.2.1",
     "standard-version": "^4.0.0",
     "tslint": "^4.5.1",
-    "typescript": "~2.1.6",
+    "typescript": "^2.4.1",
     "validate-commit-msg": "^2.11.2",
     "webpack": "^2.4.1",
     "zone.js": "^0.8.4"
@@ -83,5 +109,6 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  }
+  },
+  "private": true
 }

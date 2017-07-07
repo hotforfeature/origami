@@ -8,12 +8,19 @@ function root(args) {
   return path.join.apply(path, [ROOT].concat(args));
 }
 
+const tsconfig = require(root('tsconfig.json'));
+tsconfig.sourceMap = false;
+tsconfig.inlineSourceMap = true;
+tsconfig.module = 'commonjs';
+tsconfig.silent = true;
+tsconfig.declaration = false;
+
 module.exports = function(options) {
   const config = {
     devtool: 'inline-source-map',
     resolve: {
       extensions: ['.ts', '.js'],
-      modules: [root('src'), 'node_modules']
+      modules: [root('origami'), 'node_modules']
     },
     module: {
       rules: [
@@ -30,19 +37,14 @@ module.exports = function(options) {
         {
           test: /\.ts$/,
           loader: 'awesome-typescript-loader',
-          query: {
-            sourceMap: false,
-            inlineSourceMap: true,
-            module: 'commonjs',
-            silent: true
-          }
+          query: tsconfig
         }
       ]
     },
     plugins: [
       new webpack.ContextReplacementPlugin(
         /angular(\\|\/)core(\\|\/)@angular/,
-        root('src')
+        root('origami')
       ),
       new webpack.ProgressPlugin({ colors: true })
     ]
@@ -53,7 +55,7 @@ module.exports = function(options) {
       enforce: 'post',
       test: /\.(js|ts)$/,
       loader: 'istanbul-instrumenter-loader',
-      include: root('src'),
+      include: root('origami'),
       exclude: [
         /\.(e2e|spec)\.ts$/,
         /node_modules/
