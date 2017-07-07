@@ -101,6 +101,10 @@ export class PolymerTemplateDirective implements OnInit {
         node.removeEventListener(eventName, handler);
       };
 
+      if ((<any>this.template)._templateInfo) {
+        this.onTemplateInfoChange((<any>this.template)._templateInfo);
+      }
+
       wrapAndDefineDescriptor(this.template, '_templateInfo', {
         afterSet: (_changed: boolean, templateInfo: any) => {
           // Micro timing, templateInfo is set to an empty object first before hostProps are added
