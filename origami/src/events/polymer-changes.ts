@@ -1,3 +1,4 @@
+import { wrapDescriptor } from '../util/descriptors';
 import { OnPolymerChange } from './on-polymer-change';
 
 export function PolymerChanges(): PropertyDecorator {
@@ -9,47 +10,28 @@ export function PolymerChanges(): PropertyDecorator {
       console.warn(`${propertyKey} is readonly. @PolymerChanges() is not needed`);
     }
 
-    const properties = new WeakMap();
-    return {
-      configurable: desc ? desc.configurable : true,
-      enumerable: desc ? desc.enumerable : true,
-      get() {
-        if (desc && desc.get) {
-          return desc.get.apply(this);
-        } else {
-          const props = properties.get(this);
-          return props && props[propertyKey];
-        }
-      },
-      set(event: any|CustomEvent) {
-        if (event instanceof CustomEvent && event.detail.path) {
+    return wrapDescriptor(target, propertyKey, {
+      shouldSet(value: any|CustomEvent) {
+        if (value instanceof CustomEvent && value.detail.path) {
           // Object or Array mutation, we need to tell Angular that things have changed
           if ((<OnPolymerChange>this).onPolymerChange) {
-            (<OnPolymerChange>this).onPolymerChange(propertyKey, event, event.detail);
+            (<OnPolymerChange>this).onPolymerChange(propertyKey, value, value.detail);
           }
+
+          return false;
         } else {
-          let props = properties.get(this);
-          if (!props) {
-            props = {};
-            properties.set(this, props);
-          }
-
-          const newValue = unwrapPolymerEvent(event);
-          if (desc && desc.set) {
-            desc.set.apply(this, [newValue]);
-          }
-
-          if (newValue !== props[propertyKey]) {
-            // Even if there is a setter, we still keep a copy to determine if a change happens
-            props[propertyKey] = newValue;
-
-            if ((<OnPolymerChange>this).onPolymerChange && event instanceof CustomEvent) {
-              (<OnPolymerChange>this).onPolymerChange(propertyKey, event, event.detail);
-            }
-          }
+          return true;
+        }
+      },
+      beforeSet(value: any|CustomEvent) {
+        return unwrapPolymerEvent(value);
+      },
+      afterSet(changed: boolean, _value: any, original: any|CustomEvent) {
+        if (changed && (<OnPolymerChange>this).onPolymerChange && original instanceof CustomEvent) {
+          (<OnPolymerChange>this).onPolymerChange(propertyKey, original, original.detail);
         }
       }
-    };
+    });
   };
 }
 

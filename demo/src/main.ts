@@ -10,7 +10,9 @@ if (environment.production) {
 }
 
 webcomponentsReady().then(() => {
-  platformBrowserDynamic().bootstrapModule(AppModule);
+  platformBrowserDynamic().bootstrapModule(AppModule, {
+    enableLegacyTemplate: false
+  });
 }).catch(error => {
   console.error(error);
 });

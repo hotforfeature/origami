@@ -3,6 +3,7 @@ import {
   Directive,
   ElementRef,
   Input,
+  NgZone,
   OnInit,
   Optional,
   TemplateRef,
@@ -10,6 +11,10 @@ import {
   ViewContainerRef,
   isDevMode
 } from '@angular/core';
+
+import { unwrapPolymerEvent } from '../events/polymer-changes';
+import { wrapAndDefineDescriptor } from '../util/descriptors';
+import { getPolymer } from '../util/Polymer';
 
 /* istanbul ignore next */
 if ('content' in document.createElement('template')) {
@@ -46,7 +51,8 @@ export class PolymerTemplateDirective implements OnInit {
 
   constructor(elementRef: ElementRef,
       @Optional() view: ViewContainerRef,
-      @Optional() templateRef: TemplateRef<any>) {
+      @Optional() templateRef: TemplateRef<any>,
+      private zone: NgZone) {
     // enableLegacyTemplate is working since 4.2.0
     if (elementRef.nativeElement.nodeType === Node.COMMENT_NODE) {
       /* istanbul ignore next */
@@ -80,6 +86,9 @@ export class PolymerTemplateDirective implements OnInit {
 
   ngOnInit() {
     if (this.host) {
+      // Configure host event binding
+      (<any>this.template)['__dataHost'] = this.host;
+
       // Shim Polymer.TemplateStamp mixin. This allows event bindings in Polymer to be used, such
       // as on-click
       this.host['_addEventListenerToNode'] = (node: HTMLElement, eventName: string,
@@ -92,7 +101,40 @@ export class PolymerTemplateDirective implements OnInit {
         node.removeEventListener(eventName, handler);
       };
 
-      (<any>this.template)['__dataHost'] = this.host;
+      wrapAndDefineDescriptor(this.template, '_templateInfo', {
+        afterSet: (_changed: boolean, templateInfo: any) => {
+          // Micro timing, templateInfo is set to an empty object first before hostProps are added
+          setTimeout(() => this.onTemplateInfoChange(templateInfo));
+        }
+      });
     }
+  }
+
+  private onTemplateInfoChange(templateInfo: any) {
+    // Setup host property binding
+    Object.keys(templateInfo.hostProps).forEach(hostProp => {
+      // Polymer -> Angular
+      const eventName = `_host_${getPolymer().CaseMap.camelToDashCase(hostProp)}-changed`;
+      this.template.addEventListener(eventName, (e: CustomEvent) => {
+        this.zone.run(() => {
+          const value = unwrapPolymerEvent(e);
+          if (this.host[hostProp] !== value) {
+            this.host[hostProp] = value;
+          }
+        });
+      });
+
+      // Angular -> Polymer
+      wrapAndDefineDescriptor(this.host, hostProp, {
+        beforeSet: (value: any) => {
+          return unwrapPolymerEvent(value);
+        },
+        afterSet: (changed: boolean, value: any) => {
+          if (changed) {
+            (<any>this.template)[`_host_${hostProp}`] = value;
+          }
+        }
+      });
+    });
   }
 }

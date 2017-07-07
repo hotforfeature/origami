@@ -25,7 +25,7 @@ testing.TestBed.initTestEnvironment(
   browser.platformBrowserDynamicTesting()
 );
 
-const context = require.context('../src', true, /\.spec\.ts$/);
+const context = require.context('../origami', true, /\.spec\.ts$/);
 context.keys().map(context);
 
 const Promise = window.Promise;
