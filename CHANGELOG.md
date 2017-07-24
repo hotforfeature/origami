@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file. See [standa
 <a name="1.3.0-beta.0"></a>
 # [1.3.0-beta.0](https://github.com/hotforfeature/origami/compare/v1.2.3...v1.3.0-beta.0) (2017-07-24)
 
+With this release, the SystemJS loader is now supported by Origami!
 
 ### Bug Fixes
 
@@ -16,7 +17,48 @@ All notable changes to this project will be documented in this file. See [standa
 * follow Angular package format v4.0 ([f69956d](https://github.com/hotforfeature/origami/commit/f69956d)), closes [#30](https://github.com/hotforfeature/origami/issues/30)
 * **templates:** add host property binding ([71fcf4c](https://github.com/hotforfeature/origami/commit/71fcf4c))
 
+Polymer templates now support both event and data binding.
 
+```ts
+@Component({
+  selector: 'paper-grid',
+  template: `
+    <vaadin-grid [items]="items">
+      <vaadin-grid-selection-column [(selectAll)]="selectAll">
+        <template class="header" ngNonBindable [polymer]="this">
+          <!-- Polymer will bind "selectAll" to the host, which is set to "this" -->
+          <paper-checkbox checked="{{selectAll}}"></paper-checkbox>
+        </template>
+        <template ngNonBindable>
+          <paper-checkbox checked="{{selected}}></paper-checkbox>
+        </template>
+      </vaadin-grid-selection-column>
+
+      <vaadin-grid-column>
+        <template class="header" ngNonBindable>
+          <div>Number</div>
+        </template>
+        <template ngNonBindable>
+          <!-- Normal event bindings will continue to call the Angular host method -->
+          <div class="cell" on-click="onClick">[[item]]</div>
+        </template>
+      </vaadin-grid-column>
+    </vaadin-grid>
+  `
+})
+export class PaperGridComponent {
+  @PolymerChanges() selectAll: boolean;
+  items = [1, 2, 3];
+
+  onClick(e) {
+    alert('Clicked Number ' + e.model.item);
+  }
+}
+```
+
+### DEPRECATION WARNING
+
+Origami's collection libraries should be imported from `@codebakery/origami/collections`. The old `@codebakery/origami/lib/collections` import path will continue to work but will be removed in the next major revision.
 
 <a name="1.2.3"></a>
 ## [1.2.3](https://github.com/hotforfeature/origami/compare/v1.2.2...v1.2.3) (2017-06-21)
