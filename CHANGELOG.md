@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.0-beta.0"></a>
+# [1.3.0-beta.0](https://github.com/hotforfeature/origami/compare/v1.2.3...v1.3.0-beta.0) (2017-07-24)
+
+
+### Bug Fixes
+
+* **templates:** check for templateInfo before listening for templateInfo changes ([46a2973](https://github.com/hotforfeature/origami/commit/46a2973))
+
+
+### Features
+
+* follow Angular package format v4.0 ([f69956d](https://github.com/hotforfeature/origami/commit/f69956d)), closes [#30](https://github.com/hotforfeature/origami/issues/30)
+* **templates:** add host property binding ([71fcf4c](https://github.com/hotforfeature/origami/commit/71fcf4c))
+
+
+
 <a name="1.2.3"></a>
 ## [1.2.3](https://github.com/hotforfeature/origami/compare/v1.2.2...v1.2.3) (2017-06-21)
 
