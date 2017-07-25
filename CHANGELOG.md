@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file. See [standa
 <a name="1.3.0-beta.1"></a>
 # [1.3.0-beta.1](https://github.com/hotforfeature/origami/compare/v1.3.0-beta.0...v1.3.0-beta.1) (2017-07-25)
 
+Re-release incorrect build.
+
 
 
 <a name="1.3.0-beta.0"></a>
@@ -64,6 +66,8 @@ export class PaperGridComponent {
 ### DEPRECATION WARNING
 
 Origami's collection libraries should be imported from `@codebakery/origami/collections`. The old `@codebakery/origami/lib/collections` import path will continue to work but will be removed in the next major revision.
+
+
 
 <a name="1.2.3"></a>
 ## [1.2.3](https://github.com/hotforfeature/origami/compare/v1.2.2...v1.2.3) (2017-06-21)
