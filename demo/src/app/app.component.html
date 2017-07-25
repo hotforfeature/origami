@@ -11,16 +11,16 @@
 
   <div>
     <div *ngIf="selectedTab === 0" padding-horizontal>
-      <h1>Kitchen Sink (Soon!)</h1>
+      <h1>Kitchen Sink</h1>
+      <h3>Vaadin Elements</h3>
+      <app-vaadin></app-vaadin>
 
-      <div padding-horizontal>
-        <h3>Elements Defined in Angular Project</h3>
-        <div>
-          <label>Angular Model</label>
-          <input [(ngModel)]="model">
-        </div>
-        <angular-polymer emitChanges [(model)]="model"></angular-polymer>
+      <h3>Elements Defined in Angular Project</h3>
+      <div>
+        <label>Angular Model</label>
+        <input [(ngModel)]="model">
       </div>
+      <angular-polymer emitChanges [(model)]="model"></angular-polymer>
     </div>
     <app-features *ngIf="selectedTab === 1"></app-features>
   </div>

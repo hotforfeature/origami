@@ -8,6 +8,6 @@ import { PolymerChanges } from '@codebakery/origami';
   encapsulation: ViewEncapsulation.None
 })
 export class AppComponent {
-  @PolymerChanges() selectedTab: number = 1;
+  @PolymerChanges() selectedTab: number = 0;
   @PolymerChanges() model: string;
 }
