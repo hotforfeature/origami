@@ -45,6 +45,8 @@ export namespace Polymer {
     afterNextRender(context: any, callback: (...args: any[]) => void, args?: any[]): void;
     flush(): void;
   }
+
+  export type DedupingMixin = (mixin: Function) => Function;
 }
 
 export interface Polymer {
@@ -52,6 +54,7 @@ export interface Polymer {
   CaseMap: Polymer.CaseMap;
   Path: Polymer.Path;
   RenderStatus: Polymer.RenderStatus;
+  dedupingMixin: Polymer.DedupingMixin;
   Element: {
     prototype: HTMLElement;
     new(): HTMLElement;

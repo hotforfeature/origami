@@ -36,7 +36,7 @@ module.exports = config => {
           '@codebakery/origami': ['dist/']
         },
         skipLibCheck: true,
-        target: 'es5',
+        target: ES5 ? 'es5' : 'es6',
         types: ['jasmine']
       },
       coverageOptions: {

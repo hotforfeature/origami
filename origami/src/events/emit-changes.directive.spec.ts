@@ -1,3 +1,4 @@
+// tslint:disable:max-classes-per-file
 import { CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 
@@ -10,12 +11,14 @@ import { EmitChangesDirective } from './emit-changes.directive';
     <emit-changes-element #polymer emitChanges></emit-changes-element>
     <emit-changes-behavior-element #behavior emitChanges></emit-changes-behavior-element>
     <unknown-element #unknown emitChanges></unknown-element>
+    <mixin-test #mixin emitChanges></mixin-test>
   `
 })
 class TestComponent {
   @ViewChild('polymer') emitChangesElementRef: ElementRef;
   @ViewChild('behavior') emitChangesBehaviorElementRef: ElementRef;
   @ViewChild('unknown') unknownElementRef: ElementRef;
+  @ViewChild('mixin') mixinElementRef: ElementRef;
 
   get emitChangesElement(): HTMLElement & Polymer.PropertyEffects {
     return this.emitChangesElementRef.nativeElement;
@@ -86,6 +89,36 @@ describe('EmitChangesDirective', () => {
         }
       ]
     });
+
+    const mixin = Polymer.dedupingMixin(base => {
+      return class Mixin extends base {
+        static get properties() {
+          return {
+            totallyLegal: {
+              type: Boolean,
+              value: true,
+              notify: true,
+              reflectToAttribute: true
+            }
+          };
+        }
+      };
+    });
+
+    class MixinTest extends mixin(Polymer.Element) {
+      static get properties() {
+        return {
+          ownProp: {
+            type: Boolean,
+            value: true,
+            notify: true,
+            reflectToAttribute: true
+          }
+        };
+      }
+    }
+
+    customElements.define('mixin-test', MixinTest);
   });
 
   beforeEach(() => {
@@ -161,7 +194,7 @@ describe('EmitChangesDirective', () => {
       fixture.detectChanges();
       const element = fixture.componentInstance.unknownElementRef.nativeElement;
       element.addEventListener('propChange', () => {
-        done.fail('it should not list to changed events');
+        done.fail('it should not listen to change events');
       });
 
       element.dispatchEvent(new CustomEvent('prop-changed'));
@@ -179,6 +212,19 @@ describe('EmitChangesDirective', () => {
       });
 
       element.behaviorProp = !element.behaviorProp;
+    });
+  });
+
+  it('should listen to mixin properties', done => {
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      const element = fixture.componentInstance.mixinElementRef.nativeElement;
+      element.addEventListener('totallyLegalChange', event => {
+        expect(event).toEqual(jasmine.any(CustomEvent));
+        done();
+      });
+
+      element.totallyLegal = false;
     });
   });
 });
