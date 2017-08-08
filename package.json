@@ -25,6 +25,7 @@
     "pretest:es5": "cd test && polymer build",
     "test:es5": "ES5=true karma start",
     "test:ci": "CI=true karma start",
+    "pretest:ci:es5": "npm run pretest:es5",
     "test:ci:es5": "CI=true ES5=true karma start",
     "precommit": "npm run lint",
     "commitmsg": "validate-commit-msg",
