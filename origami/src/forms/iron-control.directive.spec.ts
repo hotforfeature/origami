@@ -2,7 +2,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormsModule, NgControl, Validators } from '@angular/forms';
-import {} from 'jasmine';
 
 import { IronControlDirective } from './iron-control.directive';
 

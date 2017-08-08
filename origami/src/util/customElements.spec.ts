@@ -1,5 +1,3 @@
-import {} from 'jasmine';
-
 import { getCustomElements } from './customElements';
 
 describe('getCustomElements()', () => {

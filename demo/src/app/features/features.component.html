@@ -12,7 +12,7 @@
 
 <div class="layout horizontal">
   <iron-list #ironList class="flex" [(items)]="features" as="feature">
-    <template [polymer]="this">
+    <template ngNonBindable [polymer]="this">
       <paper-icon-item>
         <iron-icon class-name="[[getIconClass(feature)]]"
             icon="[[getIcon(feature)]]"

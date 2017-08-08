@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import {} from 'jasmine';
 
 import { PolymerChanges } from './polymer-changes';
 

@@ -1,6 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import {} from 'jasmine';
 
 import { Polymer, getPolymer } from '../util/Polymer';
 import { EmitChangesDirective } from './emit-changes.directive';

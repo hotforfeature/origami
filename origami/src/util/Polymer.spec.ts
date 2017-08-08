@@ -1,5 +1,3 @@
-import {} from 'jasmine';
-
 import { getPolymer } from './Polymer';
 
 describe('getPolymer()', () => {

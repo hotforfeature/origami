@@ -1,7 +1,6 @@
 // tslint:disable:no-string-literal
 import { Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import {} from 'jasmine';
 
 import { PolymerTemplateDirective } from './polymer-template.directive';
 

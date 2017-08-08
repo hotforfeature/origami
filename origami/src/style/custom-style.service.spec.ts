@@ -2,7 +2,6 @@
 import { Component, ElementRef, OnInit, ViewEncapsulation } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { BrowserModule } from '@angular/platform-browser';
-import {} from 'jasmine';
 
 import { CustomStyleService } from './custom-style.service';
 

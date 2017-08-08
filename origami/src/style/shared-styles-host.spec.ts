@@ -5,7 +5,6 @@ import {
   BrowserModule,
   ɵDomSharedStylesHost as DomSharedStylesHost
 } from '@angular/platform-browser';
-import {} from 'jasmine';
 
 import { PolymerDomSharedStylesHost } from './shared-styles-host';
 
