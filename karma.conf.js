@@ -40,7 +40,8 @@ module.exports = config => {
         types: ['jasmine']
       },
       coverageOptions: {
-        exclude: /\.(d|spec|test)\.ts$|^mock*|index\.ts/
+        exclude: /\.(d|spec|test)\.ts$|^mock*|index\.ts/,
+        instrumentation: !CI
       },
       exclude: [
         'demo',
@@ -80,7 +81,8 @@ module.exports = config => {
       }
     },
     concurrency: 5,
-    singleRun: true
+    singleRun: true,
+    autoWatch: false
   };
 
   const directory = ES5 ? './test/build/es5' : './test';
