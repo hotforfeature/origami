@@ -101,7 +101,8 @@ module.exports = config => {
     // conf.plugins.push(require('karma-sauce-launcher'));
     conf.sauceLabs = {
       testName: ES5 ? 'Origami Karma (ES5)' : 'Origami Karma',
-      startConnect: TRAVIS ? false : true
+      startConnect: TRAVIS ? false : true,
+      tunnelIdentifier: TRAVIS ? process.env.TRAVIS_JOB_NUMBER : undefined
     };
 
     if (ES5) {
