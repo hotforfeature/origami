@@ -7,5 +7,8 @@ export * from './style/custom-style.service';
 export * from './style/shared-styles-host';
 export * from './templates/polymer-template.directive';
 export * from './util/customElements';
+export * from './util/descriptors';
+export * from './util/getCustomElementClass';
+export * from './util/getTagName';
 export * from './util/Polymer';
 export * from './util/webcomponents';
