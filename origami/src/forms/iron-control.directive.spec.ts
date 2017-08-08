@@ -1,6 +1,6 @@
 // tslint:disable:max-classes-per-file no-access-missing-member
 import { CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, NgControl, Validators } from '@angular/forms';
 
 import { IronControlDirective } from './iron-control.directive';
@@ -94,18 +94,19 @@ describe('IronControlDirective', () => {
     });
 
     describe('ngOnInit()', () => {
-      it('should warn if element is not known iron element', async(() => {
+      it('should warn if element is not known iron element', done => {
         spyOn(console, 'warn');
         const notIronFixture = TestBed.createComponent(NotIronComponent);
         notIronFixture.detectChanges();
         notIronFixture.whenStable().then(() => {
           expect(console.warn).toHaveBeenCalledWith(jasmine.stringMatching('<div>'));
-        });
-      }));
+          done();
+        }).catch(done.fail);
+      });
     });
 
     describe('ngAfterViewInit()', () => {
-      it('should update element invalid property if NgControl is dirty and invalid', async(() => {
+      it('should update element invalid property if NgControl is dirty and invalid', done => {
         const fixture = TestBed.createComponent(InputComponent);
         fixture.detectChanges();
         fixture.whenStable().then(() => {
@@ -120,20 +121,22 @@ describe('IronControlDirective', () => {
         }).then(() => {
           expect(fixture.componentInstance.ngControl.invalid).toBe(true);
           expect(fixture.componentInstance.element.invalid).toBe(true);
-        });
-      }));
+          done();
+        }).catch(done.fail);
+      });
 
-      it('should add element validate() function to NgControl validators', async(() => {
+      it('should add element validate() function to NgControl validators', done => {
         const fixture = TestBed.createComponent(InputComponent);
         fixture.detectChanges();
         fixture.whenStable().then(() => {
           spyOn(fixture.componentInstance.element, 'validate').and.callThrough();
           fixture.componentInstance.ngControl.control.updateValueAndValidity();
           expect(fixture.componentInstance.element.validate).toHaveBeenCalledTimes(1);
-        });
-      }));
+          done();
+        }).catch(done.fail);
+      });
 
-      it('should set ironValidatable error if element validate() returns false', async(() => {
+      it('should set ironValidatable error if element validate() returns false', done => {
         const fixture = TestBed.createComponent(InputComponent);
         fixture.detectChanges();
         fixture.whenStable().then(() => {
@@ -141,12 +144,13 @@ describe('IronControlDirective', () => {
           fixture.componentInstance.ngControl.control.updateValueAndValidity();
           expect(fixture.componentInstance.ngControl.control.hasError('ironValidatable'))
             .toBe(true);
-        });
-      }));
+          done();
+        }).catch(done.fail);
+      });
     });
 
     describe('writeValue()', () => {
-      it('should set value property of form element', async(() => {
+      it('should set value property of form element', done => {
         const fixture = TestBed.createComponent(InputComponent);
         fixture.detectChanges();
         fixture.whenStable().then(() => {
@@ -156,10 +160,11 @@ describe('IronControlDirective', () => {
           return fixture.whenStable();
         }).then(() => {
           expect(fixture.componentInstance.element.value).toBe('New Value');
-        });
-      }));
+          done();
+        }).catch(done.fail);
+      });
 
-      it('should not mark controls as dirty when resetting', async(() => {
+      it('should not mark controls as dirty when resetting', done => {
         const fixture = TestBed.createComponent(InputComponent);
         fixture.detectChanges();
         fixture.whenStable().then(() => {
@@ -173,12 +178,13 @@ describe('IronControlDirective', () => {
           return fixture.whenStable();
         }).then(() => {
           expect(fixture.componentInstance.ngControl.dirty).toBe(false);
-        });
-      }));
+          done();
+        }).catch(done.fail);
+      });
     });
 
     describe('registerOnChange()', () => {
-      it('should detect input changes', async(() => {
+      it('should detect input changes', done => {
         const fixture = TestBed.createComponent(InputComponent);
         fixture.detectChanges();
         fixture.whenStable().then(() => {
@@ -188,12 +194,13 @@ describe('IronControlDirective', () => {
           return fixture.whenStable();
         }).then(() => {
           expect(fixture.componentInstance.model.input).toBe('New Value');
-        });
-      }));
+          done();
+        }).catch(done.fail);
+      });
     });
 
     describe('registerOnTouched()', () => {
-      it('should detect input blur', async(() => {
+      it('should detect input blur', done => {
         const fixture = TestBed.createComponent(InputComponent);
         fixture.detectChanges();
         fixture.whenStable().then(() => {
@@ -203,8 +210,9 @@ describe('IronControlDirective', () => {
           return fixture.whenStable();
         }).then(() => {
           expect(fixture.componentInstance.ngControl.touched).toBe(true);
-        });
-      }));
+          done();
+        }).catch(done.fail);
+      });
     });
 
     describe('setDisabledState()', () => {
@@ -237,7 +245,7 @@ describe('IronControlDirective', () => {
     });
 
     describe('writeValue()', () => {
-      it('should set checked property of IronCheckedElementBehavior', async(() => {
+      it('should set checked property of IronCheckedElementBehavior', done => {
         const fixture = TestBed.createComponent(CheckboxComponent);
         fixture.detectChanges();
         fixture.whenStable().then(() => {
@@ -247,12 +255,13 @@ describe('IronControlDirective', () => {
           return fixture.whenStable();
         }).then(() => {
           expect(fixture.componentInstance.element.checked).toBe(false);
-        });
-      }));
+          done();
+        }).catch(done.fail);
+      });
     });
 
     describe('registerOnChange()', () => {
-      it('should detect checkbox changes', async(() => {
+      it('should detect checkbox changes', done => {
         const fixture = TestBed.createComponent(CheckboxComponent);
         fixture.detectChanges();
         fixture.whenStable().then(() => {
@@ -262,8 +271,9 @@ describe('IronControlDirective', () => {
           return fixture.whenStable();
         }).then(() => {
           expect(fixture.componentInstance.model.checkbox).toBe(false);
-        });
-      }));
+          done();
+        }).catch(done.fail);
+      });
     });
   });
 
@@ -284,7 +294,7 @@ describe('IronControlDirective', () => {
     });
 
     describe('writeValue()', () => {
-      it('should set selected property of IronSelectableBehavior', async(() => {
+      it('should set selected property of IronSelectableBehavior', done => {
         const fixture = TestBed.createComponent(SelectorComponent);
         fixture.detectChanges();
         fixture.whenStable().then(() => {
@@ -294,10 +304,11 @@ describe('IronControlDirective', () => {
           return fixture.whenStable();
         }).then(() => {
           expect(fixture.componentInstance.element.selected).toBe(1);
-        });
-      }));
+          done();
+        }).catch(done.fail);
+      });
 
-      it('should set selected property of deferred ironSelector', async(() => {
+      it('should set selected property of deferred ironSelector', done => {
         const fixture = TestBed.createComponent(DeferSelectorComponent);
         const deferred = fixture.componentInstance.element.querySelector('iron-selector');
         fixture.detectChanges();
@@ -308,10 +319,11 @@ describe('IronControlDirective', () => {
           return fixture.whenStable();
         }).then(() => {
           expect(deferred.selected).toBe(1);
-        });
-      }));
+          done();
+        }).catch(done.fail);
+      });
 
-      it('should set selectedValues property of multi IronSelectableBehavior', async(() => {
+      it('should set selectedValues property of multi IronSelectableBehavior', done => {
         const fixture = TestBed.createComponent(MultiSelectorComponent);
         fixture.detectChanges();
         fixture.whenStable().then(() => {
@@ -321,12 +333,13 @@ describe('IronControlDirective', () => {
           return fixture.whenStable();
         }).then(() => {
           expect(fixture.componentInstance.element.selectedValues).toEqual([0, 1]);
-        });
-      }));
+          done();
+        }).catch(done.fail);
+      });
     });
 
     describe('registerOnChange()', () => {
-      it('should detect select value changes', async(() => {
+      it('should detect select value changes', done => {
         const fixture = TestBed.createComponent(SelectorComponent);
         fixture.detectChanges();
         fixture.whenStable().then(() => {
@@ -336,10 +349,11 @@ describe('IronControlDirective', () => {
           return fixture.whenStable();
         }).then(() => {
           expect(fixture.componentInstance.model.selector).toBe(1);
-        });
-      }));
+          done();
+        }).catch(done.fail);
+      });
 
-      it('should detect deferred select value changes', async(() => {
+      it('should detect deferred select value changes', done => {
         const fixture = TestBed.createComponent(DeferSelectorComponent);
         const deferred = fixture.componentInstance.element.querySelector('iron-selector');
         fixture.detectChanges();
@@ -350,10 +364,11 @@ describe('IronControlDirective', () => {
           return fixture.whenStable();
         }).then(() => {
           expect(fixture.componentInstance.model.selector).toBe(1);
-        });
-      }));
+          done();
+        }).catch(done.fail);
+      });
 
-      it('should detect selected values change', async(() => {
+      it('should detect selected values change', done => {
         const fixture = TestBed.createComponent(MultiSelectorComponent);
         fixture.detectChanges();
         fixture.whenStable().then(() => {
@@ -363,12 +378,13 @@ describe('IronControlDirective', () => {
           return fixture.whenStable();
         }).then(() => {
           expect(fixture.componentInstance.model.multiSelector).toEqual([0, 1]);
-        });
-      }));
+          done();
+        }).catch(done.fail);
+      });
     });
 
     describe('registerOnTouched()', () => {
-      it('should detect select iron-active events', async(() => {
+      it('should detect select iron-active events', done => {
         const fixture = TestBed.createComponent(SelectorComponent);
         fixture.detectChanges();
         fixture.whenStable().then(() => {
@@ -378,8 +394,9 @@ describe('IronControlDirective', () => {
           return fixture.whenStable();
         }).then(() => {
           expect(fixture.componentInstance.ngControl.touched).toBe(true);
-        });
-      }));
+          done();
+        }).catch(done.fail);
+      });
     });
   });
 });

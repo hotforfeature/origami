@@ -87,12 +87,6 @@ module.exports = config => {
 
   const directory = ES5 ? './test/build/es5' : './test';
   const bowerDirectory = directory + '/bower_components';
-  if (ES5) {
-    conf.files.push({
-      pattern: bowerDirectory + '/webcomponentsjs/custom-elements-es5-adapter.js', watched: false
-    });
-  }
-
   conf.files.push(
     { pattern: bowerDirectory + '/webcomponentsjs/webcomponents-loader.js', watched: false },
     { pattern: directory + '/elements.html', watched: false },
