@@ -79,7 +79,6 @@ export class PolymerTemplateDirective implements OnInit {
       hostNode.removeChild(parentNode);
       hostNode.appendChild(parentNode);
     } else {
-      // TODO: Test this with enableLegacyTemplate: false
       this.template = elementRef.nativeElement;
     }
   }
@@ -116,29 +115,31 @@ export class PolymerTemplateDirective implements OnInit {
 
   private onTemplateInfoChange(templateInfo: any) {
     // Setup host property binding
-    Object.keys(templateInfo.hostProps).forEach(hostProp => {
-      // Polymer -> Angular
-      const eventName = `_host_${getPolymer().CaseMap.camelToDashCase(hostProp)}-changed`;
-      this.template.addEventListener(eventName, (e: CustomEvent) => {
-        this.zone.run(() => {
-          const value = unwrapPolymerEvent(e);
-          if (this.host[hostProp] !== value) {
-            this.host[hostProp] = value;
+    if (templateInfo && templateInfo.hostProps) {
+      Object.keys(templateInfo.hostProps).forEach(hostProp => {
+        // Polymer -> Angular
+        const eventName = `_host_${getPolymer().CaseMap.camelToDashCase(hostProp)}-changed`;
+        this.template.addEventListener(eventName, (e: CustomEvent) => {
+          this.zone.run(() => {
+            const value = unwrapPolymerEvent(e);
+            if (this.host[hostProp] !== value) {
+              this.host[hostProp] = value;
+            }
+          });
+        });
+
+        // Angular -> Polymer
+        wrapAndDefineDescriptor(this.host, hostProp, {
+          beforeSet: (value: any) => {
+            return unwrapPolymerEvent(value);
+          },
+          afterSet: (changed: boolean, value: any) => {
+            if (changed) {
+              (<any>this.template)[`_host_${hostProp}`] = value;
+            }
           }
         });
       });
-
-      // Angular -> Polymer
-      wrapAndDefineDescriptor(this.host, hostProp, {
-        beforeSet: (value: any) => {
-          return unwrapPolymerEvent(value);
-        },
-        afterSet: (changed: boolean, value: any) => {
-          if (changed) {
-            (<any>this.template)[`_host_${hostProp}`] = value;
-          }
-        }
-      });
-    });
+    }
   }
 }

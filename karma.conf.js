@@ -20,7 +20,7 @@ module.exports = config => {
     },
     karmaTypescriptConfig: {
       bundlerOptions: {
-        entrypoints: /(test|\.spec).ts$/,
+        entrypoints: /(test|spec).ts$/,
         resolve: {
           alias: {
             '@codebakery/origami': './dist/bundles/origami.umd.js'
@@ -40,7 +40,7 @@ module.exports = config => {
         types: ['jasmine']
       },
       coverageOptions: {
-        exclude: /\.(d|spec|test)\.ts$|^mock*|index\.ts/,
+        exclude: /(d|spec|test|public_api|origami|polymer\.module)\.ts$|collections/,
         instrumentation: !CI
       },
       exclude: [

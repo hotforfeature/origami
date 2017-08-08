@@ -19,7 +19,6 @@ export function wrapDescriptor<T>(target: any, propertyKey: string,
 
   const properties = new WeakMap();
   return {
-    configurable: desc ? desc.configurable : true,
     enumerable: desc ? desc.enumerable : true,
     get() {
       if (desc && desc.get) {

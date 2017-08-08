@@ -39,12 +39,19 @@ export namespace Polymer {
     unshift<T>(path: PathLike, ...items: T[]): number;
     notifyPath(path: PathLike, value?: any): void;
   }
+
+  export interface RenderStatus {
+    beforeNextRender(context: any, callback: (...args: any[]) => void, args?: any[]): void;
+    afterNextRender(context: any, callback: (...args: any[]) => void, args?: any[]): void;
+    flush(): void;
+  }
 }
 
 export interface Polymer {
   (info?: any): any;
   CaseMap: Polymer.CaseMap;
   Path: Polymer.Path;
+  RenderStatus: Polymer.RenderStatus;
   Element: {
     prototype: HTMLElement;
     new(): HTMLElement;
