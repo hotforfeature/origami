@@ -13,7 +13,7 @@
   "author": "Andrew Mitchell <abmitchell77@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@angular/cli": "^1.0.0",
+    "@angular/cli": "^1.2.4",
     "@angular/common": "^4.2.0",
     "@angular/compiler": "^4.2.0",
     "@angular/compiler-cli": "^4.2.0",

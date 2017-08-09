@@ -1,11 +1,10 @@
 // tslint:disable:max-classes-per-file
 import { Component, ElementRef, OnInit, ViewEncapsulation } from '@angular/core';
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   BrowserModule,
   ɵDomSharedStylesHost as DomSharedStylesHost
 } from '@angular/platform-browser';
-import {} from 'jasmine';
 
 import { PolymerDomSharedStylesHost } from './shared-styles-host';
 
@@ -68,28 +67,31 @@ describe('PolymerDomSharedStylesHost', () => {
   afterEach(() => {
     Array.from(document.head.querySelectorAll('custom-style')).forEach(customStyle => {
       document.head.removeChild(customStyle);
+      document.head.appendChild(customStyle.querySelector('style'));
     });
   });
 
-  it('should wrap <head> <style>s with <custom-style>', async(() => {
+  it('should wrap <head> <style>s with <custom-style>', done => {
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       expect(document.head.querySelectorAll('custom-style').length).toBeGreaterThan(0);
+      done();
     });
-  }));
+  });
 
-  if (HTMLElement.prototype['createShadowRoot']) { // tslint:disable-line:no-string-literal
-    it('should wrap <style>s with <custom-style> in shadow DOM', async(() => {
+  if ('createShadowRoot' in HTMLElement.prototype) {
+    it('should wrap <style>s with <custom-style> in shadow DOM', done => {
       fixture = TestBed.createComponent(NativeComponent);
       fixture.whenStable().then(() => {
         fixture.detectChanges();
         expect(fixture.nativeElement.shadowRoot.querySelectorAll('custom-style').length)
           .toBeGreaterThan(0);
+        done();
       });
-    }));
+    });
   }
 
-  it('should ignore <style> elements with scope attribute from Polymer', async(() => {
+  it('should ignore <style> elements with scope attribute from Polymer', done => {
     const scopeStyle = document.createElement('style');
     scopeStyle.setAttribute('scope', 'my-element');
     document.head.appendChild(scopeStyle);
@@ -98,6 +100,7 @@ describe('PolymerDomSharedStylesHost', () => {
       expect(document.head.querySelectorAll('custom-style').length).toBeGreaterThan(0);
       expect(scopeStyle.parentElement).toBe(document.head);
       document.head.removeChild(scopeStyle);
+      done();
     });
-  }));
+  });
 });

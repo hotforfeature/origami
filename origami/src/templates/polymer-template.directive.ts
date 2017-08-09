@@ -15,17 +15,29 @@ import {
 import { unwrapPolymerEvent } from '../events/polymer-changes';
 import { wrapAndDefineDescriptor } from '../util/descriptors';
 import { getPolymer } from '../util/Polymer';
+import { webcomponentsReady } from '../util/webcomponents';
 
 /* istanbul ignore next */
-if ('content' in document.createElement('template')) {
+function shimHTMLTemplateAppend() {
   // Even when this enableLegacyTemplate is false, the resulting <template> has childNodes
   // appended to it instead of its #document-fragment
   // https://github.com/angular/angular/issues/15557
   const nativeAppend = HTMLTemplateElement.prototype.appendChild;
   // tslint:disable-next-line:only-arrow-functions
   HTMLTemplateElement.prototype.appendChild = function<T extends Node>(childNode: T) {
-    return this.content.appendChild(childNode);
+    if (this.content) {
+      return this.content.appendChild(childNode);
+    } else {
+      return nativeAppend.apply(this, [childNode]);
+    }
   };
+}
+
+/* istanbul ignore next */
+if (typeof HTMLTemplateElement !== 'undefined') {
+  shimHTMLTemplateAppend();
+} else {
+  webcomponentsReady(true).then(shimHTMLTemplateAppend);
 }
 
 /* istanbul ignore next */
@@ -79,7 +91,6 @@ export class PolymerTemplateDirective implements OnInit {
       hostNode.removeChild(parentNode);
       hostNode.appendChild(parentNode);
     } else {
-      // TODO: Test this with enableLegacyTemplate: false
       this.template = elementRef.nativeElement;
     }
   }
@@ -116,29 +127,31 @@ export class PolymerTemplateDirective implements OnInit {
 
   private onTemplateInfoChange(templateInfo: any) {
     // Setup host property binding
-    Object.keys(templateInfo.hostProps).forEach(hostProp => {
-      // Polymer -> Angular
-      const eventName = `_host_${getPolymer().CaseMap.camelToDashCase(hostProp)}-changed`;
-      this.template.addEventListener(eventName, (e: CustomEvent) => {
-        this.zone.run(() => {
-          const value = unwrapPolymerEvent(e);
-          if (this.host[hostProp] !== value) {
-            this.host[hostProp] = value;
+    if (templateInfo && templateInfo.hostProps) {
+      Object.keys(templateInfo.hostProps).forEach(hostProp => {
+        // Polymer -> Angular
+        const eventName = `_host_${getPolymer().CaseMap.camelToDashCase(hostProp)}-changed`;
+        this.template.addEventListener(eventName, (e: CustomEvent) => {
+          this.zone.run(() => {
+            const value = unwrapPolymerEvent(e);
+            if (this.host[hostProp] !== value) {
+              this.host[hostProp] = value;
+            }
+          });
+        });
+
+        // Angular -> Polymer
+        wrapAndDefineDescriptor(this.host, hostProp, {
+          beforeSet: (value: any) => {
+            return unwrapPolymerEvent(value);
+          },
+          afterSet: (changed: boolean, value: any) => {
+            if (changed) {
+              (<any>this.template)[`_host_${hostProp}`] = value;
+            }
           }
         });
       });
-
-      // Angular -> Polymer
-      wrapAndDefineDescriptor(this.host, hostProp, {
-        beforeSet: (value: any) => {
-          return unwrapPolymerEvent(value);
-        },
-        afterSet: (changed: boolean, value: any) => {
-          if (changed) {
-            (<any>this.template)[`_host_${hostProp}`] = value;
-          }
-        }
-      });
-    });
+    }
   }
 }

@@ -1,5 +1,3 @@
-import {} from 'jasmine';
-
 import { getTagName } from './getTagName';
 
 describe('getTagName()', () => {

@@ -1,8 +1,16 @@
-// tslint:disable:no-string-literal
-import { Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
+// tslint:disable:no-string-literal max-classes-per-file
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  Component,
+  ElementRef,
+  QueryList,
+  ViewChild,
+  ViewChildren
+} from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import {} from 'jasmine';
 
+import { PolymerChanges } from '../events/polymer-changes';
+import { getPolymer } from '../util/Polymer';
 import { PolymerTemplateDirective } from './polymer-template.directive';
 
 @Component({
@@ -24,6 +32,7 @@ import { PolymerTemplateDirective } from './polymer-template.directive';
     </div>
   `
 })
+
 class TestComponent {
   @ViewChild('ngTemplate') ngTemplateDiv: ElementRef;
   @ViewChild('firstSibling') firstSiblingDiv: ElementRef;
@@ -31,7 +40,22 @@ class TestComponent {
   @ViewChildren(PolymerTemplateDirective) polymerDirectives: QueryList<PolymerTemplateDirective>;
 }
 
-describe('PolymerTemplateDirective', () => {
+@Component({
+  selector: 'test-component',
+  template: `
+    <iron-list style="width: 100px; height: 100px" [items]="items">
+      <template ngNonBindable [polymer]="this">
+        <paper-checkbox checked="{{ngChecked}}"></paper-checkbox>
+      </template>
+    </iron-list>
+  `
+})
+class HostBindComponent {
+  items = [1, 2, 3];
+  @PolymerChanges() ngChecked: boolean;
+}
+
+describe('PolymerTemplateDirective (legacy)', () => {
   let fixture: ComponentFixture<TestComponent>;
   let ngTemplate: HTMLTemplateElement;
   let firstSiblingTemplate: HTMLTemplateElement;
@@ -74,8 +98,8 @@ describe('PolymerTemplateDirective', () => {
 
   describe('host', () => {
     it('should be [polymer] input', async(() => {
+      fixture.detectChanges();
       fixture.whenStable().then(() => {
-        fixture.detectChanges();
         const directive = fixture.componentInstance.polymerDirectives.first;
         expect(directive.host).toBe(fixture.componentInstance);
       });
@@ -84,8 +108,8 @@ describe('PolymerTemplateDirective', () => {
 
   describe('methodHost', () => {
     it('should set host and give deprecation warning', async(() => {
+      fixture.detectChanges();
       fixture.whenStable().then(() => {
-        fixture.detectChanges();
         const directive = fixture.componentInstance.polymerDirectives.first;
         const host = {};
         directive.methodHost = host;
@@ -97,8 +121,8 @@ describe('PolymerTemplateDirective', () => {
 
   describe('ngOnInit()', () => {
     it('should set template.__dataHost to host', async(() => {
+      fixture.detectChanges();
       fixture.whenStable().then(() => {
-        fixture.detectChanges();
         const host = fixture.componentInstance;
         expect(ngTemplate['__dataHost']).toBe(host);
         expect(firstSiblingTemplate['__dataHost']).toBeUndefined();
@@ -106,8 +130,8 @@ describe('PolymerTemplateDirective', () => {
     }));
 
     it('should shim _addEventListenerToNode', async(() => {
+      fixture.detectChanges();
       fixture.whenStable().then(() => {
-        fixture.detectChanges();
         const host = fixture.componentInstance;
         expect(host['_addEventListenerToNode']).toEqual(jasmine.any(Function));
         const node = document.createElement('div');
@@ -119,8 +143,8 @@ describe('PolymerTemplateDirective', () => {
     }));
 
     it('should shim _removeEventListenerFromNode', async(() => {
+      fixture.detectChanges();
       fixture.whenStable().then(() => {
-        fixture.detectChanges();
         const host = fixture.componentInstance;
         expect(host['_removeEventListenerFromNode']).toEqual(jasmine.any(Function));
         const node = document.createElement('div');
@@ -130,5 +154,50 @@ describe('PolymerTemplateDirective', () => {
         expect(node.removeEventListener).toHaveBeenCalledWith('click', handler);
       });
     }));
+  });
+});
+
+describe('PolymerTemplateDirective', () => {
+  let fixture: ComponentFixture<HostBindComponent>;
+
+  beforeEach(() => {
+    TestBed.configureCompiler(<any>{
+      enableLegacyTemplate: false
+    });
+
+    TestBed.configureTestingModule({
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      declarations: [
+        PolymerTemplateDirective,
+        HostBindComponent
+      ]
+    });
+
+    fixture = TestBed.createComponent(HostBindComponent);
+  });
+
+  describe('host', () => {
+    it('should propagate Angular host bindings to and from template', done => {
+      fixture.detectChanges();
+      fixture.whenStable().then(() => {
+        const ironList = fixture.debugElement.nativeElement.querySelector('iron-list');
+        getPolymer().RenderStatus.afterNextRender(this, () => {
+          const checkboxes = Array.from(ironList.querySelectorAll('paper-checkbox'));
+          expect(checkboxes.length).toEqual(3);
+          fixture.componentInstance.ngChecked = true;
+          checkboxes.forEach((checkbox: any) => {
+            expect(checkbox.checked).toBe(true);
+          });
+
+          (<any>checkboxes[0]).checked = false;
+          expect(fixture.componentInstance.ngChecked).toBe(false);
+          checkboxes.forEach((checkbox: any) => {
+            expect(checkbox.checked).toBe(false);
+          });
+
+          done();
+        });
+      }).catch(done.fail);
+    });
   });
 });

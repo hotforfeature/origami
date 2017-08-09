@@ -1,5 +1,3 @@
-import {} from 'jasmine';
-
 import { getCustomElements } from './customElements';
 import { getCustomElementClass } from './getCustomElementClass';
 import { getPolymer } from './Polymer';

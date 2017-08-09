@@ -1,5 +1,3 @@
-import {} from 'jasmine';
-
 import { webcomponentsReady } from './webcomponents';
 
 describe('webcomponentsReady', () => {

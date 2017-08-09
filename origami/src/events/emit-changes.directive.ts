@@ -13,18 +13,7 @@ export class EmitChangesDirective implements OnInit {
     const klass = getCustomElementClass(this.elementRef);
     if (klass) {
       const properties: {[name: string]: any} = {};
-      this.copyKeysFrom((<any>klass).properties, properties);
-
-      // Hybrid element properties and behaviors
-      this.copyKeysFrom(klass.prototype.properties, properties);
-      if (klass.prototype.behaviors) {
-        klass.prototype.behaviors.map((behavior: any) => {
-          return behavior.properties ||
-            /* istanbul ignore next */ [];
-        }).forEach((property: any) => {
-          this.copyKeysFrom(property, properties);
-        });
-      }
+      this.copyKeysFrom((<any>klass).__classProperties, properties);
 
       // Listen for notify properties and Object/Array properties which may issue path changes
       const changeable = Object.keys(properties).filter(propertyName => {
@@ -45,12 +34,17 @@ export class EmitChangesDirective implements OnInit {
   }
 
   private copyKeysFrom(from: any, to: any): any {
-    Object.keys(from ||
-        /* istanbul ignore next */ {}).forEach(key => {
-      if (key[0] !== '_') {
-        // Only copy public properties
-        to[key] = from[key];
-      }
-    });
+    let proto = from;
+    while (proto !== Object.prototype) {
+      Object.keys(proto ||
+          /* istanbul ignore next */ {}).forEach(key => {
+        if (key[0] !== '_') {
+          // Only copy public properties
+          to[key] = from[key];
+        }
+      });
+
+      proto = Object.getPrototypeOf(proto);
+    }
   }
 }
