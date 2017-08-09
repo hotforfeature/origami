@@ -43,9 +43,11 @@ getTestBed().initTestEnvironment(
   platformBrowserDynamicTesting()
 );
 
+import { webcomponentsReady } from './src/util/webcomponents';
+
 // Preserve zone.js Promise (webcomponents-lite.js will override it) and wait for WebComponents.
 const Promise = window.Promise;
-window.addEventListener('WebComponentsReady', function() {
+webcomponentsReady().then(() => {
   // Restore zone.js Promise.
   window.Promise = Promise;
   // And finally start Karma.

@@ -15,17 +15,29 @@ import {
 import { unwrapPolymerEvent } from '../events/polymer-changes';
 import { wrapAndDefineDescriptor } from '../util/descriptors';
 import { getPolymer } from '../util/Polymer';
+import { webcomponentsReady } from '../util/webcomponents';
 
 /* istanbul ignore next */
-if ('content' in document.createElement('template')) {
+function shimHTMLTemplateAppend() {
   // Even when this enableLegacyTemplate is false, the resulting <template> has childNodes
   // appended to it instead of its #document-fragment
   // https://github.com/angular/angular/issues/15557
   const nativeAppend = HTMLTemplateElement.prototype.appendChild;
   // tslint:disable-next-line:only-arrow-functions
   HTMLTemplateElement.prototype.appendChild = function<T extends Node>(childNode: T) {
-    return this.content.appendChild(childNode);
+    if (this.content) {
+      return this.content.appendChild(childNode);
+    } else {
+      return nativeAppend.apply(this, [childNode]);
+    }
   };
+}
+
+/* istanbul ignore next */
+if (typeof HTMLTemplateElement !== 'undefined') {
+  shimHTMLTemplateAppend();
+} else {
+  webcomponentsReady(true).then(shimHTMLTemplateAppend);
 }
 
 /* istanbul ignore next */

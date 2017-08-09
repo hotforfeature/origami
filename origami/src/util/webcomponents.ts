@@ -38,11 +38,13 @@ export function webcomponentsSupported(): boolean {
 // want to make sure we keep that.
 const OriginalPromise = window.Promise; // tslint:disable-line:variable-name
 let readyPromise: Promise<void>;
-
-export function webcomponentsReady(): Promise<void> {
+let priorityPromise: Promise<void>;
+export function webcomponentsReady(priority?: boolean): Promise<void> {
+  // Priority should only be used by Origami. It ensures priority tasks are run before all other
+  // tasks (including the Angular app's bootstrap)
   if (!readyPromise) {
     /* istanbul ignore next */
-    readyPromise = new Promise<void>((resolve, reject) => {
+    priorityPromise = new Promise<void>((resolve, reject) => {
       if (window.WebComponents) {
         if (window.WebComponents.ready) {
           window.Promise = OriginalPromise;
@@ -61,7 +63,13 @@ export function webcomponentsReady(): Promise<void> {
         reject(new Error('WebComponent support or polyfills are not present'));
       }
     });
+
+    readyPromise = priorityPromise.then(() => {
+      return new Promise<void>(resolve => {
+        setTimeout(resolve);
+      });
+    });
   }
 
-  return readyPromise;
+  return priority ? priorityPromise : readyPromise;
 }
