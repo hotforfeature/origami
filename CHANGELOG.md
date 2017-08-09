@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.1"></a>
+## [1.3.1](https://github.com/hotforfeature/origami/compare/v1.3.0...v1.3.1) (2017-08-09)
+
+
+### Bug Fixes
+
+* **collections:** add paper-toast to PaperElementsModule ([e04d8ef](https://github.com/hotforfeature/origami/commit/e04d8ef))
+
+
+
 <a name="1.3.0"></a>
 # [1.3.0](https://github.com/hotforfeature/origami/compare/v1.3.0-beta.1...v1.3.0) (2017-08-09)
 
