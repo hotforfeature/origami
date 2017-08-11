@@ -16,5 +16,8 @@
     "typeRoots": [
       "../node_modules/@types/node"
     ]
+  },
+  "angularCompilerOptions": {
+    "enableLegacyTemplate": false
   }
 }

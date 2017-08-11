@@ -11,6 +11,7 @@ import 'rxjs/add/operator/map';
 })
 export class VaadinComponent {
   items: Observable<any>;
+  @PolymerChanges() comboSelected: string;
   @PolymerChanges() date: string;
   @PolymerChanges() gridSelectAll: boolean = false;
 

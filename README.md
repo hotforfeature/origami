@@ -128,14 +128,28 @@ webcomponentsReady().then(() => {
 
 ### Templates
 
-Angular 4 consumes all `<template>` elements instead of letting Polymer use them. The app should set `enableLegacyTemplate` to false when bootstrapping to prevent this.
+Angular 4 consumes all `<template>` elements instead of letting Polymer use them. The app should set `enableLegacyTemplate` to false when bootstrapping to prevent this. Don't forget that for Ahead-of-Time compilation Angular compiler options must be specified in the `tsconfig.json` file being used for AoT compiling.
 
 Angular 5+ will default this value to false.
+
+main.ts
 
 ```ts
 platformBrowserDynamic().bootstrapModule(AppModule, {
   enableLegacyTemplate: false
 });
+```
+
+tsconfig-aot.json
+```json
+{
+  "compilerOptions": {
+    ...
+  },
+  "angularCompilerOptions": {
+    "enableLegacyTemplate": false
+  }
+}
 ```
 
 Always use `<ng-template>` for Angular templates, and `<template>` for Polymer templates.
@@ -225,6 +239,20 @@ webcomponentsReady().then(() => {
     enableLegacyTemplate: false
   });
 });
+```
+
+If compiling for Ahead-of-Time, add `enableLegacyTemplate` to the `tsconfig.json` being used for AoT compilation.
+
+tsconfig-aot.json
+```json
+{
+  "compilerOptions": {
+    ...
+  },
+  "angularCompilerOptions": {
+    "enableLegacyTemplate": false
+  }
+}
 ```
 
 ### Import
