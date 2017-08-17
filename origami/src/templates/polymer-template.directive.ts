@@ -37,7 +37,7 @@ function shimHTMLTemplateAppend() {
 if (typeof HTMLTemplateElement !== 'undefined') {
   shimHTMLTemplateAppend();
 } else {
-  webcomponentsReady(true).then(shimHTMLTemplateAppend);
+  webcomponentsReady(true).then(shimHTMLTemplateAppend).catch(() => { /* noop */ });
 }
 
 /* istanbul ignore next */
