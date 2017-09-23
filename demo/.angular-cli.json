@@ -1,21 +1,48 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "project": {
-    "version": "1.0.0",
     "name": "origami-demo"
   },
   "apps": [
     {
+      "name": "es5",
       "root": "src",
-      "outDir": "dist",
+      "outDir": "dist/es5",
       "assets": [
-        "assets"
+        "assets",
+        "bower_components/webcomponentsjs/custom*.js",
+        "bower_components/webcomponentsjs/web*.js"
       ],
       "index": "index.html",
       "main": "main.ts",
       "polyfills": "polyfills.ts",
       "test": "test.ts",
-      "tsconfig": "tsconfig.json",
+      "tsconfig": "tsconfig.es5.json",
+      "prefix": "app",
+      "styles": [
+        "styles.css"
+      ],
+      "scripts": [],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "dev": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts"
+      }
+    },
+    {
+      "name": "es6",
+      "root": "src",
+      "outDir": "dist/es6",
+      "assets": [
+        "assets",
+        "bower_components/webcomponentsjs/custom*.js",
+        "bower_components/webcomponentsjs/web*.js"
+      ],
+      "index": "index.html",
+      "main": "main.ts",
+      "polyfills": "polyfills.ts",
+      "test": "test.ts",
+      "tsconfig": "tsconfig.es6.json",
       "prefix": "app",
       "styles": [
         "styles.css"

@@ -6,8 +6,16 @@
   <base href="/">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="assets/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
-  <link href="assets/elements.html" rel="import">
+  <div id="ce-es5-shim">
+    <script>
+      if (!window.customElements) {
+        var ceShimContainer = document.querySelector('#ce-es5-shim');
+        ceShimContainer.parentElement.removeChild(ceShimContainer);
+      }
+    </script>
+    <script src="bower_components/webcomponentsjs/custom-elements-es5-adapter.js"></script>
+  </div>
+  <script src="bower_components/webcomponentsjs/webcomponents-loader.js"></script>
 </head>
 <body>
   <custom-style>

@@ -1,6 +1,13 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Polymer, PolymerChanges } from '@codebakery/origami';
 
+import 'bower_components/iron-icon/iron-icon.html';
+import 'bower_components/iron-icons/iron-icons.html';
+import 'bower_components/iron-list/iron-list.html';
+import 'bower_components/paper-button/paper-button.html';
+import 'bower_components/paper-item/paper-icon-item.html';
+import 'bower_components/paper-item/paper-item-body.html';
+
 import { Feature } from './Feature';
 import { getFeatures } from './features';
 
@@ -10,12 +17,12 @@ import { getFeatures } from './features';
   styleUrls: ['./features.component.css']
 })
 export class FeaturesComponent implements OnInit {
-  @PolymerChanges() features;
+  @PolymerChanges() features: Feature[];
   @ViewChild('ironList') ironListRef: ElementRef;
 
   private ironList: Polymer.PropertyEffects;
-  private modifyAngular;
-  private modifyPolymer;
+  private modifyAngular: number;
+  private modifyPolymer: number;
 
   ngOnInit() {
     this.ironList = this.ironListRef.nativeElement;
