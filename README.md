@@ -57,6 +57,7 @@ bower init
 
 Create a `.bowerrc` file in your project root folder to move the default `bower_components/` directory to your app's root.
 
+`.bowerrc`
 ```json
 {
   "directory": "src/bower_components"
@@ -75,18 +76,15 @@ We're going to use a dynamic loader to only add polyfills if the browser needs t
 
 Modify `.angular-cli.json` and add the following to your app's assets.
 
-.angular-cli.json
-```json
+`.angular-cli.json`
+```
 {
   "apps": [
     {
       ...
       "assets": [
-        /* The default assets folder Angular generates */
-        "assets",
-        /* Include the custom-elements-es5-adapter */
+        ...
         "bower_components/webcomponentsjs/custom*.js",
-        /* Plus any other polyfill files */
         "bower_components/webcomponentsjs/web*.js"
       ],
       ...
@@ -97,7 +95,7 @@ Modify `.angular-cli.json` and add the following to your app's assets.
 
 Next, modify the `index.html` shell to include the polyfills.
 
-index.html
+`index.html`
 ```html
 <!doctype html>
 <html>
@@ -121,7 +119,7 @@ Custom elements must be defined as ES6 classes. The `custom-elements-es5-adapter
 
 The last piece is to wait to bootstrap Angular until the polyfills are loaded. Modify your `main.ts` and wait for the polyfills.
 
-main.ts
+`main.ts`
 ```ts
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { webcomponentsReady } from '@codebakery/origami';
@@ -139,8 +137,8 @@ webcomponentsReady().then(() => {
 
 `enableLegacyTemplate: false` will prevent Angular 4 from turning native `<template>` elements into `<ng-template>`s. Bootstrap options must also be specified in your `tsconfig.json` for Ahead-of-Time compilation.
 
-tsconfig.app.json
-```json
+`tsconfig.app.json`
+```
 {
   "compilerOptions": {
     ...
@@ -157,7 +155,7 @@ Angular 5 defaults this value to `false`. You do not need to include it in your 
 
 Import Origami into your topmost root `NgModule`. In any modules where you use custom elements, add `CUSTOM_ELEMENTS_SCHEMA` to the module. This prevents the Angular compiler from emitting errors on unknown element tags.
 
-app.module.ts
+`app.module.ts`
 ```ts
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -192,6 +190,7 @@ bower install --save PolymerElements/paper-input
 
 Next, import the element in the Angular component that you want to use it in. Add the `[ironControl]` directive to elements that use Angular form directives.
 
+`app.component.ts`
 ```ts
 import { Component } from '@angular/core';
 import { PolymerChanges } from '@codebakery/origami';
