@@ -53,6 +53,7 @@
     "build:origami": "npm run ngc && npm run rollup && npm run copy",
     "build:collections": "npm run ngc:c && npm run rollup:c && npm run copy:c && npm run legacy:c",
     "build": "npm run build:origami && npm run build:collections",
+    "postbuild": "cpy patch-cli.js dist/",
     "release": "standard-version",
     "prepare": "npm run build"
   },
