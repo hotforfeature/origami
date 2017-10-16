@@ -1,6 +1,3 @@
-export * from './events/emit-changes.directive';
-export * from './events/on-polymer-change';
-export * from './events/polymer-changes';
 export * from './forms/iron-control.directive';
 export * from './polymer.module';
 export * from './style/shared-styles-host';
@@ -10,4 +7,5 @@ export * from './util/descriptors';
 export * from './util/getCustomElementClass';
 export * from './util/getTagName';
 export * from './util/Polymer';
+export * from './util/unwrapPolymerEvent';
 export * from './util/webcomponents';

@@ -2,8 +2,8 @@
 import { CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 
-import { PolymerChanges } from '../events/polymer-changes';
 import { getPolymer } from '../util/Polymer';
+import { unwrapPolymerEvent } from '../util/unwrapPolymerEvent';
 import { PolymerTemplateDirective } from './polymer-template.directive';
 
 @Component({
@@ -33,7 +33,7 @@ class TestComponent {
 })
 class HostBindComponent {
   items = [1, 2, 3];
-  @PolymerChanges() ngChecked: boolean;
+  ngChecked: boolean;
 }
 
 describe('PolymerTemplateDirective', () => {

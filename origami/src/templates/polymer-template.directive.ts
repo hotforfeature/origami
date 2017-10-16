@@ -1,9 +1,9 @@
 // tslint:disable:no-string-literal
 import { Directive, ElementRef, Input, NgZone, OnInit } from '@angular/core';
 
-import { unwrapPolymerEvent } from '../events/polymer-changes';
 import { wrapAndDefineDescriptor } from '../util/descriptors';
 import { getPolymer } from '../util/Polymer';
+import { unwrapPolymerEvent } from '../util/unwrapPolymerEvent';
 import { webcomponentsReady } from '../util/webcomponents';
 
 /* istanbul ignore next */
