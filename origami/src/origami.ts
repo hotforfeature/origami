@@ -3,7 +3,6 @@ export * from './events/on-polymer-change';
 export * from './events/polymer-changes';
 export * from './forms/iron-control.directive';
 export * from './polymer.module';
-export * from './style/custom-style.service';
 export * from './style/shared-styles-host';
 export * from './templates/polymer-template.directive';
 export * from './util/customElements';

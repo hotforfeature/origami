@@ -1,12 +1,5 @@
 // tslint:disable:no-string-literal max-classes-per-file
-import {
-  CUSTOM_ELEMENTS_SCHEMA,
-  Component,
-  ElementRef,
-  QueryList,
-  ViewChild,
-  ViewChildren
-} from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 
 import { PolymerChanges } from '../events/polymer-changes';
@@ -16,28 +9,16 @@ import { PolymerTemplateDirective } from './polymer-template.directive';
 @Component({
   selector: 'test-component',
   template: `
-    <div #ngTemplate>
-      <ng-template [polymer]="this">
-        <div id="first"></div>
-        <div id="second"></div>
-      </ng-template>
-    </div>
-    <div #firstSibling>
-      <ng-template polymer></ng-template>
-      <div id="lastSibling"></div>
-    </div>
-    <div #lastSibling>
-      <div id="firstSibling"></div>
-      <ng-template polymer></ng-template>
-    </div>
+    <template #template [polymer]="this"></template>
+    <template #noHost polymer></template>
   `
 })
-
 class TestComponent {
-  @ViewChild('ngTemplate') ngTemplateDiv: ElementRef;
-  @ViewChild('firstSibling') firstSiblingDiv: ElementRef;
-  @ViewChild('lastSibling') lastSiblingDiv: ElementRef;
-  @ViewChildren(PolymerTemplateDirective) polymerDirectives: QueryList<PolymerTemplateDirective>;
+  @ViewChild('template', { read: ElementRef }) templateRef: ElementRef;
+  @ViewChild('template', {
+    read: PolymerTemplateDirective
+  }) polymerDirective: PolymerTemplateDirective;
+  @ViewChild('noHost', { read: ElementRef }) noHostTemplateRef: ElementRef;
 }
 
 @Component({
@@ -55,68 +36,62 @@ class HostBindComponent {
   @PolymerChanges() ngChecked: boolean;
 }
 
-describe('PolymerTemplateDirective (legacy)', () => {
+describe('PolymerTemplateDirective', () => {
   let fixture: ComponentFixture<TestComponent>;
-  let ngTemplate: HTMLTemplateElement;
-  let firstSiblingTemplate: HTMLTemplateElement;
-  let lastSiblingTemplate: HTMLTemplateElement;
+  let template: HTMLTemplateElement;
+  let noHost: HTMLTemplateElement;
 
   beforeEach(() => {
-    spyOn(console, 'warn');
+    TestBed.configureCompiler(<any>{
+      enableLegacyTemplate: false
+    });
+
     TestBed.configureTestingModule({
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
       declarations: [
         PolymerTemplateDirective,
-        TestComponent
+        TestComponent,
+        HostBindComponent
       ]
     });
 
     fixture = TestBed.createComponent(TestComponent);
-    ngTemplate = fixture.componentInstance.ngTemplateDiv.nativeElement.children[0];
-    firstSiblingTemplate = fixture.componentInstance.firstSiblingDiv.nativeElement.children[0];
-    lastSiblingTemplate = fixture.componentInstance.lastSiblingDiv.nativeElement.children[1];
-  });
-
-  it('should replace <ng-template> with <template>', () => {
-    expect(ngTemplate.tagName).toEqual('TEMPLATE');
-  });
-
-  it('should replace <ng-template> in correct position from parent', () => {
-    expect(firstSiblingTemplate.parentElement.children[0]).toBe(firstSiblingTemplate);
-    expect(firstSiblingTemplate.parentElement.children[1].id).toBe('lastSibling');
-    expect(lastSiblingTemplate.parentElement.children[0].id).toBe('firstSibling');
-    expect(lastSiblingTemplate.parentElement.children[1]).toBe(lastSiblingTemplate);
-  });
-
-  it('should add <ng-template> children to <template> content', () => {
-    // IE11/Edge do not implement ParentNode interface for DocumentFragment, which provides the
-    // children property
-    expect(ngTemplate.content).toBeDefined();
-    const first = ngTemplate.content.querySelector('#first');
-    expect(first).toBeDefined();
-    expect(first.nextElementSibling.id).toBe('second');
+    template = fixture.componentInstance.templateRef.nativeElement;
+    noHost = fixture.componentInstance.noHostTemplateRef.nativeElement;
   });
 
   describe('host', () => {
     it('should be [polymer] input', async(() => {
       fixture.detectChanges();
       fixture.whenStable().then(() => {
-        const directive = fixture.componentInstance.polymerDirectives.first;
+        const directive = fixture.componentInstance.polymerDirective;
         expect(directive.host).toBe(fixture.componentInstance);
       });
     }));
-  });
 
-  describe('methodHost', () => {
-    it('should set host and give deprecation warning', async(() => {
-      fixture.detectChanges();
-      fixture.whenStable().then(() => {
-        const directive = fixture.componentInstance.polymerDirectives.first;
-        const host = {};
-        directive.methodHost = host;
-        expect(directive.host).toBe(host);
-        expect(console.warn).toHaveBeenCalledWith(jasmine.stringMatching('deprecated'));
-      });
-    }));
+    it('should propagate Angular host bindings to and from template', done => {
+      const bindFixture = TestBed.createComponent(HostBindComponent);
+      bindFixture.detectChanges();
+      bindFixture.whenStable().then(() => {
+        const ironList = bindFixture.debugElement.nativeElement.querySelector('iron-list');
+        getPolymer().RenderStatus.afterNextRender(this, () => {
+          const checkboxes = Array.from(ironList.querySelectorAll('paper-checkbox'));
+          expect(checkboxes.length).toEqual(3);
+          bindFixture.componentInstance.ngChecked = true;
+          checkboxes.forEach((checkbox: any) => {
+            expect(checkbox.checked).toBe(true);
+          });
+
+          (<any>checkboxes[0]).checked = false;
+          expect(bindFixture.componentInstance.ngChecked).toBe(false);
+          checkboxes.forEach((checkbox: any) => {
+            expect(checkbox.checked).toBe(false);
+          });
+
+          done();
+        });
+      }).catch(done.fail);
+    });
   });
 
   describe('ngOnInit()', () => {
@@ -124,8 +99,8 @@ describe('PolymerTemplateDirective (legacy)', () => {
       fixture.detectChanges();
       fixture.whenStable().then(() => {
         const host = fixture.componentInstance;
-        expect(ngTemplate['__dataHost']).toBe(host);
-        expect(firstSiblingTemplate['__dataHost']).toBeUndefined();
+        expect(template['__dataHost']).toBe(host);
+        expect(noHost['__dataHost']).toBeUndefined();
       });
     }));
 
@@ -154,50 +129,5 @@ describe('PolymerTemplateDirective (legacy)', () => {
         expect(node.removeEventListener).toHaveBeenCalledWith('click', handler);
       });
     }));
-  });
-});
-
-describe('PolymerTemplateDirective', () => {
-  let fixture: ComponentFixture<HostBindComponent>;
-
-  beforeEach(() => {
-    TestBed.configureCompiler(<any>{
-      enableLegacyTemplate: false
-    });
-
-    TestBed.configureTestingModule({
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [
-        PolymerTemplateDirective,
-        HostBindComponent
-      ]
-    });
-
-    fixture = TestBed.createComponent(HostBindComponent);
-  });
-
-  describe('host', () => {
-    it('should propagate Angular host bindings to and from template', done => {
-      fixture.detectChanges();
-      fixture.whenStable().then(() => {
-        const ironList = fixture.debugElement.nativeElement.querySelector('iron-list');
-        getPolymer().RenderStatus.afterNextRender(this, () => {
-          const checkboxes = Array.from(ironList.querySelectorAll('paper-checkbox'));
-          expect(checkboxes.length).toEqual(3);
-          fixture.componentInstance.ngChecked = true;
-          checkboxes.forEach((checkbox: any) => {
-            expect(checkbox.checked).toBe(true);
-          });
-
-          (<any>checkboxes[0]).checked = false;
-          expect(fixture.componentInstance.ngChecked).toBe(false);
-          checkboxes.forEach((checkbox: any) => {
-            expect(checkbox.checked).toBe(false);
-          });
-
-          done();
-        });
-      }).catch(done.fail);
-    });
   });
 });

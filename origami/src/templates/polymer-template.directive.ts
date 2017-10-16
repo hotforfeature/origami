@@ -1,16 +1,5 @@
 // tslint:disable:no-string-literal
-import {
-  Directive,
-  ElementRef,
-  Input,
-  NgZone,
-  OnInit,
-  Optional,
-  TemplateRef,
-  VERSION,
-  ViewContainerRef,
-  isDevMode
-} from '@angular/core';
+import { Directive, ElementRef, Input, NgZone, OnInit } from '@angular/core';
 
 import { unwrapPolymerEvent } from '../events/polymer-changes';
 import { wrapAndDefineDescriptor } from '../util/descriptors';
@@ -40,59 +29,19 @@ if (typeof HTMLTemplateElement !== 'undefined') {
   webcomponentsReady(true).then(shimHTMLTemplateAppend).catch(() => { /* noop */ });
 }
 
-/* istanbul ignore next */
-if (VERSION.major === '4' && VERSION.minor < '2' && isDevMode()) {
-  // tslint:disable-next-line:no-console
-  console.warn('Angular 4.2.0 has fixed enableLegacyTemplate. Origami strongly recommends to ' +
-    'update to this version so that <template> elements work across all web components.');
-}
+// TODO: No use to this directive unless a host is set. Consider changing selector to
+// template[host] and error if there is no host
 
 @Directive({
-  selector: 'ng-template[polymer], template[polymer]'
+  selector: 'template[polymer]'
 })
 export class PolymerTemplateDirective implements OnInit {
   @Input('polymer') host: any; // tslint:disable-line:no-input-rename
-  @Input() set methodHost(host: any) {
-    // tslint:disable-next-line:no-console
-    console.warn('<template polymer [methodHost]="host"> is deprecated. Use ' +
-      '<template [polymer]="host"> instead.');
-    this.host = host;
-  }
 
   private template: HTMLTemplateElement;
 
-  constructor(elementRef: ElementRef,
-      @Optional() view: ViewContainerRef,
-      @Optional() templateRef: TemplateRef<any>,
-      private zone: NgZone) {
-    // enableLegacyTemplate is working since 4.2.0
-    if (elementRef.nativeElement.nodeType === Node.COMMENT_NODE) {
-      /* istanbul ignore next */
-      if (VERSION.major >= '4' && VERSION.minor >= '2') {
-        // tslint:disable-next-line:no-console
-        console.warn('<ng-template polymer> is deprecated. Use <template> and ' +
-          'enableLegacyTemplate: false');
-      }
-
-      const parentNode = (<HTMLElement>view.element.nativeElement).parentNode as Node;
-      this.template = document.createElement('template');
-
-      const viewRef = view.createEmbeddedView(templateRef);
-      viewRef.rootNodes.forEach(rootNode => {
-        parentNode.removeChild(rootNode);
-        this.template.content.appendChild(rootNode);
-      });
-
-      parentNode.appendChild(this.template);
-
-      // Detach and re-attach the parent element. This will trigger any template attaching logic
-      // that a custom elements needs which Angular skipped when using <ng-template>
-      const hostNode = parentNode.parentNode as Node;
-      hostNode.removeChild(parentNode);
-      hostNode.appendChild(parentNode);
-    } else {
-      this.template = elementRef.nativeElement;
-    }
+  constructor(elementRef: ElementRef, private zone: NgZone) {
+    this.template = elementRef.nativeElement;
   }
 
   ngOnInit() {

@@ -4,7 +4,6 @@ import { ɵDomSharedStylesHost as DomSharedStylesHost } from '@angular/platform-
 
 import { EmitChangesDirective } from './events/emit-changes.directive';
 import { IronControlDirective } from './forms/iron-control.directive';
-import { CustomStyleService } from './style/custom-style.service';
 import { PolymerDomSharedStylesHost } from './style/shared-styles-host';
 import { PolymerTemplateDirective } from './templates/polymer-template.directive';
 
@@ -16,9 +15,6 @@ import { PolymerTemplateDirective } from './templates/polymer-template.directive
     EmitChangesDirective,
     IronControlDirective,
     PolymerTemplateDirective
-  ],
-  providers: [
-    CustomStyleService
   ],
   exports: [
     EmitChangesDirective,
