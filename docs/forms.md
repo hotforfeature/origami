@@ -10,19 +10,19 @@ By default, `<paper-checkbox>` has a `checked` attribute that we can bind to.
 
 ```ts
 import { Component } from '@angular/core';
-import { PolymerChanges } from '@codebakery/origami';
 
 @Component({
   selector: 'app-poly',
   template: `
     <form #ngForm="ngForm">
-      <paper-checkbox [(checked)]="isChecked" required></paper-checkbox>
+      <paper-checkbox [checked]="isChecked" (changed-changed)="isChecked = $event.detail.value" 
+          required></paper-checkbox>
       <button type="submit" [disabled]="!ngForm.form.valid">Submit</button>
     </form>
   `
 })
 export class PolyComponent {
-  @PolymerChanges() isChecked: boolean;
+  isChecked: boolean;
 }
 ```
 
@@ -30,9 +30,7 @@ Our property is bound correctly, but `NgForm`'s validity is incorrect when the c
 
 ## IronControl
 
-Similar to the `[emitChanges]` attribute, Origami provides the `[ironControl]` directive.
-
-`[ironControl]` will connect an element to an Angular `NgControl`, provided the element implements one of the following Polymer behaviors:
+Origami provides the `[ironControl]` directive. `[ironControl]` will connect an element to an Angular `NgControl`, provided the element implements one of the following Polymer behaviors:
 
 - IronFormElementBehavior
 - IronCheckedElementBehavior
@@ -42,7 +40,6 @@ A warning will be generated in the console if `[ironControl]` can't support the 
 
 ```ts
 import { Component } from '@angular/core';
-import { PolymerChanges } from '@codebakery/origami';
 
 @Component({
   selector: 'app-poly',
@@ -54,7 +51,7 @@ import { PolymerChanges } from '@codebakery/origami';
   `
 })
 export class PolyComponent {
-  @PolymerChanges() isChecked: boolean;
+  isChecked: boolean;
 }
 ```
 
@@ -94,7 +91,6 @@ In these cases, add `[ironControl]` to the parent element and specify an `[ironS
 
 ```ts
 import { Component } from '@angular/core';
-import { PolymerChanges } from '@codebakery/origami';
 
 @Component({
   selector: 'app-poly',
@@ -115,7 +111,7 @@ import { PolymerChanges } from '@codebakery/origami';
   `
 })
 export class PolyComponent {
-  @PolymerChanges() selectedItem: string;
+  selectedItem: string;
 }
 ```
 

@@ -50,17 +50,13 @@ It makes more sense to use an element.
 
 Since we cannot use Angular components inside Polymer templates, we need to use a web component. Where do we define this component?
 
-## Asset Definition
+## Element Definition
 
-Remember that Angular html templates aren't "real HTML". They are consumed by the build process and exist as JavaScript when compiled. To define our own web component, we need an HTML file that the app will see at runtime.
+Origami's build process includes two locations in your app root that Polymer Webpack loader will use to recognize Polymer element HTML: `bower_components/` and `elements/`. Any non-Bower Polymer element should be included in the `elements/` folder.
 
-We could define a bower component in a separate repository, then import it. This would be great if we reuse our component in other projects. If, like our example, you just want a component for the Angular project, it makes more sense to define it in our project.
-
-The `assets/` folder, or any other folder that is included with the project's build, is a great place to define things.
-
-assets/app-item.html
+src/elements/app-item.html
 ```html
-<link href="bower_components/polymer/polymer.html" rel="import">
+<link href="../bower_components/polymer/polymer.html" rel="import">
 
 <dom-module id="app-item">
   <template>
@@ -82,30 +78,37 @@ assets/app-item.html
 </dom-module>
 ```
 
-This element has access to `bower_components/` so it can import other dependencies. The last thing to do is import it.
+Note the use of `<link>` to import other elements relative to the `elements/` directory.
 
-index.html
-```html
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>Paper Crane</title>
-  <base href="/">
+After declaring our element, the next step is to import it into our component.
 
-  <script src="assets/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
-  <link href="assets/app-item.html" rel="import">
-</head>
-<body>
-  <app-root>Loading...</app-root>
-</body>
-</html>
+src/app.component.ts
+```ts
+import { Component } from '@angular/core';
+
+import 'iron-list/iron-list.html'; // Import from Bower, no relative path
+
+import './elements/app-item.html'; // Relative import to a file in the project, requires a "./"
+
+@Component({
+  selector: 'app-root',
+  template: `
+    <iron-list [items]="items" as="item">
+      <template ngNonBindable>
+        <app-item item="[[item]]"></app-item>
+      </template>
+    </iron-list>
+  `
+})
+export class AppComponent { 
+  items = [{
+    name: 'Crane',
+    folds: 22
+  }, {
+    name: 'Frog',
+    folds: 30
+  }];
+}
 ```
 
-We could also import this element in `assets/elements.html` if following the [recommended way to import elements](importing-elements.md).
-
-## TypeScript
-
-We declare our element as an ES6-style class. There's no need to use the legacy `Polymer()` function since our element doesn't need to support Polymer 1.x.
-
-However, we cannot use TypeScript at this time. Angular won't process anything in the `assets/` folder, they're static. As such, they won't be compiled from TypeScript to JavaScript. A project would need a highly customized build to use TypeScript in custom element definitions, and that's outside the scope of this documentation.
-
+Remember to import element definitions relatively. Otherwise, `import 'elements/app-item.html'` would look for a file in `bower_components/elements/app-item.html`;

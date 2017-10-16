@@ -1,23 +1,8 @@
-# Custom Style
+# CSS custom properties and @apply
 
-Many Polymer components use CSS variables and mixins to style themselves. Some browsers natively support CSS variables, but CSS mixins are not a standardized feature.
+Many Polymer components use CSS custom properties and mixins to style themselves. Some browsers natively support CSS custom properties, but CSS mixins are not a standardized feature.
 
-Polymer uses [ShadyCSS](https://github.com/webcomponents/shadycss) to polyfill both CSS variables and the proposed `@apply` mixin. To support the polyfill, Polymer provides the `<custom-style>` element. However, Angular consumes all `<style>` elements, making it impossible to write the following markup.
-
-```html
-<!-- THIS WILL NOT WORK -->
-<custom-style>
-  <style> <!-- Angular will strip this <style> and leave an empty <custom-style> -->
-    paper-button {
-      --paper-button-ink-color: var(--paper-red-500);
-    }
-  </style>
-</custom-style>
-```
-
-## PolymerDomSharedStylesHost
-
-To bypass this, Origami provides a custom `DomSharedStylesHost` that will automatically wrap styles in `<custom-style>` elements. To provide this class, make sure to import `PolymerModule.forRoot()` at your app's highest module.
+Polymer uses [ShadyCSS](https://github.com/webcomponents/shadycss) to polyfill both CSS custom properties and the proposed `@apply` mixin. Origami will automatically register component styles with ShadyCSS. Make sure to import `PolymerModule.forRoot()` in your app's main module to enable this feature.
 
 app.module.ts
 ```ts
@@ -40,37 +25,35 @@ import { PolymerModule } from '@codebakery/origami';
 export class AppModule { }
 ```
 
-Now, Origami will automatically wrap any `<style>`, including emulated and native encapsulation styles, with `<custom-style>`. Make sure that the `bower_components/polymer/polymer.html` element is imported. It will automatically import `bower_components/shadycss/apply-shim.html` to enable CSS mixins.
-
+app.component.ts
 ```ts
-import { Component, OnInit } from '@angular/core';
-import { CustomStyleService, PolymerChanges } from '@codebakery/origami';
+import { Component } from '@angular/core';
+
+import 'iron-flex-layout/iron-flex-layout.html';
+import 'paper-button/paper-button.html';
+import 'paper-styles/paper-styles.html';
 
 @Component({
-  selector: 'app-poly',
+  selector: 'app-component',
   template: `
-    <!-- PolymerDomSharedStylesHost will wrap this in <custom-style> -->
-    <style>
-      paper-button {
-        --paper-button-ink-color: var(--paper-red-500);
-      }
-    </style>
+    <paper-button>Big Red Button</paper-button>
+    <div class="row">
+      <div>Rows</div>
+      <div>using</div>
+      <div>flexbox!</div>
+    </div>
+  `,
+  styles: [`
+    paper-button {
+      --paper-button-ink-color: var(--paper-red-500);
+    }
 
-    <label>Disabled</label>
-    <input type="checkbox" [(ngModel)]="isDisabled">
-
-    <paper-button [(disabled)]="isDisabled"></paper-button>
-  `
+    .row {
+      @apply --layout-horizontal;
+    }
+  `]
 })
-export class PolyComponent implements OnInit {
-  @PolymerChanges() isDisabled: boolean;
-
-  constructor(private customStyle: CustomStyleService) { }
-
-  ngOnInit() {
-    this.customStyle.updateCustomStyles();
-  }
-}
+export class AppComponent { }
 ```
 
 ## Limitations
