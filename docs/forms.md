@@ -4,8 +4,6 @@
 
 Angular's template (`NgModel`) and reactive (`FormControl`) forms are a core part of many applications.
 
-Polymer also provides several core behaviors in its Iron Elements collection that describe form elements.
-
 For example, a `<paper-checkbox>` implements the IronCheckedElementBehavior, IronFormElementBehavior, and IronValidatableBehavior. It is built to work inside an `<iron-form>`.
 
 By default, `<paper-checkbox>` has a `checked` attribute that we can bind to.
@@ -146,70 +144,12 @@ IronValidatableBehavior emits a single result (true or false) for validation. It
 
 > The clever programmers will notice that in our reactive form, only the single Angular validation is run, since the `required` attribute is not used.
 
-## Collection Modules
-
-Just like `[emitChanges]`, it is simple to write a directive that provides the `[ironControl]` for known custom elements.
-
-Origami's collection modules include the proper control selectors for Polymer's collections. Importing `PaperElementsModule` for the above example removes the need for extra `[ironControl]` attribuets.
-
-app.module.ts
-```ts
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { PolymerModule } from '@codebakery/origami';
-import { PaperElementsModule } from '@codebakery/origami/lib/collections';
-
-@NgModule({
-  declarations: [
-    AppComponent
-  ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [
-    PolymerModule.forRoot(),
-    PaperElementsModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
-export class AppModule { }
-```
-
-app.component.ts
-```ts
-import { Component } from '@angular/core';
-import { PolymerChanges } from '@codebakery/origami';
-
-@Component({
-  selector: 'app-poly',
-  template: `
-    <form #ngForm="ngForm">
-      <!-- No ironControl needed, is Just Works (TM) -->
-      <paper-checkbox [(ngModel)]="isChecked" required></paper-checkbox>
-
-      <!-- Remember our friend? The collection module also fixes the ironSelector issue -->
-      <paper-dropdown-menu [(ngModel)]="selectedItem" required>
-        <paper-listbox attr-for-selected="value">
-          <paper-item value="item-1">Item 1</paper-item>
-          <paper-item value="item-2">Item 2</paper-item>
-          <paper-item value="item-3">Item 3</paper-item>
-        </paper-listbox>
-      </paper-dropdown-menu>
-
-      <button type="submit" [disabled]="!ngForm.form.valid">Submit</button>
-    </form>
-  `
-})
-export class PolyComponent {
-  @PolymerChanges() isChecked: boolean;
-  @PolymerChanges() selectedItem: string;
-}
-```
-
 <a name="tldr"></a>
 ## Recap (TL;DR;)
 
 To enable template and reactive form jolly cooperation between Angular and Polymer:
 
-1. Add the `[ironControl]` attribute (or import a module that does this for you)
+1. Add the `[ironControl]` attribute
 2. ???
 3. Profit
 

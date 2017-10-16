@@ -177,68 +177,10 @@ export class PolyComponent {
 
 Remember that `@PolymerChanges()` unwraps events coming from Polymer, so it only affects a property's setter. The decorator is not needed if the property is readonly with a getter and no setter. Origami will issue a warning if `@PolymerChanges()` is not needed.
 
-## Collection Modules
-
-The `[emitChanges]` directive will map any custom element (that follows Polymer's <em>property-changed</em> event syntax) to Angular events that can easily be bound with `@PolymerChanges()`.
-
-Why not define a directive to automatically select all custom elements and apply the `[emitChanges]` directive logic?
-
-Enter collection modules!
-
-Origami provides modules that select several custom elements. In our example, we could import the `PaperElementsModule` and not need to use `[emitChanges]`. It would "Just Work" (TM).
-
-app.module.ts
-```ts
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { PolymerModule } from '@codebakery/origami';
-import { PaperElementsModule } from '@codebakery/origami/lib/collections';
-
-@NgModule({
-  declarations: [
-    AppComponent
-  ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [
-    PolymerModule.forRoot(),
-    PaperElementsModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
-export class AppModule { }
-```
-
-poly.component.ts
-```ts
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { PolymerChanges } from '@codebakery/origami';
-
-@Component({
-  selector: 'app-poly',
-  template: `
-    <label>Disabled</label>
-    <input type="checkbox" [(ngModel)]="isDisabled">
-    <button (click)="toggleDisabled()">Update from Polymer</button>
-
-    <paper-button #paperButton [(disabled)]="isDisabled"></paper-button>
-  `
-})
-export class PolyComponent {
-  @PolymerChanges() isDisabled: boolean;
-  @ViewChild('paperButton') paperButton: ElementRef;
-
-  toggleDisabled() {
-    this.paperButton.nativeElement.disabled = !this.paperButton.nativeElement.disabled;
-  }
-}
-```
-
-This is what Origami was created for. Using Polymer custom elements seamlessly in Angular!
-
 <a name="tldr"></a>
 ## Recap (TL;DR;)
 
 To use a Polymer-built custom element in Angular:
 
-1. Add the `[emitChanges]` attribute to two-way bound elements (or import a module that does this for you)
+1. Add the `[emitChanges]` attribute to two-way bound elements
 2. Use `@PolymerChanges()` decorators on properties bound to custom elements
