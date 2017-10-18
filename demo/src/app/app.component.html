@@ -3,7 +3,8 @@
     <app-toolbar>
       <div main-title>Origami</div>
     </app-toolbar>
-    <paper-tabs sticky [(selected)]="selectedTab">
+    <paper-tabs sticky [selected]="selectedTab"
+        (selected-changed)="selectedTab = $event.detail.value">
       <paper-tab>Kitchen Sink</paper-tab>
       <paper-tab>Features</paper-tab>
     </paper-tabs>
@@ -20,7 +21,8 @@
         <label>Angular Model</label>
         <input [(ngModel)]="model">
       </div>
-      <angular-polymer emitChanges [(model)]="model"></angular-polymer>
+      <angular-polymer [model]="model"
+          (model-changed)="model = $event.detail.value"></angular-polymer>
     </div>
     <app-features *ngIf="selectedTab === 1"></app-features>
   </div>

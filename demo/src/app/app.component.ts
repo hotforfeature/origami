@@ -1,5 +1,4 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { PolymerChanges } from '@codebakery/origami';
 
 import 'app-layout/app-header-layout/app-header-layout.html';
 import 'app-layout/app-header/app-header.html';
@@ -17,6 +16,6 @@ import '../elements/angular-polymer.html';
   encapsulation: ViewEncapsulation.None // Allows app.component.css to act as root stylesheet
 })
 export class AppComponent {
-  @PolymerChanges() selectedTab: number = 0;
-  @PolymerChanges() model: string;
+  selectedTab: number = 0;
+  model: string;
 }

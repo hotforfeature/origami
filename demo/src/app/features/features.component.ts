@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Polymer, PolymerChanges } from '@codebakery/origami';
+import { Polymer } from '@codebakery/origami';
 
 import 'iron-icon/iron-icon.html';
 import 'iron-icons/iron-icons.html';
@@ -17,7 +17,7 @@ import { getFeatures } from './features';
   styleUrls: ['./features.component.css']
 })
 export class FeaturesComponent implements OnInit {
-  @PolymerChanges() features: Feature[];
+  features: Feature[];
   @ViewChild('ironList') ironListRef: ElementRef;
 
   private ironList: Polymer.PropertyEffects;

@@ -11,7 +11,8 @@
 </div>
 
 <div class="layout horizontal">
-  <iron-list #ironList class="flex" [(items)]="features" as="feature">
+  <iron-list #ironList class="flex" [items]="features" as="feature"
+      (items-changed)="features = $event.detail.value">
     <template ngNonBindable [polymer]="this">
       <paper-icon-item>
         <iron-icon class-name="[[getIconClass(feature)]]"

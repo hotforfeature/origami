@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Http } from '@angular/http';
-import { PolymerChanges } from '@codebakery/origami';
 import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
 
@@ -23,9 +22,9 @@ import 'vaadin-split-layout/vaadin-split-layout.html';
 })
 export class VaadinComponent {
   items: Observable<any>;
-  @PolymerChanges() comboSelected: string;
-  @PolymerChanges() date: string;
-  @PolymerChanges() gridSelectAll: boolean = false;
+  comboSelected: string;
+  date: string;
+  gridSelectAll: boolean = false;
 
   constructor(http: Http) {
     this.items = http.get('https://randomuser.me/api?results=100&inc=name,email,location')

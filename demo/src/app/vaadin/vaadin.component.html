@@ -1,7 +1,7 @@
 <h4>&lt;vaadin-combo-box&gt;</h4>
 <div>Selected (Angular): {{comboSelected}}</div>
 <vaadin-combo-box [items]="items | async" item-value-path="email" item-label-path="email"
-    emitChanges ironControl [(ngModel)]="comboSelected">
+    ironControl [(ngModel)]="comboSelected">
   <template [polymer]="this" ngNonBindable>
     <paper-icon-item on-click="contextMenuAlert">
       <img src="[[item.picture.thumbnail]]" item-icon>
@@ -28,13 +28,14 @@
 
 <h4>&lt;vaadin-date-picker&gt;</h4>
 <input type="date" [(ngModel)]="date" />
-<vaadin-date-picker emitChanges ironControl [(ngModel)]="date"></vaadin-date-picker>
+<vaadin-date-picker ironControl [(ngModel)]="date"></vaadin-date-picker>
 
 <h4>&lt;vaadin-grid&gt;</h4>
 <label>Select All</label>
 <input type="checkbox" [(ngModel)]="gridSelectAll" />
 <vaadin-grid [items]="items | async" id="material" size="200">
-  <vaadin-grid-selection-column [(selectAll)]="gridSelectAll" width="66px" flex="0">
+  <vaadin-grid-selection-column [selectAll]="gridSelectAll" width="66px" flex="0"
+      (select-all-changed)="gridSelectAll = $event.detail.value">
     <template class="header" ngNonBindable [polymer]="this">
       <paper-checkbox checked="{{gridSelectAll}}"></paper-checkbox>
     </template>
