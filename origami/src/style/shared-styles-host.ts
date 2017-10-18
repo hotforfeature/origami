@@ -72,13 +72,17 @@ export class PolymerDomSharedStylesHost extends DomSharedStylesHost {
   }
 
   private addStylesToShadyCSS() {
-    this.hostNodes.forEach(hostNode => {
-      Array.from(hostNode.childNodes).forEach((childNode: Element) => {
-        if (childNode.tagName === 'STYLE') {
-          // ShadyCSS will handle <style> elements that have already been registered
-          getShadyCSS().CustomStyleInterface.addCustomStyle(<HTMLStyleElement>childNode);
-        }
+    // Importing Polymer will import ShadyCSS, but it is not required
+    const shadyCss = getShadyCSS();
+    if (shadyCss) {
+      this.hostNodes.forEach(hostNode => {
+        Array.from(hostNode.childNodes).forEach((childNode: Element) => {
+          if (childNode.tagName === 'STYLE') {
+            // ShadyCSS will handle <style> elements that have already been registered
+            shadyCss.CustomStyleInterface.addCustomStyle(<HTMLStyleElement>childNode);
+          }
+        });
       });
-    });
+    }
   }
 }

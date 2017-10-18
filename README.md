@@ -27,7 +27,7 @@ Origami bridges the gap between the Angular platform and Polymer-built web compo
 
 ```sh
 npm i --save @codebakery/origami
-npm i --save-dev babel-loader, babel-preset-es2015, polymer-webpack-loader, script-loader
+npm i --save-dev babel-loader babel-core babel-preset-es2015 polymer-webpack-loader script-loader
 ```
 
 Origami needs to patch the Angular CLI to insert the webpack loaders that we installed. Modify your `package.json` and add a postinstall script to create the patch.
