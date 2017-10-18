@@ -17,7 +17,7 @@ import { PolymerDomSharedStylesHost } from './shared-styles-host';
       --red: red;
       --mixin: {
         font-size: 10px;
-      }
+      };
     }
     h1 {
       @apply --mixin;
@@ -37,7 +37,7 @@ class TestComponent { }
       --blue: blue;
       --mixin: {
         font-size: 8px;
-      }
+      };
     }
     h1 {
       @apply --mixin;
@@ -64,43 +64,48 @@ describe('PolymerDomSharedStylesHost', () => {
     fixture = TestBed.createComponent(TestComponent);
   });
 
-  afterEach(() => {
-    Array.from(document.head.querySelectorAll('custom-style')).forEach(customStyle => {
-      document.head.removeChild(customStyle);
-      document.head.appendChild(customStyle.querySelector('style'));
-    });
-  });
-
-  it('should wrap <head> <style>s with <custom-style>', done => {
+  it('should add <style>s to ShadyCSS', done => {
     fixture.whenStable().then(() => {
       fixture.detectChanges();
-      expect(document.head.querySelectorAll('custom-style').length).toBeGreaterThan(0);
+      Array.from(document.head.querySelectorAll('style')).forEach((style: any) => {
+        expect(style.__seenByShadyCSS).toBe(true);
+      });
+
       done();
     });
   });
 
   if ('createShadowRoot' in HTMLElement.prototype) {
-    it('should wrap <style>s with <custom-style> in shadow DOM', done => {
+    it('should add <style>s to ShadyCSS in shadow DOM', done => {
       fixture = TestBed.createComponent(NativeComponent);
       fixture.whenStable().then(() => {
         fixture.detectChanges();
-        expect(fixture.nativeElement.shadowRoot.querySelectorAll('custom-style').length)
-          .toBeGreaterThan(0);
+        Array.from(fixture.nativeElement.shadowRoot.querySelectorAll('style'))
+          .forEach((style: any) => {
+            expect(style.__seenByShadyCSS).toBe(true);
+          });
+
         done();
       });
     });
   }
 
-  it('should ignore <style> elements with scope attribute from Polymer', done => {
-    const scopeStyle = document.createElement('style');
-    scopeStyle.setAttribute('scope', 'my-element');
-    document.head.appendChild(scopeStyle);
-    fixture.whenStable().then(() => {
-      fixture.detectChanges();
-      expect(document.head.querySelectorAll('custom-style').length).toBeGreaterThan(0);
-      expect(scopeStyle.parentElement).toBe(document.head);
-      document.head.removeChild(scopeStyle);
-      done();
-    });
+  it('should patch <body> to insert <style>s into the <head>', () => {
+    const div = document.createElement('div');
+    const style = document.createElement('style');
+    document.body.insertBefore(div, document.body.firstChild);
+    document.body.insertBefore(style, document.body.firstChild);
+    const divInBody = div.parentNode === document.body;
+    const styleInHead = style.parentNode === document.head;
+    if (div.parentElement) {
+      div.parentElement.removeChild(div);
+    }
+
+    if (style.parentElement) {
+      style.parentElement.removeChild(style);
+    }
+
+    expect(divInBody).toBe(true);
+    expect(styleInHead).toBe(true);
   });
 });

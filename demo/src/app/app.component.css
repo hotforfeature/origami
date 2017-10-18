@@ -1,28 +1,13 @@
 html {
-  /*
-    Fun quirk with polymer-webpack-loader.
-
-    The loader will load and add <custom-style> elements to the body of the document instead of the
-    head. Angular will load its styles in the <head>. So our app.component.css styles are actually
-    at a lower specificity.
-
-    We can fix this a few ways:
-
-    1. Use !important (ew, but effective)
-    2. Delay the loading of <paper-styles>. This is easy to do if you lazy load your components.
-    3. Use higher specificity, such as "html[s] {}" with an attribute or class to give this rule
-       block higher specificity. This works in native CSS property browsers, but breaks in ShadyCSS.
-       (see https://github.com/webcomponents/shadycss/issues/75)
-  */
   @apply --paper-font-body1;
 
-  --primary-color: var(--paper-deep-purple-500) !important;
-  --primary-light-color: var(--paper-deep-purple-100) !important;
-  --primary-dark-color: var(--paper-deep-purple-700) !important;
+  --primary-color: var(--paper-deep-purple-500);
+  --primary-light-color: var(--paper-deep-purple-100);
+  --primary-dark-color: var(--paper-deep-purple-700);
 
-  --accent-color: var(--paper-amber-a200 !important);
-  --accent-light-color: var(--paper-amber-a100) !important;
-  --accent-dark-color: var(--paper-amber-a400) !important;
+  --accent-color: var(--paper-amber-a200);
+  --accent-light-color: var(--paper-amber-a100);
+  --accent-dark-color: var(--paper-amber-a400);
 }
 
 [primary] {

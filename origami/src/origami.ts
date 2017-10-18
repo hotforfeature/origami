@@ -7,5 +7,6 @@ export * from './util/descriptors';
 export * from './util/getCustomElementClass';
 export * from './util/getTagName';
 export * from './util/Polymer';
+export * from './util/ShadyCSS';
 export * from './util/unwrapPolymerEvent';
 export * from './util/webcomponents';
