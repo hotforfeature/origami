@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 
+const ES5 = Boolean(process.env.ES5);
 const ROOT = path.resolve(__dirname, '..');
 
 function root(args) {
@@ -9,8 +10,7 @@ function root(args) {
 }
 
 const compilerOptions = require(root('tsconfig.json')).compilerOptions;
-// TODO: ES5 and ES6 tests
-compilerOptions.target = 'ES5';
+compilerOptions.target = ES5 ? 'ES5' : 'ES6';
 compilerOptions.module = 'commonjs';
 compilerOptions.declaration = false;
 compilerOptions.silent = true;

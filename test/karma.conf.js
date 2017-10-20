@@ -1,5 +1,7 @@
 module.exports = function(config) {
   const CI = Boolean(process.env.CI);
+  const ES5 = Boolean(process.env.ES5);
+  const IE11 = Boolean(process.env.IE11);
   const TRAVIS = Boolean(process.env.TRAVIS);
   const COVERAGE = !CI;
 
@@ -15,7 +17,6 @@ module.exports = function(config) {
       require('karma-mocha-reporter')
     ],
     files: [
-      './bower_components/webcomponentsjs/custom-elements-es5-adapter.js',
       './bower_components/webcomponentsjs/webcomponents-loader.js',
       { pattern: './bower_components/**/*', watched: false, included: false, served: true },
       { pattern: './test/karma-shim.js', watched: false }
@@ -57,6 +58,11 @@ module.exports = function(config) {
     }
   };
 
+  if (ES5 && !IE11) {
+    configuration.files.splice(0, 0,
+      './bower_components/webcomponentsjs/custom-elements-es5-adapter.js');
+  }
+
   if (COVERAGE) {
     configuration.plugins.push(require('karma-coverage-istanbul-reporter'));
     configuration.reporters.push('coverage-istanbul');
@@ -75,19 +81,12 @@ module.exports = function(config) {
   if (CI) {
     configuration.plugins.push(require('karma-sauce-launcher'));
     configuration.sauceLabs = {
-      testName: 'Origami Karma',
+      testName: ES5 ? 'Origami Karma (ES5)' : 'Origami Karma',
       startConnect: TRAVIS ? false : true,
       tunnelIdentifier: TRAVIS ? process.env.TRAVIS_JOB_NUMBER : undefined
     };
 
-    // IE11 takes a while and doesn't respond
-    configuration.browserNoActivityTimeout = 5 * 60 * 1000;
     configuration.customLaunchers = {
-      SL_IE_11: {
-        base: 'SauceLabs',
-        browserName: 'internet explorer',
-        version: '11'
-      },
       SL_Chrome: {
         base: 'SauceLabs',
         browserName: 'chrome',
@@ -129,6 +128,19 @@ module.exports = function(config) {
         version: 'latest-1'
       }
     };
+
+    if (ES5 && IE11) {
+      configuration.sauceLabs.testName += ' (IE11)';
+      // IE11 takes a while and doesn't respond
+      configuration.browserNoActivityTimeout = 5 * 60 * 1000;
+      configuration.customLaunchers = {
+        SL_IE_11: {
+          base: 'SauceLabs',
+          browserName: 'internet explorer',
+          version: '11'
+        }
+      };
+    }
 
     configuration.browsers = Object.keys(configuration.customLaunchers);
     configuration.reporters.push('saucelabs');
