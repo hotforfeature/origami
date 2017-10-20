@@ -12,4 +12,3 @@ addons:
 script:
   - npm run bower
   - npm run test:ci
-  - npm run test:ci:es5

@@ -7,7 +7,7 @@
   "license": "MIT",
   "homepage": "https://github.com/hotforfeature/origami",
   "private": true,
-  "dependencies": {
+  "devDependencies": {
     "polymer": "Polymer/polymer#^2.0.0",
     "paper-input": "PolymerElements/paper-input#^2.0.0",
     "paper-checkbox": "PolymerElements/paper-checkbox#^2.0.0",

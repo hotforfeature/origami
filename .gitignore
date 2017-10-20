@@ -2,10 +2,11 @@
 /dist
 /test/build
 /out-tsc
+/coverage
 
 # dependencies
 /node_modules
-/test/bower_components
+/bower_components
 
 # IDEs and editors
 /.idea

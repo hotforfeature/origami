@@ -1,7 +1,11 @@
 // tslint:disable:max-classes-per-file no-access-missing-member
 import { CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule, NgControl, Validators } from '@angular/forms';
+import { AbstractControl, FormsModule, NgControl, Validators } from '@angular/forms';
+
+import 'iron-selector/iron-selector.html';
+import 'paper-checkbox/paper-checkbox.html';
+import 'paper-input/paper-input.html';
 
 import { IronControlDirective } from './iron-control.directive';
 
@@ -16,11 +20,19 @@ class FormComponent {
     return (<any>this.ironControl)['ngControl']; // tslint:disable-line:no-string-literal
   }
 
+  get control(): AbstractControl {
+    if (this.ngControl.control) {
+      return this.ngControl.control;
+    } else {
+      throw new Error('NgControl.control has not been set');
+    }
+  }
+
   model = {
-    input: 'Value',
+    input: <string | null>'Value',
     checkbox: true,
     selector: 0,
-    multiSelector: []
+    multiSelector: <number[]>[]
   };
 }
 
@@ -111,7 +123,7 @@ describe('IronControlDirective', () => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
           expect(fixture.componentInstance.element.invalid).toBe(false);
-          fixture.componentInstance.ngControl.control.markAsDirty();
+          fixture.componentInstance.control.markAsDirty();
           return fixture.whenStable();
         }).then(() => {
           expect(fixture.componentInstance.element.invalid).toBe(false);
@@ -130,7 +142,7 @@ describe('IronControlDirective', () => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
           spyOn(fixture.componentInstance.element, 'validate').and.callThrough();
-          fixture.componentInstance.ngControl.control.updateValueAndValidity();
+          fixture.componentInstance.control.updateValueAndValidity();
           expect(fixture.componentInstance.element.validate).toHaveBeenCalledTimes(1);
           done();
         }).catch(done.fail);
@@ -141,8 +153,8 @@ describe('IronControlDirective', () => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
           spyOn(fixture.componentInstance.element, 'validate').and.returnValue(false);
-          fixture.componentInstance.ngControl.control.updateValueAndValidity();
-          expect(fixture.componentInstance.ngControl.control.hasError('ironValidatable'))
+          fixture.componentInstance.control.updateValueAndValidity();
+          expect(fixture.componentInstance.control.hasError('ironValidatable'))
             .toBe(true);
           done();
         }).catch(done.fail);
@@ -221,9 +233,9 @@ describe('IronControlDirective', () => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
           expect(fixture.componentInstance.ngControl.disabled).toBe(false);
-          fixture.componentInstance.ngControl.control.disable();
+          fixture.componentInstance.control.disable();
           expect(fixture.componentInstance.element.disabled).toBe(true);
-          fixture.componentInstance.ngControl.control.enable();
+          fixture.componentInstance.control.enable();
           expect(fixture.componentInstance.element.disabled).toBe(false);
         });
       });

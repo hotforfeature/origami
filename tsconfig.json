@@ -13,11 +13,9 @@
     "moduleResolution": "node",
     "noUnusedLocals": false,
     "noUnusedParameters": true,
-    "paths": {
-      "@codebakery/origami": ["dist/"]
-    },
     "skipLibCheck": true,
     "sourceMap": true,
-    "strict": true
+    "strict": true,
+    "target": "ES5"
   }
 }

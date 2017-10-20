@@ -2,6 +2,9 @@
 import { CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 
+import 'iron-list/iron-list.html';
+import 'paper-checkbox/paper-checkbox.html';
+
 import { getPolymer } from '../util/Polymer';
 import { unwrapPolymerEvent } from '../util/unwrapPolymerEvent';
 import { PolymerTemplateDirective } from './polymer-template.directive';
@@ -38,8 +41,8 @@ class HostBindComponent {
 
 describe('PolymerTemplateDirective', () => {
   let fixture: ComponentFixture<TestComponent>;
-  let template: HTMLTemplateElement;
-  let noHost: HTMLTemplateElement;
+  let template: any;
+  let noHost: any;
 
   beforeEach(() => {
     TestBed.configureCompiler(<any>{
@@ -74,7 +77,7 @@ describe('PolymerTemplateDirective', () => {
       bindFixture.detectChanges();
       bindFixture.whenStable().then(() => {
         const ironList = bindFixture.debugElement.nativeElement.querySelector('iron-list');
-        getPolymer().RenderStatus.afterNextRender(this, () => {
+        getPolymer().RenderStatus.afterNextRender({}, () => {
           const checkboxes = Array.from(ironList.querySelectorAll('paper-checkbox'));
           expect(checkboxes.length).toEqual(3);
           bindFixture.componentInstance.ngChecked = true;
@@ -107,7 +110,7 @@ describe('PolymerTemplateDirective', () => {
     it('should shim _addEventListenerToNode', async(() => {
       fixture.detectChanges();
       fixture.whenStable().then(() => {
-        const host = fixture.componentInstance;
+        const host: any = fixture.componentInstance;
         expect(host['_addEventListenerToNode']).toEqual(jasmine.any(Function));
         const node = document.createElement('div');
         const handler = () => { /* noop */ };
@@ -120,7 +123,7 @@ describe('PolymerTemplateDirective', () => {
     it('should shim _removeEventListenerFromNode', async(() => {
       fixture.detectChanges();
       fixture.whenStable().then(() => {
-        const host = fixture.componentInstance;
+        const host: any = fixture.componentInstance;
         expect(host['_removeEventListenerFromNode']).toEqual(jasmine.any(Function));
         const node = document.createElement('div');
         const handler = () => { /* noop */ };

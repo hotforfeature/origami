@@ -1,10 +1,11 @@
-// tslint:disable:max-classes-per-file
 import { Component, ElementRef, OnInit, ViewEncapsulation } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   BrowserModule,
   ɵDomSharedStylesHost as DomSharedStylesHost
 } from '@angular/platform-browser';
+
+import 'polymer/polymer.html';
 
 import { PolymerDomSharedStylesHost } from './shared-styles-host';
 
@@ -28,34 +29,13 @@ import { PolymerDomSharedStylesHost } from './shared-styles-host';
 })
 class TestComponent { }
 
-@Component({
-  selector: 'native-component',
-  template: `<h1>Hello Native</h1>`,
-  styles: [
-    `
-    :host {
-      --blue: blue;
-      --mixin: {
-        font-size: 8px;
-      };
-    }
-    h1 {
-      @apply --mixin;
-      color: var(--blue);
-    }
-    `
-  ],
-  encapsulation: ViewEncapsulation.Native
-})
-class NativeComponent { }
-
 describe('PolymerDomSharedStylesHost', () => {
   let fixture: ComponentFixture<TestComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [BrowserModule],
-      declarations: [TestComponent, NativeComponent],
+      declarations: [TestComponent],
       providers: [{
         provide: DomSharedStylesHost, useClass: PolymerDomSharedStylesHost
       }]
@@ -74,21 +54,6 @@ describe('PolymerDomSharedStylesHost', () => {
       done();
     });
   });
-
-  if ('createShadowRoot' in HTMLElement.prototype) {
-    it('should add <style>s to ShadyCSS in shadow DOM', done => {
-      fixture = TestBed.createComponent(NativeComponent);
-      fixture.whenStable().then(() => {
-        fixture.detectChanges();
-        Array.from(fixture.nativeElement.shadowRoot.querySelectorAll('style'))
-          .forEach((style: any) => {
-            expect(style.__seenByShadyCSS).toBe(true);
-          });
-
-        done();
-      });
-    });
-  }
 
   it('should patch <body> to insert <style>s into the <head>', () => {
     const div = document.createElement('div');
