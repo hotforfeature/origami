@@ -7,11 +7,6 @@ const stylesPath = path.resolve(__dirname, '../../@angular/cli/models/webpack-co
 let data = fs.readFileSync(commonPath, 'utf8');
 if (!data.includes('/* Origami Patched */')) {
   data = '/* Origami Patched */\n' + data;
-  data = data.replace(/(.*require\(.*\);)/, '$1\nconst ts = require(\'typescript\');');
-  data = data.replace(/(return\s*{\s*resolve)/,
-    `const supportES2015 = wco.tsConfig.options.target !== ts.ScriptTarget.ES3 &&
-        wco.tsConfig.options.target !== ts.ScriptTarget.ES5;
-    $1`);
   data = data.replace(/(modules:\s*\[)/g, '$1path.resolve(appRoot, \'bower_components\'), ');
   data = data.replace(/{.*html\$.*},/, `
     // Use polymer-webpack-loader for element html files and raw-loader for all
