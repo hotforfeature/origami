@@ -109,8 +109,10 @@ export class IronControlDirective implements ControlValueAccessor, OnInit, After
       this.statusSub.unsubscribe();
     }
 
-    this.ironSelector.removeEventListener('selected-changed', this.boundSelectedChanged);
-    this.ironSelector.removeEventListener('selected-values-changed', this.boundSelectedChanged);
+    if (this.ironSelector) {
+      this.ironSelector.removeEventListener('selected-changed', this.boundSelectedChanged);
+      this.ironSelector.removeEventListener('selected-values-changed', this.boundSelectedChanged);
+    }
   }
 
   writeValue(obj: any) {
