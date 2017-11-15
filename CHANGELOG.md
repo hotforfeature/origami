@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file. See [standa
 <a name="1.3.3"></a>
 ## [1.3.3](https://github.com/hotforfeature/origami/compare/v1.3.2...v1.3.3) (2017-11-15)
 
+This release is to correct an NPM tag error.
 
 
 <a name="1.3.2"></a>
