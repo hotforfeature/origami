@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file. See [standa
 <a name="2.0.0-alpha.4"></a>
 # [2.0.0-alpha.4](https://github.com/hotforfeature/origami/compare/v2.0.0-alpha.3...v2.0.0-alpha.4) (2017-11-15)
 
+This release fixes an NPM tag error.
 
 
 <a name="2.0.0-alpha.3"></a>
