@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-alpha.3"></a>
+# [2.0.0-alpha.3](https://github.com/hotforfeature/origami/compare/v2.0.0-alpha.2...v2.0.0-alpha.3) (2017-11-15)
+
+
+### Bug Fixes
+
+* **forms:** guard against ngOnDestroy called before ngOnInit ([46e53f0](https://github.com/hotforfeature/origami/commit/46e53f0))
+* **style:** stop adding ShadyCSS scoped styles as document-level styles (":not(.style-scope)" fix) ([d742059](https://github.com/hotforfeature/origami/commit/d742059))
+
+
+
 <a name="2.0.0-alpha.2"></a>
 # [2.0.0-alpha.2](https://github.com/hotforfeature/origami/compare/v2.0.0-alpha.1...v2.0.0-alpha.2) (2017-11-03)
 
