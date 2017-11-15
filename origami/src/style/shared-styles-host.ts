@@ -77,7 +77,7 @@ export class PolymerDomSharedStylesHost extends DomSharedStylesHost {
     if (shadyCss) {
       this.hostNodes.forEach(hostNode => {
         Array.from(hostNode.childNodes).forEach((childNode: Element) => {
-          if (childNode.tagName === 'STYLE') {
+          if (childNode.tagName === 'STYLE' && !childNode.hasAttribute('scope')) {
             // ShadyCSS will handle <style> elements that have already been registered
             shadyCss.CustomStyleInterface.addCustomStyle(<HTMLStyleElement>childNode);
           }
