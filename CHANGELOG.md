@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file. See [standa
 <a name="1.3.4"></a>
 ## [1.3.4](https://github.com/hotforfeature/origami/compare/v1.3.3...v1.3.4) (2017-11-20)
 
+Fix metadata version mismatch.
 
 
 <a name="1.3.3"></a>
