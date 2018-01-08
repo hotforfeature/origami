@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-alpha.5"></a>
+# [2.0.0-alpha.5](https://github.com/hotforfeature/origami/compare/v2.0.0-alpha.4...v2.0.0-alpha.5) (2018-01-08)
+
+
+### Bug Fixes
+
+* **patch:** support Angular CLI 1.6 ([ec0e26d](https://github.com/hotforfeature/origami/commit/ec0e26d))
+
+
+
 <a name="2.0.0-alpha.4"></a>
 # [2.0.0-alpha.4](https://github.com/hotforfeature/origami/compare/v2.0.0-alpha.3...v2.0.0-alpha.4) (2017-11-15)
 
