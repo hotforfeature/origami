@@ -22,7 +22,7 @@ if (!data.includes('/* Origami Patched */')) {
     {
       test: /\.html$/,
       use: [
-        ...supportES2015 ? [] : [{
+        ...wco.supportES2015 ? [] : [{
           loader: 'babel-loader',
           options: {
             presets: ['es2015']
@@ -39,7 +39,7 @@ if (!data.includes('/* Origami Patched */')) {
     {
       test: /\.js$/,
       use: [
-        ...supportES2015 ? [] : [{
+        ...wco.supportES2015 ? [] : [{
           loader: 'babel-loader',
           options: {
             presets: ['es2015']
@@ -53,10 +53,10 @@ if (!data.includes('/* Origami Patched */')) {
       ]
     },
     // Compile polymer-webpack-loader's RegisterHtmlTemplate to ES5
-    ...supportES2015 ? [] : [{
+    ...wco.supportES2015 ? [] : [{
       test: /register-html-template\.js$/,
       use: [
-        supportES2015 ? undefined : {
+        wco.supportES2015 ? undefined : {
           loader: 'babel-loader',
           options: {
             presets: ['es2015']
