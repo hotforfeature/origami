@@ -72,6 +72,8 @@ if (!data.includes('/* Origami Patched */')) {
 data = fs.readFileSync(stylesPath, 'utf8');
 if (!data.includes('/* Origami Patched */')) {
   data = '/* Origami Patched */\n' + data;
+  // postcss-custom-properties plugin that caused the needless warnings was
+  // removed in v1.6.4. This regex replace won't match and that's ok.
   data = data.replace(/(customProperties\({)/, '$1 warnings: false,');
   fs.writeFileSync(stylesPath, data);
 }
