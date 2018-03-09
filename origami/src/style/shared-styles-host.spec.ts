@@ -47,7 +47,8 @@ describe('PolymerDomSharedStylesHost', () => {
   it('should add <style>s to ShadyCSS', done => {
     fixture.whenStable().then(() => {
       fixture.detectChanges();
-      Array.from(document.head.querySelectorAll('style')).forEach((style: any) => {
+      // Ignore scoped ShadyCSS-added style tags
+      Array.from(document.head.querySelectorAll('style:not([scope])')).forEach((style: any) => {
         expect(style.__seenByShadyCSS).toBe(true);
       });
 
