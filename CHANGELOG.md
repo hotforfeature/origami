@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file. See [standa
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/hotforfeature/origami/compare/v2.0.0-alpha.5...v2.0.0) (2018-03-09)
 
+Origami v2 brings a lot of exciting changes! The library features a new build system architecture using [polymer-webpack-loader](https://github.com/webpack-contrib/polymer-webpack-loader). It patches the Angular CLI to inject this loader using the `patch-cli.js` script.
+
+Check out the README.md for more details on the new and improved build process.
+
 
 ### Code Refactoring
 
@@ -12,6 +16,32 @@ All notable changes to this project will be documented in this file. See [standa
 
 
 ### BREAKING CHANGES
+
+* The `emitChanges` directive [has been removed](https://github.com/hotforfeature/origami/issues/60). It was slow and not all that useful for two-way binding. It's much better to either use `ironControl` and `[(ngModel)]` or manually hook into the `(property-changed)` event.
+
+Before
+```html
+<paper-checkbox [(checked)]="isChecked" emitChanges></paper-checkbox>
+```
+
+After
+```html
+<paper-checkbox [checked]="isChecked" (checked-changed)="isChecked = $event.detail.value"></paper-checkbox>
+<!-- or -->
+<paper-checkbox [(ngModel)]="isChecked" ironControl></paper-checkbox>
+```
+
+* [Collections have been removed](https://github.com/hotforfeature/origami/issues/59). The `ironControl` directive will no longer be automatically applied to elements. If you want to use Angular forms (`[(ngModel)]` or `formControlName`), you will need to add the `ironControl` directive manually.
+
+Before
+```html
+<paper-input [(ngModel)]="value"></paper-input>
+```
+
+After
+```html
+<paper-input [(ngModel)]="value" ironConrol></paper-input>
+```
 
 * **util:** The utility functions to get the Polymer/ShadyCSS/customElements properties have been removed. Instead typings are provided in the repo to access window.Polymer and window.ShadyCSS
 
