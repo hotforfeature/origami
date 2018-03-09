@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/hotforfeature/origami/compare/v2.0.0-alpha.5...v2.0.0) (2018-03-09)
+
+
+### Code Refactoring
+
+* **util:** remove getter functions for Polymer/ShadyCSS/customElements ([c479759](https://github.com/hotforfeature/origami/commit/c479759))
+
+
+### BREAKING CHANGES
+
+* **util:** The utility functions to get the Polymer/ShadyCSS/customElements properties have been removed. Instead typings are provided in the repo to access window.Polymer and window.ShadyCSS
+
+
+
+<a name="1.3.4"></a>
+## [1.3.4](https://github.com/hotforfeature/origami/compare/v2.0.0-alpha.4...v1.3.4) (2017-11-20)
+
+
+
+<a name="1.3.3"></a>
+## [1.3.3](https://github.com/hotforfeature/origami/compare/v2.0.0-alpha.3...v1.3.3) (2017-11-15)
+
+
+
 <a name="2.0.0-alpha.5"></a>
 # [2.0.0-alpha.5](https://github.com/hotforfeature/origami/compare/v2.0.0-alpha.4...v2.0.0-alpha.5) (2018-01-08)
 
