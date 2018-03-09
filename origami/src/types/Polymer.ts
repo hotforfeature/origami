@@ -66,7 +66,3 @@ declare global {
     Polymer: Polymer;
   }
 }
-
-export function getPolymer(): Polymer {
-  return window.Polymer;
-}

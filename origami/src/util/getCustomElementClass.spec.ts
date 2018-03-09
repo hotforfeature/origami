@@ -1,10 +1,11 @@
-import { getCustomElements } from './customElements';
+import 'polymer/polymer.html';
+
+import '../types/Polymer';
 import { getCustomElementClass } from './getCustomElementClass';
-import { getPolymer } from './Polymer';
 
 describe('getCustomElementClass()', () => {
   it('should return constructor function for the element', () => {
-    const CustomElement = getPolymer()({ // tslint:disable-line:variable-name
+    const CustomElement = window.Polymer({ // tslint:disable-line:variable-name
       is: 'custom-element'
     });
 

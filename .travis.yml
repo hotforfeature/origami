@@ -13,3 +13,4 @@ script:
   - npm run bower
   - npm run test:ci
   - npm run test:ci:es5
+  - npm run test:ci:ie11
