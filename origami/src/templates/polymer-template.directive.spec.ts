@@ -5,7 +5,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import 'iron-list/iron-list.html';
 import 'paper-checkbox/paper-checkbox.html';
 
-import { getPolymer } from '../util/Polymer';
+import '../types/Polymer';
 import { unwrapPolymerEvent } from '../util/unwrapPolymerEvent';
 import { PolymerTemplateDirective } from './polymer-template.directive';
 
@@ -77,7 +77,7 @@ describe('PolymerTemplateDirective', () => {
       bindFixture.detectChanges();
       bindFixture.whenStable().then(() => {
         const ironList = bindFixture.debugElement.nativeElement.querySelector('iron-list');
-        getPolymer().RenderStatus.afterNextRender({}, () => {
+        window.Polymer.RenderStatus.afterNextRender({}, () => {
           const checkboxes = Array.from(ironList.querySelectorAll('paper-checkbox'));
           expect(checkboxes.length).toEqual(3);
           bindFixture.componentInstance.ngChecked = true;

@@ -1,8 +1,8 @@
 // tslint:disable:no-string-literal
 import { Directive, ElementRef, Input, NgZone, OnInit } from '@angular/core';
 
+import '../types/Polymer';
 import { wrapAndDefineDescriptor } from '../util/descriptors';
-import { getPolymer } from '../util/Polymer';
 import { unwrapPolymerEvent } from '../util/unwrapPolymerEvent';
 import { webcomponentsReady } from '../util/webcomponents';
 
@@ -79,7 +79,7 @@ export class PolymerTemplateDirective implements OnInit {
     if (templateInfo && templateInfo.hostProps) {
       Object.keys(templateInfo.hostProps).forEach(hostProp => {
         // Polymer -> Angular
-        const eventName = `_host_${getPolymer().CaseMap.camelToDashCase(hostProp)}-changed`;
+        const eventName = `_host_${window.Polymer.CaseMap.camelToDashCase(hostProp)}-changed`;
         this.template.addEventListener(eventName, (e: CustomEvent) => {
           this.zone.run(() => {
             const value = unwrapPolymerEvent(e);

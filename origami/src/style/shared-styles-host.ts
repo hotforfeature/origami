@@ -1,7 +1,7 @@
 import { Inject } from '@angular/core';
 import { DOCUMENT, ɵDomSharedStylesHost as DomSharedStylesHost } from '@angular/platform-browser';
 
-import { getShadyCSS } from '../util/ShadyCSS';
+import '../types/ShadyCSS';
 
 /**
  * poylmer-webpack-loader will insert <style> and <custom-style> elements into the body, while
@@ -73,7 +73,7 @@ export class PolymerDomSharedStylesHost extends DomSharedStylesHost {
 
   private addStylesToShadyCSS() {
     // Importing Polymer will import ShadyCSS, but it is not required
-    const shadyCss = getShadyCSS();
+    const shadyCss = window.ShadyCSS;
     if (shadyCss) {
       this.hostNodes.forEach(hostNode => {
         Array.from(hostNode.childNodes).forEach((childNode: Element) => {

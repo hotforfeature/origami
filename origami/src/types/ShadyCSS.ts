@@ -13,7 +13,3 @@ declare global {
     ShadyCSS: ShadyCSS;
   }
 }
-
-export function getShadyCSS(): ShadyCSS {
-  return window.ShadyCSS;
-}
