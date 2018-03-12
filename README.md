@@ -193,7 +193,6 @@ Next, import the element in the Angular component that you want to use it in. Ad
 `app.component.ts`
 ```ts
 import { Component } from '@angular/core';
-import { PolymerChanges } from '@codebakery/origami';
 
 import 'paper-checkbox/paper-checkbox.html';
 import 'paper-input/paper-input.html';
