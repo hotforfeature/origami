@@ -55,17 +55,6 @@ npm i -g bower
 bower init
 ```
 
-Create a `.bowerrc` file in your project root folder to move the default `bower_components/` directory to your app's root.
-
-`.bowerrc`
-```json
-{
-  "directory": "src/bower_components"
-}
-```
-
-You should not check in `src/bower_components/` to your project's repository. Add it to `.gitignore`. When cloning a fresh install, run `npm install && bower install`.
-
 ### 3. Load polyfills
 
 ```sh
@@ -81,15 +70,16 @@ Modify `.angular-cli.json` and add the following to your app's assets.
 {
   "apps": [
     {
-      ...
+      "root": "src",
       "assets": [
-        ...
-        "bower_components/webcomponentsjs/custom*.js",
-        "bower_components/webcomponentsjs/web*.js"
+        /* include other assets such as manifest.json */
+        "../bower_components/webcomponentsjs/custom*.js",
+        "../bower_components/webcomponentsjs/web*.js"
       ],
-      ...
+      /* remaining app config */
     }
-  ]
+  ],
+  /* remaining CLI config */
 }
 ```
 
@@ -106,7 +96,18 @@ Next, modify the `index.html` shell to include the polyfills.
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <script src="bower_components/webcomponentsjs/custom-elements-es5-adapter.js"></script>
+  <!-- This div is needed when targeting ES5. 
+  It will add the adapter to browsers that support customElements, which 
+  require ES6 classes -->
+  <div id="ce-es5-shim">
+    <script type="text/javascript">
+      if (!window.customElements) {
+        var ceShimContainer = document.querySelector('#ce-es5-shim');
+        ceShimContainer.parentElement.removeChild(ceShimContainer);
+      }
+    </script>
+    <script type="text/javascript" src="bower_components/webcomponentsjs/custom-elements-es5-adapter.js"></script>
+  </div>
   <script src="bower_components/webcomponentsjs/webcomponents-loader.js"></script>
 </head>
 <body>
@@ -127,13 +128,22 @@ import { webcomponentsReady } from '@codebakery/origami';
 import { AppModule } from './app/app.module';
 
 webcomponentsReady().then(() => {
+  platformBrowserDynamic().bootstrapModule(AppModule);
+});
+```
+
+#### Angular 4 templates
+
+Angular 4 consumes native `<template>` tags, which are commonly used in web components. Add the following configuration to the app's bootstrap to prevent this.
+
+`main.ts`
+```ts
+webcomponentsReady().then(() => {
   platformBrowserDynamic().bootstrapModule(AppModule, {
     enableLegacyTemplate: false // Required for Angular 4 to use native <template>s
   });
 });
 ```
-
-#### Angular 4 only
 
 `enableLegacyTemplate: false` will prevent Angular 4 from turning native `<template>` elements into `<ng-template>`s. Bootstrap options must also be specified in your `tsconfig.json` for Ahead-of-Time compilation.
 
@@ -149,7 +159,7 @@ webcomponentsReady().then(() => {
 }
 ```
 
-Angular 5 defaults this value to `false`. You do not need to include it in your bootstrap function or `tsconfig.json`.
+Angular 5+ defaults this value to `false`. You do not need to include it in your bootstrap function or `tsconfig.json`.
 
 ### 4. Import Origami
 

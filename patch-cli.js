@@ -7,15 +7,36 @@ const stylesPath = path.resolve(__dirname, '../../@angular/cli/models/webpack-co
 let data = fs.readFileSync(commonPath, 'utf8');
 if (!data.includes('/* Origami Patched */')) {
   data = '/* Origami Patched */\n' + data;
-  data = data.replace(/(modules:\s*\[)/g, '$1path.resolve(appRoot, \'bower_components\'), ');
-  data = data.replace(/{.*html\$.*},/, `
+  data = data.replace(/(appRoot =.*;)/, `$1
+    /* origami patch start */
+    const bowerDirs = [
+      path.resolve(appRoot, 'bower_components'),
+      path.resolve(projectRoot, 'bower_components')
+    ];
+
+    try {
+      const bowerrc = JSON.parse(require('fs').readFileSync(path.resolve(projectRoot, './.bowerrc')));
+      if (bowerrc && bowerrc.directory) {
+        bowerDirs.push(path.resolve(projectRoot, bowerrc.directory));
+      }
+    } catch (e) {
+      // .bowerrc not present
+    }
+    /* origami patch end */
+  `);
+  data = data.replace(/(modules:\s*\[)/g, '$1/* origami patch start */...bowerDirs, /* origami patch end */');
+  data = data.replace(/({.*html\$.*}),/, `
+    /* origami patch start */
+    /*
+    $1
+    */
     // Use polymer-webpack-loader for element html files and raw-loader for all
     // other Angular html files
     {
       test: /\.html$/,
       loader: 'raw-loader',
       exclude: [
-        path.resolve(appRoot, 'bower_components'),
+        ...bowerDirs,
         path.resolve(appRoot, 'elements')
       ]
     },
@@ -31,7 +52,7 @@ if (!data.includes('/* Origami Patched */')) {
         { loader: 'polymer-webpack-loader' }
       ],
       include: [
-        path.resolve(appRoot, 'bower_components'),
+        ...bowerDirs,
         path.resolve(appRoot, 'elements')
       ]
     },
@@ -48,7 +69,7 @@ if (!data.includes('/* Origami Patched */')) {
         { loader: 'script-loader' }
       ],
       include: [
-        path.resolve(appRoot, 'bower_components'),
+        ...bowerDirs,
         path.resolve(appRoot, 'elements')
       ]
     },
@@ -64,6 +85,7 @@ if (!data.includes('/* Origami Patched */')) {
         }
       ]
     }],
+    /* origami patch end */
   `);
 
   fs.writeFileSync(commonPath, data);
