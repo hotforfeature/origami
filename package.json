@@ -37,7 +37,7 @@
     "rollup:umd": "rollup -c origami/rollup.config.js --format umd --output dist/bundles/origami.umd.js -- dist/@codebakery/origami.es5.js",
     "rollup:umd:min": "rollup -c origami/rollup.config.js --format umd --output dist/bundles/origami.umd.min.js -- dist/@codebakery/origami.es5.js",
     "rollup": "npm run rollup:es6 && npm run rollup:es5 && npm run rollup:umd && npm run rollup:umd:min",
-    "copy": "cpy '**/*.d.ts' '*.metadata.json' ../../dist/ --parents --cwd out-tsc/es6/ && node cp-package.js origami/package.json dist/package.json",
+    "copy": "cpy '**/*.d.ts' '*.metadata.json' ../../dist/ --parents --cwd out-tsc/es6/ && cpy README.md ./dist/ && node cp-package.js origami/package.json dist/package.json",
     "prebuild": "npm run clean",
     "build": "npm run ngc && npm run rollup && npm run copy",
     "postbuild": "cpy patch-cli.js dist/",
