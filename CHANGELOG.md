@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.2"></a>
+## [2.0.2](https://github.com/hotforfeature/origami/compare/v2.0.1...v2.0.2) (2018-03-12)
+
+
+### Bug Fixes
+
+* **patch:** include project root, app root, and .bowerrc directories for bower components [#75](https://github.com/hotforfeature/origami/issues/75) ([f59d62f](https://github.com/hotforfeature/origami/commit/f59d62f))
+
+
+
 <a name="2.0.1"></a>
 ## [2.0.1](https://github.com/hotforfeature/origami/compare/v2.0.0...v2.0.1) (2018-03-12)
 
