@@ -57,11 +57,28 @@ bower init
 
 ### 3. Load polyfills
 
+We're going to use a dynamic loader to only add polyfills if the browser needs them. In order to do this, Angular needs to include all the polyfill scripts at runtime as part of its assets. 
+
+Since we'll be referencing these assets in our `index.html`, they must be part of the app's root directory. A typical Angular CLI-generated project will have a `src/` directory that is the app root.
+
+We can move where bower dependencies are installed with a `.bowerrc` file in the project directory.
+
+`.bowerrc`
+```json
+{
+  "directory": "src/bower_components/"
+}
+```
+
+Now all bower dependencies are available for `.angular-cli.json` and our `index.html`. This example is using `src/bower_components/` as the directory to install to, but this may be any folder name that exists in the app root directory.
+
+> Like `node_modules/` you should add `src/bower_components/` to your `.gitignore` file to prevent checking them in.
+
+Now that bower is installing where the project files can see it, install the webcomponents polyfill.
+
 ```sh
 bower install --save webcomponentsjs
 ```
-
-We're going to use a dynamic loader to only add polyfills if the browser needs them. In order to do this, Angular needs to include all the polyfill scripts at runtime as part of its assets.
 
 Modify `.angular-cli.json` and add the following to your app's assets.
 
@@ -72,9 +89,11 @@ Modify `.angular-cli.json` and add the following to your app's assets.
     {
       "root": "src",
       "assets": [
-        /* include other assets such as manifest.json */
-        "../bower_components/webcomponentsjs/custom*.js",
-        "../bower_components/webcomponentsjs/web*.js"
+        "assets",
+        "favicon.ico",
+        "manifest.json",
+        "bower_components/webcomponentsjs/custom*.js",
+        "bower_components/webcomponentsjs/web*.js"
       ],
       /* remaining app config */
     }
