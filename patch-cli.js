@@ -9,34 +9,26 @@ if (!data.includes('/* Origami Patched */')) {
   data = '/* Origami Patched */\n' + data;
   data = data.replace(/(appRoot =.*;)/, `$1
     /* origami patch start */
-    const bowerDirs = [
-      path.resolve(appRoot, 'bower_components'),
-      path.resolve(projectRoot, 'bower_components')
+    const polymerDirs = [
+      path.resolve(appRoot, '../node_modules/@polymer'),
+      path.resolve(projectRoot, '../node_modules/@polymer')
     ];
 
-    try {
-      const bowerrc = JSON.parse(require('fs').readFileSync(path.resolve(projectRoot, './.bowerrc')));
-      if (bowerrc && bowerrc.directory) {
-        bowerDirs.push(path.resolve(projectRoot, bowerrc.directory));
-      }
-    } catch (e) {
-      // .bowerrc not present
-    }
     /* origami patch end */
   `);
-  data = data.replace(/(modules:\s*\[)/g, '$1/* origami patch start */...bowerDirs, /* origami patch end */');
+  data = data.replace(/(modules:\s*\[)/g, '$1/* origami patch start */...polymerDirs, /* origami patch end */');
   data = data.replace(/({.*html\$.*}),/, `
     /* origami patch start */
     /*
     $1
     */
-    // Use polymer-webpack-loader for element html files and raw-loader for all
+    // Use babel-loader for element html files and raw-loader for all
     // other Angular html files
     {
       test: /\.html$/,
       loader: 'raw-loader',
       exclude: [
-        ...bowerDirs,
+        ...polymerDirs,
         path.resolve(appRoot, 'elements')
       ]
     },
@@ -49,14 +41,14 @@ if (!data.includes('/* Origami Patched */')) {
             presets: ['es2015']
           }
         }],
-        { loader: 'polymer-webpack-loader' }
+        { loader: 'babel-loader' }
       ],
       include: [
-        ...bowerDirs,
+        ...polymerDirs,
         path.resolve(appRoot, 'elements')
       ]
     },
-    // Use script-loader for element js files
+    // Use babel-loader for element js files
     {
       test: /\.js$/,
       use: [
@@ -66,10 +58,10 @@ if (!data.includes('/* Origami Patched */')) {
             presets: ['es2015']
           }
         }],
-        { loader: 'script-loader' }
+        { loader: 'babel-loader' }
       ],
       include: [
-        ...bowerDirs,
+        ...polymerDirs,
         path.resolve(appRoot, 'elements')
       ]
     },
