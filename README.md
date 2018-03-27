@@ -9,6 +9,8 @@ _Origami is the art of folding paper with sharp angles to form beautiful creatio
 
 Angular + Polymer
 
+_Note: This Origami fork is for Polymer 3 and Angular 4+_
+
 ## Intro
 
 Origami bridges the gap between the Angular platform and Polymer-built web components. This opens up [a huge ecosystem](https://www.webcomponents.org/) of high quality custom elements that can be used in Angular!
@@ -27,7 +29,7 @@ Origami bridges the gap between the Angular platform and Polymer-built web compo
 
 ```sh
 npm i --save @codebakery/origami
-npm i --save-dev babel-loader babel-core babel-preset-es2015 polymer-webpack-loader script-loader
+npm i --save-dev babel-loader babel-core babel-preset-es2015
 ```
 
 Origami needs to patch the Angular CLI to insert the webpack loaders that we installed. Modify your `package.json` and add a postinstall script to create the patch.
@@ -44,43 +46,13 @@ package.json
 npm run postinstall
 ```
 
-Now anytime you install or update the Angular CLI, Origami will check and apply the patch if needed.
-
-### 2. Use Bower to add elements
-
-[Bower](https://bower.io/) is a flat dependency package manager for web modules. Polymer 2 and many elements are hosted with it.
-
-```sh
-npm i -g bower
-bower init
-```
-
 ### 3. Load polyfills
 
 We're going to use a dynamic loader to only add polyfills if the browser needs them. In order to do this, Angular needs to include all the polyfill scripts at runtime as part of its assets. 
 
 Since we'll be referencing these assets in our `index.html`, they must be part of the app's root directory. A typical Angular CLI-generated project will have a `src/` directory that is the app root.
 
-We can move where bower dependencies are installed with a `.bowerrc` file in the project directory.
-
-`.bowerrc`
-```json
-{
-  "directory": "src/bower_components/"
-}
-```
-
-Now all bower dependencies are available for `.angular-cli.json` and our `index.html`. This example is using `src/bower_components/` as the directory to install to, but this may be any folder name that exists in the app root directory.
-
-> Like `node_modules/` you should add `src/bower_components/` to your `.gitignore` file to prevent checking them in.
-
-Now that bower is installing where the project files can see it, install the webcomponents polyfill.
-
-```sh
-bower install --save webcomponentsjs
-```
-
-Modify `.angular-cli.json` and add the following to your app's assets.
+We can create a directory under `src/` called `wc_polyfills` and move the webcomponents polyfills to this directory. For this we can modify the .angular-cli.json as follow:
 
 `.angular-cli.json`
 ```
@@ -91,15 +63,26 @@ Modify `.angular-cli.json` and add the following to your app's assets.
       "assets": [
         "assets",
         "favicon.ico",
-        "manifest.json",
-        "bower_components/webcomponentsjs/custom*.js",
-        "bower_components/webcomponentsjs/web*.js"
+        { "glob": "web*.js", "input": "../node_modules/@webcomponents/webcomponentsjs", "output": "./wc_polyfills/" },
+        { "glob": "custom*.js", "input": "../node_modules/@webcomponents/webcomponentsjs", "output": "./wc_polyfills/" },
+        { "glob": "**/*", "input": "./wc_polyfills", "output": "./wc_polyfills/" }
       ],
       /* remaining app config */
     }
   ],
   /* remaining CLI config */
 }
+```
+
+
+Now all polyfills dependencies are available for `.angular-cli.json` and our `index.html`. This example is using `src/wc_polyfills/` as the directory to move to, but this may be any folder name that exists in the app root directory.
+
+> Like `node_modules/` you should add `src/wc_polyfills/` to your `.gitignore` file to prevent checking them in.
+
+Now install the webcomponents polyfill.
+
+```sh
+npm install --save @webcomponents/webcomponentsjs
 ```
 
 Next, modify the `index.html` shell to include the polyfills.
@@ -110,7 +93,7 @@ Next, modify the `index.html` shell to include the polyfills.
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Origami</title>
+  <title>Origami for Polymer 3</title>
   <base href="/">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -125,9 +108,9 @@ Next, modify the `index.html` shell to include the polyfills.
         ceShimContainer.parentElement.removeChild(ceShimContainer);
       }
     </script>
-    <script type="text/javascript" src="bower_components/webcomponentsjs/custom-elements-es5-adapter.js"></script>
+    <script type="text/javascript" src="wc_polyfills/custom-elements-es5-adapter.js"></script>
   </div>
-  <script src="bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+  <script src="wc_polyfills/webcomponents-loader.js"></script>
 </head>
 <body>
   <app-root>Loading...</app-root>
@@ -135,7 +118,7 @@ Next, modify the `index.html` shell to include the polyfills.
 </html>
 ```
 
-Custom elements must be defined as ES6 classes. The `custom-elements-es5-adapter.js` script will allow our transpiled elements to work in ES6-ready browsers. `webcomponents-loader.js` will check the browser's abilities and load the correct polyfill from the `bower_components/webcomponentsjs/` folder.
+Custom elements must be defined as ES6 classes. The `custom-elements-es5-adapter.js` script will allow our transpiled elements to work in ES6-ready browsers. `webcomponents-loader.js` will check the browser's abilities and load the correct polyfill from the `wc_polyfills/` folder.
 
 The last piece is to wait to bootstrap Angular until the polyfills are loaded. Modify your `main.ts` and wait for the polyfills.
 
@@ -152,6 +135,8 @@ webcomponentsReady().then(() => {
 ```
 
 #### Angular 4 templates
+
+_Note: This step no yet test because the example project was created with Angular 5, also will must work for Angular 4, if you have any trouble, please create a issue._
 
 Angular 4 consumes native `<template>` tags, which are commonly used in web components. Add the following configuration to the app's bootstrap to prevent this.
 
@@ -210,12 +195,13 @@ export class AppModule { }
 
 ### 5. Import and use custom elements
 
-Install elements! Persist them to `bower.json` with the `--save` flag.
+Install elements! Persist them to `package.json` with the `--save` flag.
 
 ```sh
-bower install --save PolymerElements/paper-checkbox
-bower install --save PolymerElements/paper-input
+npm install --save @polymer/paper-checkbox@next
+npm install --save @polymer/paper-input@next
 ```
+_Note: The polymer components have the suffix @next, this is necesary for now beacuse Polymer is still on preview._
 
 Next, import the element in the Angular component that you want to use it in. Add the `[ironControl]` directive to elements that use Angular form directives.
 
@@ -223,8 +209,8 @@ Next, import the element in the Angular component that you want to use it in. Ad
 ```ts
 import { Component } from '@angular/core';
 
-import 'paper-checkbox/paper-checkbox.html';
-import 'paper-input/paper-input.html';
+import '@polymer/paper-checkbox/paper-checkbox';
+import '@polymer/paper-input/paper-input';
 
 @Component({
   selector: 'app-root',
@@ -251,9 +237,12 @@ export class AppComponent {
 ## Support
 
 - Angular 4.2.0 +
-- Polymer 2.0 +
+- Polymer 3.0
 
-Origami does not support Polymer 1. Check out [angular-polymer](https://github.com/platosha/angular-polymer) if you need Polymer 1 support.
+This Origami fork does not support Polymer 1 and 2. 
+If your Polymer components are based on Polymer 2 you can use polymer-modulizer (https://github.com/Polymer/polymer-modulizer) for migrate these to Polymer 3.
+
+Check out [angular-polymer](https://github.com/platosha/angular-polymer) if you need Polymer 1 support.
 
 ### Browsers
 
