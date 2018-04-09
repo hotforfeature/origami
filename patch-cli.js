@@ -14,9 +14,7 @@ if (!data.includes('/* Origami Patched */')) {
     ];
     /* origami patch end */
   `);
-  data = data.replace(/(rules:\s*\[)/g, `
-    $1/!* origami patch start *!/
-     // Use babel-loader for element js files
+  data = data.replace(/(rules:\s*\[)/g, `$1 
      {
       test: /.js$/,
       use: [
@@ -32,7 +30,6 @@ if (!data.includes('/* Origami Patched */')) {
         ...polymerDirs
       ]
      },
-     /!* origami patch end *!/
   `);
 
   fs.writeFileSync(commonPath, data);
