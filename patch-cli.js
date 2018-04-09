@@ -10,30 +10,13 @@ if (!data.includes('/* Origami Patched */')) {
   data = data.replace(/(appRoot =.*;)/, `$1
     /* origami patch start */
     const polymerDirs = [
-      path.resolve(appRoot, '../node_modules/@polymer'),
-      path.resolve(projectRoot, '../node_modules/@polymer')
+      path.resolve(appRoot, '../node_modules/@polymer')
     ];
-
     /* origami patch end */
   `);
-  data = data.replace(/(modules:\s*\[)/g, '$1/* origami patch start */...polymerDirs, /* origami patch end */');
-  data = data.replace(/({.*html\$.*}),/, `
-    /* origami patch start */
-    /*
-    $1
-    */
-    // Use babel-loader for element html files and raw-loader for all
-    // other Angular html files
-    {
-      test: /\.html$/,
-      loader: 'raw-loader',
-      exclude: [
-        ...polymerDirs,
-        path.resolve(appRoot, 'elements')
-      ]
-    },
-    {
-      test: /\.html$/,
+  data = data.replace(/(rules:\s*\[)/g, `$1 
+     {
+      test: /.js$/,
       use: [
         ...wco.supportES2015 ? [] : [{
           loader: 'babel-loader',
@@ -44,40 +27,9 @@ if (!data.includes('/* Origami Patched */')) {
         { loader: 'babel-loader' }
       ],
       include: [
-        ...polymerDirs,
-        path.resolve(appRoot, 'elements')
+        ...polymerDirs
       ]
-    },
-    // Use babel-loader for element js files
-    {
-      test: /\.js$/,
-      use: [
-        ...wco.supportES2015 ? [] : [{
-          loader: 'babel-loader',
-          options: {
-            presets: ['es2015']
-          }
-        }],
-        { loader: 'babel-loader' }
-      ],
-      include: [
-        ...polymerDirs,
-        path.resolve(appRoot, 'elements')
-      ]
-    },
-    // Compile polymer-webpack-loader's RegisterHtmlTemplate to ES5
-    ...wco.supportES2015 ? [] : [{
-      test: /register-html-template\.js$/,
-      use: [
-        wco.supportES2015 ? undefined : {
-          loader: 'babel-loader',
-          options: {
-            presets: ['es2015']
-          }
-        }
-      ]
-    }],
-    /* origami patch end */
+     },
   `);
 
   fs.writeFileSync(commonPath, data);
