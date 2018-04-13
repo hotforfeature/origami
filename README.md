@@ -52,7 +52,7 @@ We're going to use a dynamic loader to only add polyfills if the browser needs t
 
 Since we'll be referencing these assets in our `index.html`, they must be part of the app's root directory. A typical Angular CLI-generated project will have a `src/` directory that is the app root.
 
-We can create a directory under `src/` called `wc_polyfills` and move the webcomponents polyfills to this directory. For this we can modify the .angular-cli.json as follow:
+For make this we can modify the .angular-cli.json as follow:
 
 `.angular-cli.json`
 ```
@@ -75,17 +75,15 @@ We can create a directory under `src/` called `wc_polyfills` and move the webcom
 ```
 
 
-Now all polyfills dependencies are available for `.angular-cli.json` and our `index.html`. This example is using `src/wc_polyfills/` as the directory to move to, but this may be any folder name that exists in the app root directory.
+Now all polyfills dependencies are available for `.angular-cli.json` and our `index.html`.
 
-> Like `node_modules/` you should add `src/wc_polyfills/` to your `.gitignore` file to prevent checking them in.
-
-Now install the webcomponents polyfill.
+Next, we install the webcomponents polyfill.
 
 ```sh
 npm install --save @webcomponents/webcomponentsjs
 ```
 
-Next, modify the `index.html` shell to include the polyfills.
+Later, modify the `index.html` shell to include the polyfills.
 
 `index.html`
 ```html
