@@ -22,7 +22,7 @@ document.body.insertBefore = function<T extends Node>(newChild: any): T {
 };
 
 // First group is incorrect escape backslash, second group is rest of mixin detection
-const MIXIN_REGEX = /(\\)(--\w[\w-_]*:\s*{)/g;
+const MIXIN_REGEX = /(\\)(--\w[\w-_]*:\s*{[^}]*})(;)?/g;
 
 export class PolymerDomSharedStylesHost extends DomSharedStylesHost {
   protected hostNodes = new Set<Node>();
@@ -52,7 +52,7 @@ export class PolymerDomSharedStylesHost extends DomSharedStylesHost {
      *
      * This regex will fix the added backslash.
      */
-    super.addStyles(styles.map(style => style.replace(MIXIN_REGEX, '$2')));
+    super.addStyles(styles.map(style => style.replace(MIXIN_REGEX, '$2;')));
   }
 
   addHost(hostNode: Node) {
