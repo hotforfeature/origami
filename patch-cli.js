@@ -1,16 +1,37 @@
 const fs = require('fs');
 const path = require('path');
 
-const commonPath = path.resolve(__dirname, '../../@angular/cli/models/webpack-configs/common.js');
-const stylesPath = path.resolve(__dirname, '../../@angular/cli/models/webpack-configs/styles.js');
+const commonPath = path.resolve(
+  __dirname,
+  '../../@angular-devkit/build-angular/src/angular-cli-files/models/webpack-configs/common.js'
+);
+const isNg6 = fs.existsSync(commonPath);
+if (!isNg6) {
+  commonPath = path.resolve(
+    __dirname,
+    '../../@angular/cli/models/webpack-configs/common.js'
+  );
+}
+const stylesPath = path.resolve(
+  __dirname,
+  '../../@angular-devkit/build-angular/src/angular-cli-files/models/webpack-configs/styles.js'
+);
+if (!fs.existsSync(stylesPath)) {
+  stylesPath = path.resolve(
+    __dirname,
+    '../../@angular/cli/models/webpack-configs/styles.js'
+  );
+}
 
 let data = fs.readFileSync(commonPath, 'utf8');
 if (!data.includes('/* Origami Patched */')) {
   data = '/* Origami Patched */\n' + data;
-  data = data.replace(/(appRoot =.*;)/, `$1
+  data = data.replace(
+    isNg6 ? /(nodeModules =.*;)/ : /(appRoot =.*;)/,
+    `$1
     /* origami patch start */
     const bowerDirs = [
-      path.resolve(appRoot, 'bower_components'),
+      path.resolve(${isNg6 ? 'root' : 'appRoot'}, 'bower_components'),
       path.resolve(projectRoot, 'bower_components')
     ];
 
@@ -23,9 +44,15 @@ if (!data.includes('/* Origami Patched */')) {
       // .bowerrc not present
     }
     /* origami patch end */
-  `);
-  data = data.replace(/(modules:\s*\[)/g, '$1/* origami patch start */...bowerDirs, /* origami patch end */');
-  data = data.replace(/({.*html\$.*}),/, `
+  `
+  );
+  data = data.replace(
+    /(modules:\s*\[)/g,
+    '$1/* origami patch start */...bowerDirs, /* origami patch end */'
+  );
+  data = data.replace(
+    /({.*html\$.*}),/,
+    `
     /* origami patch start */
     /*
     $1
@@ -37,7 +64,7 @@ if (!data.includes('/* Origami Patched */')) {
       loader: 'raw-loader',
       exclude: [
         ...bowerDirs,
-        path.resolve(appRoot, 'elements')
+        path.resolve(${isNg6 ? 'root' : 'appRoot'}, 'elements')
       ]
     },
     {
@@ -53,7 +80,7 @@ if (!data.includes('/* Origami Patched */')) {
       ],
       include: [
         ...bowerDirs,
-        path.resolve(appRoot, 'elements')
+        path.resolve(${isNg6 ? 'root' : 'appRoot'}, 'elements')
       ]
     },
     // Use script-loader for element js files
@@ -70,7 +97,7 @@ if (!data.includes('/* Origami Patched */')) {
       ],
       include: [
         ...bowerDirs,
-        path.resolve(appRoot, 'elements')
+        path.resolve(${isNg6 ? 'root' : 'appRoot'}, 'elements')
       ]
     },
     // Compile polymer-webpack-loader's RegisterHtmlTemplate to ES5
@@ -86,7 +113,8 @@ if (!data.includes('/* Origami Patched */')) {
       ]
     }],
     /* origami patch end */
-  `);
+  `
+  );
 
   fs.writeFileSync(commonPath, data);
 }
