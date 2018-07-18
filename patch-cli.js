@@ -1,10 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 
-const commonPath = path.resolve(
+let commonPath = path.resolve(
   __dirname,
   '../../@angular-devkit/build-angular/src/angular-cli-files/models/webpack-configs/common.js'
 );
+
 const isNg6 = fs.existsSync(commonPath);
 if (!isNg6) {
   commonPath = path.resolve(
@@ -14,14 +15,10 @@ if (!isNg6) {
 }
 const stylesPath = path.resolve(
   __dirname,
-  '../../@angular-devkit/build-angular/src/angular-cli-files/models/webpack-configs/styles.js'
+  isNg6
+    ? '../../@angular-devkit/build-angular/src/angular-cli-files/models/webpack-configs/styles.js'
+    : '../../@angular/cli/models/webpack-configs/styles.js'
 );
-if (!fs.existsSync(stylesPath)) {
-  stylesPath = path.resolve(
-    __dirname,
-    '../../@angular/cli/models/webpack-configs/styles.js'
-  );
-}
 
 let data = fs.readFileSync(commonPath, 'utf8');
 if (!data.includes('/* Origami Patched */')) {
