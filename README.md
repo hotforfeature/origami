@@ -1,266 +1,246 @@
-[![NPM Package](https://badge.fury.io/js/%40codebakery%2Forigami.svg)](https://www.npmjs.com/package/@codebakery/origami)
-[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
-
-[![Build Status](https://saucelabs.com/browser-matrix/codebakery-origami.svg)](https://saucelabs.com/open_sauce/user/codebakery-origami)
-
 # Origami
 
 _Origami is the art of folding paper with sharp angles to form beautiful creations._
 
 Angular + Polymer
 
-## Intro
+[![NPM Package](https://badge.fury.io/js/%40codebakery%2Forigami.svg)](https://www.npmjs.com/package/@codebakery/origami)
+[![Build Status](https://saucelabs.com/browser-matrix/codebakery-origami.svg)](https://saucelabs.com/open_sauce/user/codebakery-origami)
 
-Origami bridges the gap between the Angular platform and Polymer-built web components. This opens up [a huge ecosystem](https://www.webcomponents.org/) of high quality custom elements that can be used in Angular!
+## Why?
 
-### "The Gap"
+[Angular and custom elements are BFFs](https://custom-elements-everywhere.com/). With Polymer, there are a few gaps that Origami fills. The library is divided into several modules that can be imported individually to address these gaps.
 
-[Angular and custom elements are BFFs](https://custom-elements-everywhere.com/). There are only a few areas specific to Polymer that Origami can help out with.
+- [Angular Form Support]('forms/README.md')
+- [ShadyCSS Polyfill]('shadycss/README.md')
+- [Polymer `<template>` Stamping]('templates/README.md')
 
-- Angular Template/Reactive Form Support (`[(ngModel)]`)
-- Native `<template>` elements
-- Seamless production-ready build process
+## Install
 
-## Setup
-
-### 1. Install Dependencies
-
-```sh
-npm i --save @codebakery/origami
-npm i --save-dev babel-loader babel-core babel-preset-es2015 polymer-webpack-loader script-loader
-```
-
-Origami needs to patch the Angular CLI to insert the webpack loaders that we installed. Modify your `package.json` and add a postinstall script to create the patch.
-
-package.json
-```json
-{
-  "scripts": {
-    "postinstall": "node ./node_modules/@codebakery/origami/patch-cli.js"
-  }
-}
-```
-```sh
-npm run postinstall
-```
-
-Now anytime you install or update the Angular CLI, Origami will check and apply the patch if needed.
-
-### 2. Use Bower to add elements
-
-[Bower](https://bower.io/) is a flat dependency package manager for web modules. Polymer 2 and many elements are hosted with it.
+> Upgrading from Origami v2? Follow [this guide](UPGRADE.md).
 
 ```sh
-npm i -g bower
-bower init
+npm install @codebakery/origami
 ```
 
-### 3. Load polyfills
+Import each module as described in the links above, or if you need all of the modules you can simply import `OrigamiModule`. Include the `CUSTOM_ELEMENTS_SCHEMA` schema to enable custom elements in Angular templates.
 
-We're going to use a dynamic loader to only add polyfills if the browser needs them. In order to do this, Angular needs to include all the polyfill scripts at runtime as part of its assets. 
+```ts
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
+import { OrigamiModule } from '@codebakery/origami';
+import { AppComponent } from './app.component';
 
-Since we'll be referencing these assets in our `index.html`, they must be part of the app's root directory. A typical Angular CLI-generated project will have a `src/` directory that is the app root.
-
-We can move where bower dependencies are installed with a `.bowerrc` file in the project directory.
-
-`.bowerrc`
-```json
-{
-  "directory": "src/bower_components/"
-}
+@NgModule({
+  imports: [BrowserModule, FormsModule, OrigamiModule],
+  declarations: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  bootstrap: [AppComponent]
+})
+export class AppModule {}
 ```
 
-Now all bower dependencies are available for `.angular-cli.json` and our `index.html`. This example is using `src/bower_components/` as the directory to install to, but this may be any folder name that exists in the app root directory.
+## Polyfills
 
-> Like `node_modules/` you should add `src/bower_components/` to your `.gitignore` file to prevent checking them in.
-
-Now that bower is installing where the project files can see it, install the webcomponents polyfill.
+Polyfills are needed to support browsers that do not support all webcomponent features.
 
 ```sh
-bower install --save webcomponentsjs
+npm install @webcomponents/webcomponentsjs
 ```
 
-Modify `.angular-cli.json` and add the following to your app's assets.
+Next, add the polyfills to `index.html` and `angular.json`
 
-`.angular-cli.json`
-```
-{
-  "apps": [
-    {
-      "root": "src",
-      "assets": [
-        "assets",
-        "favicon.ico",
-        "manifest.json",
-        "bower_components/webcomponentsjs/custom*.js",
-        "bower_components/webcomponentsjs/web*.js"
-      ],
-      /* remaining app config */
-    }
-  ],
-  /* remaining CLI config */
-}
-```
+### `index.html`
 
-Next, modify the `index.html` shell to include the polyfills.
+Add a `<script>` importing `webcomponents-loader.js`. If your app compiles to ES5, include the `<div>` container to handle importing `custom-elements-es5-adapter.js`.
 
-`index.html`
 ```html
-<!doctype html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>Origami</title>
-  <base href="/">
-
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- This div is needed when targeting ES5. 
-  It will add the adapter to browsers that support customElements, which 
-  require ES6 classes -->
-  <div id="ce-es5-shim">
-    <script type="text/javascript">
+  <!-- ONLY include this div if your app compiles to ES5 -->
+  <div id="es5-adapter">
+    <script>
       if (!window.customElements) {
-        var ceShimContainer = document.querySelector('#ce-es5-shim');
-        ceShimContainer.parentElement.removeChild(ceShimContainer);
+        // If the browser does not implement customElements, it should not load the adapter
+        var container = document.querySelector('#es5-adapter');
+        container.parentElement.removeChild(container);
       }
     </script>
-    <script type="text/javascript" src="bower_components/webcomponentsjs/custom-elements-es5-adapter.js"></script>
+    <!-- Allows customElements to define ES5 functions instead of ES6 classes -->
+    <script src="node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js"></script>
   </div>
-  <script src="bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+
+  <!-- Required polyfill loader -->
+  <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 </head>
 <body>
-  <app-root>Loading...</app-root>
+  <app-root></app-root>
+  <!-- Angular scripts will be added here -->
 </body>
 </html>
 ```
 
-Custom elements must be defined as ES6 classes. The `custom-elements-es5-adapter.js` script will allow our transpiled elements to work in ES6-ready browsers. `webcomponents-loader.js` will check the browser's abilities and load the correct polyfill from the `bower_components/webcomponentsjs/` folder.
+### `angular.json`
 
-The last piece is to wait to bootstrap Angular until the polyfills are loaded. Modify your `main.ts` and wait for the polyfills.
+Add an asset glob to the architect `"build"` and `"test"` sections. The glob will vary depending on if the project is set to compile to ES6 or ES5, since ES5 needs the `custom-elements-es5-adapter.js` file.
 
-`main.ts`
-```ts
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { webcomponentsReady } from '@codebakery/origami';
+#### ES6
 
-import { AppModule } from './app/app.module';
-
-webcomponentsReady().then(() => {
-  platformBrowserDynamic().bootstrapModule(AppModule);
-});
-```
-
-#### Angular 4 templates
-
-Angular 4 consumes native `<template>` tags, which are commonly used in web components. Add the following configuration to the app's bootstrap to prevent this.
-
-`main.ts`
-```ts
-webcomponentsReady().then(() => {
-  platformBrowserDynamic().bootstrapModule(AppModule, {
-    enableLegacyTemplate: false // Required for Angular 4 to use native <template>s
-  });
-});
-```
-
-`enableLegacyTemplate: false` will prevent Angular 4 from turning native `<template>` elements into `<ng-template>`s. Bootstrap options must also be specified in your `tsconfig.json` for Ahead-of-Time compilation.
-
-`tsconfig.app.json`
-```
+```json
 {
-  "compilerOptions": {
-    ...
-  },
-  "angularCompilerOptions": {
-    "enableLegacyTemplate": false
+  "projects": {
+    "es6App": {
+      "architect": {
+        "build": {
+          "options": {
+            "assets": [
+              "src/assets",
+              /* other assets */
+              {
+                "glob": "{*loader.js,bundles/*.js}",
+                "input": "node_modules/@webcomponents/webcomponentsjs",
+                "output": "/node_modules/@webcomponents/webcomponentsjs"
+              }
+            ]
+          }
+        },
+        "test": {
+          "options": {
+            "assets": [
+              "src/assets",
+              /* other assets */
+              {
+                "glob": "{*loader.js,bundles/*.js}",
+                "input": "node_modules/@webcomponents/webcomponentsjs",
+                "output": "/node_modules/@webcomponents/webcomponentsjs"
+              }
+            ]
+          }
+        }
+      }
+    }
   }
 }
 ```
 
-Angular 5+ defaults this value to `false`. You do not need to include it in your bootstrap function or `tsconfig.json`.
+#### ES5
 
-### 4. Import Origami
-
-Import Origami into your topmost root `NgModule`. In any modules where you use custom elements, add `CUSTOM_ELEMENTS_SCHEMA` to the module. This prevents the Angular compiler from emitting errors on unknown element tags.
-
-`app.module.ts`
-```ts
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
-import { PolymerModule } from '@codebakery/origami';
-
-import { AppComponent } from './app.component';
-
-@NgModule({
-  imports: [
-    BrowserModule,
-    FormsModule, // Origami requires the Angular Forms module
-    PolymerModule.forRoot() // Do not call .forRoot() when importing in child modules
-  ],
-  declarations: [
-    AppComponent
-  ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA], // Add to every @NgModule() that uses custom elements
-  bootstrap: [AppComponent]
-})
-export class AppModule { }
+```json
+{
+  "projects": {
+    "es5App": {
+      "architect": {
+        "build": {
+          "assets": [
+            "src/assets",
+            /* other assets */
+            {
+              "glob": "{*loader.js,*adapter.js,bundles/*.js}",
+              "input": "node_modules/@webcomponents/webcomponentsjs",
+              "output": "/node_modules/@webcomponents/webcomponentsjs"
+            }
+          ]
+        },
+        "test": {
+          "options": {
+            "assets": [
+              "src/assets",
+              /* other assets */
+              {
+                "glob": "{*loader.js,*adapter.js,bundles/*.js}",
+                "input": "node_modules/@webcomponents/webcomponentsjs",
+                "output": "/node_modules/@webcomponents/webcomponentsjs"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}
 ```
 
-### 5. Import and use custom elements
+## Usage
 
-Install elements! Persist them to `bower.json` with the `--save` flag.
+### [Angular Form Support]('forms/README.md')
 
-```sh
-bower install --save PolymerElements/paper-checkbox
-bower install --save PolymerElements/paper-input
-```
+Add the `origami` attribute to any custom element using `[ngModel]`, `[formControl]` or `[formControlName]`.
 
-Next, import the element in the Angular component that you want to use it in. Add the `[ironControl]` directive to elements that use Angular form directives.
-
-`app.component.ts`
 ```ts
 import { Component } from '@angular/core';
-
-import 'paper-checkbox/paper-checkbox.html';
-import 'paper-input/paper-input.html';
+import '@polymer/paper-input/paper-input';
 
 @Component({
-  selector: 'app-root',
+  selector: 'app-component',
   template: `
-    <div>
-      <label>Hello from Angular</label>
-      <input [(ngModel)]="value">
-    </div>
-    <paper-input label="Hello from Polymer" ironControl [(ngModel)]="value"></paper-input>
-
-    <div>
-      <label>Non-form two-way bindings!</label>
-      <input type="checkbox" [(value)]="checked">
-    </div>
-    <paper-checkbox [checked]="checked" (checked-changed)="checked = $event.detail.value"></paper-checkbox>
+    <div>Angular value: {{value}}</div>
+    <paper-input [(ngModel)]="value" origami></paper-input>
   `
 })
 export class AppComponent {
   value: string;
-  checked: boolean;
 }
 ```
 
-## Support
+### [ShadyCSS Polyfill]('shadycss/README.md')
 
-- Angular 4.2.0 +
-- Polymer 2.0 +
+Enables the use of CSS custom properties in Angular styles.
 
-Origami does not support Polymer 1. Check out [angular-polymer](https://github.com/platosha/angular-polymer) if you need Polymer 1 support.
+```ts
+import { Component } from '@angular/core';
 
-### Browsers
+@Component({
+  selector: 'app-component',
+  styles: [
+    `
+      :host {
+        --my-color: blue;
+      }
 
-- Chrome
-- Safari 9+
-- Firefox
-- Edge
-- Internet Explorer 11
+      h1 {
+        color: var(--my-color);
+      }
+    `
+  ],
+  template: `
+    <h1>I'm blue!</h1>
+  `
+})
+export class AppComponent {}
+```
 
-[Polymer](https://www.polymer-project.org/2.0/docs/browsers) and [Angular](https://angular.io/guide/browser-support) support different browsers. Using Polymer means that you will lose support for IE 9 and 10 as well as Safari/iOS 7 and 8.
+### [Polymer `<template>` Stamping]('templates/README.md')
+
+Call `polymerHost()` and add it to the providers for a component that uses Polymer's data binding syntax in `<template>` elements. Add `ngNonBindable` to all `<template>` elements.
+
+```ts
+import { Component } from '@angular/core';
+import { polymerHost } from '@codebakery/origami/templates';
+import '@polymer/iron-list/iron-list';
+
+@Component({
+  selector: 'app-component',
+  template: `
+    <iron-list [items]="items">
+      <template ngNonBindable>
+        <div on-click="itemClicked">
+          <div>[[getLabel(item)]]</div>
+        </div>
+      </template>
+    </iron-list>
+  `,
+  providers: [polymerHost(AppComponent)]
+})
+export class AppComponent {
+  items = [1, 2, 3];
+
+  getLabel(item: number) {
+    return `# ${item}`;
+  }
+
+  itemClicked(event: Event) {
+    console.log(event);
+  }
+}
+```

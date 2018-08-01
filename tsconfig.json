@@ -5,17 +5,17 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "lib": [
-      "es6",
-      "dom"
-    ],
     "module": "es2015",
     "moduleResolution": "node",
-    "noUnusedLocals": false,
-    "noUnusedParameters": true,
-    "skipLibCheck": true,
+    "paths": {
+      "@codebakery/origami": ["./public_api.ts"],
+      "@codebakery/origami/forms": ["./forms/public_api.ts"],
+      "@codebakery/origami/shadycss": ["./shadycss/public_api.ts"],
+      "@codebakery/origami/templates": ["./templates/public_api.ts"],
+      "@codebakery/origami/util": ["./util/public_api.ts"]
+    },
     "sourceMap": true,
     "strict": true,
-    "target": "ES6"
+    "target": "es2015"
   }
 }

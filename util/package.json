@@ -1,0 +1,11 @@
+{
+  "$schema": "../node_modules/ng-packagr/package.schema.json",
+  "ngPackage": {
+    "dest": "../",
+    "lib": {
+      "entryFile": "public_api.ts",
+      "flatModuleFile": "origami-util"
+    }
+  },
+  "sideEffects": true
+}
