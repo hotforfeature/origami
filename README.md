@@ -22,7 +22,7 @@ To setup Origami, follow these steps:
 2. Install [webcomponent polyfills](#polyfills)
    1. Add links to them in [`index.html`](#indexhtml)
    2. Add assets to include them in [`angular.json`](#angularjson-angular-6) or [`.angular-cli.json`](#angular-clijson-angular-5)
-3. [Use it!](#usage)
+3. Read the [Usage Summary](#usage-summary)
 
 ## Install
 
@@ -220,7 +220,7 @@ Add an asset glob to the app's `"assets"` array. The glob will vary depending on
 }
 ```
 
-## Usage
+## Usage Summary
 
 ### [Angular Form Support](forms/README.md)
 

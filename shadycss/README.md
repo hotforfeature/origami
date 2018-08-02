@@ -4,16 +4,12 @@ Adds [ShadyCSS](https://github.com/webcomponents/shadycss) support to Angular st
 
 ## Usage
 
-Import the `ShadyCSSModule` in any `@NgModule` you wish to use ShadyCSS with. For the best performance is recommended to import it once at the root module.
+Import the `ShadyCSSModule` in any `@NgModule` you wish to use ShadyCSS with. For the best performance it is recommended to import it once at the root module.
 
 ```ts
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ShadyCSSModule } from '@codebakery/origami/shadycss';
-// The polyfill must be imported separately
-import '@webcomponents/shadycss/entrypoints/custom-style-interface';
-// Or if using Polymer, it will be imported from any dependency that imports
-// import '@polymer/polymer/lib/elements/custom-style.js';
 import { AppComponent } from './app.component';
 
 @NgModule({
@@ -23,6 +19,14 @@ import { AppComponent } from './app.component';
   bootstrap: [AppComponent]
 })
 export class AppModule {}
+```
+
+Ensure that either the CustomStyleInterface polyfill is imported, or that an element that depends on it is imported.
+
+```ts
+import '@webcomponents/shadycss/entrypoints/custom-style-interface';
+// or
+import '@polymer/polymer/lib/elements/custom-style';
 ```
 
 You may then use CSS custom properties in Angular `styles` and `styleUrls`.
@@ -52,7 +56,7 @@ export class AppComponent {}
 
 ## Limitations
 
-This module cannot provide polyfill support for external stylesheets or any styles defined in the `angular.json` project build options' `"styles"` array. A recommended workaround is to use `ViewEncapsulation.None` on the app's root component and use its component styles as "global" styles.
+This module cannot provide polyfill support for external stylesheets or any styles defined in the `angular.json` or `.angular-cli.json` `"styles"` array. A recommended workaround is to use `ViewEncapsulation.None` on the app's root component and use its component styles as "global" styles.
 
 ```ts
 import { Component, ViewEncapsulation } from '@angular/core';

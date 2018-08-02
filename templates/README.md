@@ -32,6 +32,10 @@ import '@polymer/iron-list/iron-list';
 
 @Component({
   selector: 'app-component',
+  providers: [
+    // This informs Polymer `<template>` elements that AppComponent is the host
+    polymerHost(AppComponent)
+  ],
   template: `
     <iron-list [items]="items">
       <template ngNonBindable>
@@ -49,11 +53,7 @@ import '@polymer/iron-list/iron-list';
         </div>
       </template>
     </iron-list>
-  `,
-  providers: [
-    // This informs Polymer `<template>` elements that AppComponent is the host
-    polymerHost(AppComponent)
-  ]
+  `
 })
 export class AppComponent {
   label = 'Item';
