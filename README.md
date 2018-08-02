@@ -21,7 +21,7 @@ To setup Origami, follow these steps:
 1. [Install and import](#install) `OrigamiModule`]
 2. Install [webcomponent polyfills](#polyfills)
    1. Add links to them in [`index.html`](#indexhtml)
-   2. Add assets to include them in [`angular.json`](#angularjson-angular-6+) or [`.angular-cli.json`](#angular-clijson-angular-5)
+   2. Add assets to include them in [`angular.json`](#angularjson-angular-6) or [`.angular-cli.json`](#angular-clijson-angular-5)
 3. [Use it!](#usage)
 
 ## Install
@@ -174,7 +174,7 @@ Add an asset glob to the architect `"build"` and `"test"` sections. The glob wil
 
 ### `.angular-cli.json` (Angular 5)
 
-> Skip this section and refer to [`angular.json`](#angularjson-angular-6+) if you are using Angular 6+.
+> Skip this section and refer to [`angular.json`](#angularjson-angular-6) if you are using Angular 6+.
 
 Add an asset glob to the app's `"assets"` array. The glob will vary depending on if the project is set to compile to ES6 or ES5, since ES5 needs the `custom-elements-es5-adapter.js` file. The `"input"` property of the asset must be relative to the project's `"root"`.
 
