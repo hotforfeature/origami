@@ -21,7 +21,6 @@ import {
   AbstractControl
 } from '@angular/forms';
 import { shimCustomElements } from '@codebakery/origami/util';
-import { Subscription } from 'rxjs';
 
 // Ensure imported elements can define themselves before polyfills
 shimCustomElements();
@@ -138,7 +137,7 @@ export class OrigamiControlValueAccessor extends DefaultValueAccessor
   /**
    * Subscription to the NgControl's statusChanges.
    */
-  protected statusSub?: Subscription;
+  protected statusSub?: { unsubscribe(): void };
   /**
    * Most custom elements property will emit a `property-changed` event when
    * their value is set. This flag informs the value accessor to ignore the

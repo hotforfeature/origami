@@ -1,5 +1,6 @@
 # v3 Breaking Changes
 
+- Dropped Angular 4 support
 - `PolymerModule` has been renamed to `OrigamiModule` and no longer requires `.forRoot()`
 - `[ironControl]` directive has been renamed to `[origami]`
 - Control validation errors are reported as `{ "validate": true }` instead of `{ "polymer": true }`, and may be configured by setting `[validationErrorsKey]`
@@ -41,9 +42,19 @@ Additionally, remove the extra dependencies required for the `patch-cli.js` scri
 npm rm polymer-webpack-loader babel-core babel-loader babel-preset-es2015 script-loader
 ```
 
-## Update Angular to v6
+Finally, re-install @angular-devkit/build-angular (Angular 6) or @angular/cli (Angular 5) to remove the changes from `patch-cli.js`.
 
-Follow the guide at https://update.angular.io/ to update Angular. This will include moving from `.angular-cli.json` to `angular.json`.
+```sh
+rm -rf node_modules/@angular-devkit/build-angular
+# or
+rm -rf node_modules/@angular/cli
+
+npm install
+```
+
+## (Optional) Update Angular
+
+If you plan on updating Angular, do so at this time and follow the guide at https://update.angular.io/. This may include moving from `.angular-cli.json` to `angular.json`.
 
 ## Update Origami
 
@@ -88,20 +99,26 @@ rm -rf src/bower_components/
 
 If you have any `.html` Polymer elements in the `src/elements/` folder, convert them to `.js` or `.ts` files at this time. [polymer-modulizer](https://github.com/Polymer/polymer-modulizer) may assist in the conversion.
 
-## Update `angular.json` Polyfill Assets
+## Update `angular.json` or `.angular-cli.json` Polyfill Assets
+
+Remember that the `"input"` is relative to the `"root"` key of the project. If your root is not the same directory that `node_modules/` are installed to, you may need to go up a directory.
 
 ### ES6 (es2015) Target Apps
+
+`angular.json` (Angular 6+)
 
 ```diff
 {
   "projects": {
     "es6App": {
+      "root": "",
+      "sourceRoot": "src",
       "architect": {
         "build": {
           "options": {
             "assets": [
 -              { "glob": "web*.js", "input": "src/bower_components/webcomponentsjs/", "output": "/bower_components/webcomponentsjs/" }
-+                { "glob": "{*loader.js,bundles/*.js}", "input": "node_modules/@webcomponents/webcomponentsjs", "output": "/node_modules/@webcomponents/webcomponentsjs" }
++              { "glob": "{*loader.js,bundles/*.js}", "input": "node_modules/@webcomponents/webcomponentsjs", "output": "node_modules/@webcomponents/webcomponentsjs" }
             ]
           }
         },
@@ -109,7 +126,7 @@ If you have any `.html` Polymer elements in the `src/elements/` folder, convert 
           "options": {
             "assets": [
 -              { "glob": "web*.js", "input": "src/bower_components/webcomponentsjs/", "output": "/bower_components/webcomponentsjs/" }
-+                { "glob": "{*loader.js,bundles/*.js}", "input": "node_modules/@webcomponents/webcomponentsjs", "output": "/node_modules/@webcomponents/webcomponentsjs" }
++              { "glob": "{*loader.js,bundles/*.js}", "input": "node_modules/@webcomponents/webcomponentsjs", "output": "node_modules/@webcomponents/webcomponentsjs" }
             ]
           }
         }
@@ -119,19 +136,40 @@ If you have any `.html` Polymer elements in the `src/elements/` folder, convert 
 }
 ```
 
+`.angular-cli.json` (Angular 5)
+
+```diff
+{
+  "apps": [
+    {
+      "name": "es6App",
+      "root": "src",
+      "assets": [
+-        "bower_components/webcomponentsjs/web*.js"
++        { "glob": "{*loader.js,bundles/*.js}", "input": "../node_modules/@webcomponents/webcomponentsjs", "output": "node_modules/@webcomponents/webcomponentsjs" }
+      ]
+    }
+  ]
+}
+```
+
 ### ES5 Target Apps
+
+`angular.json` (Angular 6+)
 
 ```diff
 {
   "projects": {
     "es5App": {
+      "root": "",
+      "sourceRoot": "src",
       "architect": {
         "build": {
           "options": {
             "assets": [
 -              { "glob": "*adapter.js", "input": "src/bower_components/webcomponentsjs/", "output": "/bower_components/webcomponentsjs/" }
 -              { "glob": "web*.js", "input": "src/bower_components/webcomponentsjs/", "output": "/bower_components/webcomponentsjs/" }
-+                { "glob": "{*loader.js,*adapter.js,bundles/*.js}", "input": "node_modules/@webcomponents/webcomponentsjs", "output": "/node_modules/@webcomponents/webcomponentsjs" }
++              { "glob": "{*loader.js,*adapter.js,bundles/*.js}", "input": "node_modules/@webcomponents/webcomponentsjs", "output": "node_modules/@webcomponents/webcomponentsjs" }
             ]
           }
         },
@@ -140,13 +178,31 @@ If you have any `.html` Polymer elements in the `src/elements/` folder, convert 
             "assets": [
 -              { "glob": "*adapter.js", "input": "src/bower_components/webcomponentsjs/", "output": "/bower_components/webcomponentsjs/" }
 -              { "glob": "web*.js", "input": "src/bower_components/webcomponentsjs/", "output": "/bower_components/webcomponentsjs/" }
-+                { "glob": "{*loader.js,*adapter.js,bundles/*.js}", "input": "node_modules/@webcomponents/webcomponentsjs", "output": "/node_modules/@webcomponents/webcomponentsjs" }
++              { "glob": "{*loader.js,*adapter.js,bundles/*.js}", "input": "node_modules/@webcomponents/webcomponentsjs", "output": "node_modules/@webcomponents/webcomponentsjs" }
             ]
           }
         }
       }
     }
   }
+}
+```
+
+`.angular-cli.json` (Angular 5)
+
+```diff
+{
+  "apps": [
+    {
+      "name": "es5App",
+      "root": "src",
+      "assets": [
+-        "bower_components/webcomponentsjs/custom-elements-es5-adapter.js",
+-        "bower_components/webcomponentsjs/web*.js"
++        { "glob": "{*loader.js,*adapter.js,bundles/*.js}", "input": "../node_modules/@webcomponents/webcomponentsjs", "output": "node_modules/@webcomponents/webcomponentsjs" }
+      ]
+    }
+  ]
 }
 ```
 

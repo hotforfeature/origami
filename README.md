@@ -7,13 +7,21 @@ Angular + Polymer
 [![NPM Package](https://badge.fury.io/js/%40codebakery%2Forigami.svg)](https://www.npmjs.com/package/@codebakery/origami)
 [![Build Status](https://saucelabs.com/browser-matrix/codebakery-origami.svg)](https://saucelabs.com/open_sauce/user/codebakery-origami)
 
-## Why?
+## Summary
 
 [Angular and custom elements are BFFs](https://custom-elements-everywhere.com/). With Polymer, there are a few gaps that Origami fills. The library is divided into several modules that can be imported individually to address these gaps.
 
 - [Angular Form Support]('forms/README.md')
 - [ShadyCSS Polyfill]('shadycss/README.md')
 - [Polymer `<template>` Stamping]('templates/README.md')
+
+To setup Origami, follow these steps:
+
+1. [Install and import](#install) `OrigamiModule`]
+2. Install [webcomponent polyfills](#polyfills)
+   1. Add links to them in [`index.html`](#indexhtml)
+   2. Add assets to include them in [`angular.json`](#angularjson) or [`.angular-cli.json`](#angular-clijson)
+3. [Use it!](#usage)
 
 ## Install
 
@@ -83,7 +91,9 @@ Add a `<script>` importing `webcomponents-loader.js`. If your app compiles to ES
 
 ### `angular.json`
 
-Add an asset glob to the architect `"build"` and `"test"` sections. The glob will vary depending on if the project is set to compile to ES6 or ES5, since ES5 needs the `custom-elements-es5-adapter.js` file.
+> Skip this section and go to [`.angular-cli.json`](#angular-clijson) if you are using Angular 5.
+
+Add an asset glob to the architect `"build"` and `"test"` sections. The glob will vary depending on if the project is set to compile to ES6 or ES5, since ES5 needs the `custom-elements-es5-adapter.js` file. The `"input"` property of the asset must be relative to the project's `"root"`.
 
 #### ES6
 
@@ -91,6 +101,8 @@ Add an asset glob to the architect `"build"` and `"test"` sections. The glob wil
 {
   "projects": {
     "es6App": {
+      "root": "",
+      "sourceRoot": "src",
       "architect": {
         "build": {
           "options": {
@@ -100,7 +112,7 @@ Add an asset glob to the architect `"build"` and `"test"` sections. The glob wil
               {
                 "glob": "{*loader.js,bundles/*.js}",
                 "input": "node_modules/@webcomponents/webcomponentsjs",
-                "output": "/node_modules/@webcomponents/webcomponentsjs"
+                "output": "node_modules/@webcomponents/webcomponentsjs"
               }
             ]
           }
@@ -113,7 +125,7 @@ Add an asset glob to the architect `"build"` and `"test"` sections. The glob wil
               {
                 "glob": "{*loader.js,bundles/*.js}",
                 "input": "node_modules/@webcomponents/webcomponentsjs",
-                "output": "/node_modules/@webcomponents/webcomponentsjs"
+                "output": "node_modules/@webcomponents/webcomponentsjs"
               }
             ]
           }
@@ -130,6 +142,8 @@ Add an asset glob to the architect `"build"` and `"test"` sections. The glob wil
 {
   "projects": {
     "es5App": {
+      "root": "",
+      "sourceRoot": "src",
       "architect": {
         "build": {
           "assets": [
@@ -138,7 +152,7 @@ Add an asset glob to the architect `"build"` and `"test"` sections. The glob wil
             {
               "glob": "{*loader.js,*adapter.js,bundles/*.js}",
               "input": "node_modules/@webcomponents/webcomponentsjs",
-              "output": "/node_modules/@webcomponents/webcomponentsjs"
+              "output": "node_modules/@webcomponents/webcomponentsjs"
             }
           ]
         },
@@ -150,7 +164,7 @@ Add an asset glob to the architect `"build"` and `"test"` sections. The glob wil
               {
                 "glob": "{*loader.js,*adapter.js,bundles/*.js}",
                 "input": "node_modules/@webcomponents/webcomponentsjs",
-                "output": "/node_modules/@webcomponents/webcomponentsjs"
+                "output": "node_modules/@webcomponents/webcomponentsjs"
               }
             ]
           }
@@ -158,6 +172,56 @@ Add an asset glob to the architect `"build"` and `"test"` sections. The glob wil
       }
     }
   }
+}
+```
+
+### `.angular-cli.json` (Angular 5)
+
+> Skip this section and refer to [`angular.json`](#angularjson) if you are using Angular 6+.
+
+Add an asset glob to the app's `"assets"` array. The glob will vary depending on if the project is set to compile to ES6 or ES5, since ES5 needs the `custom-elements-es5-adapter.js` file. The `"input"` property of the asset must be relative to the project's `"root"`.
+
+#### ES6
+
+```json
+{
+  "apps": [
+    {
+      "name": "es6App",
+      "root": "src",
+      "assets": [
+        "assets",
+        /* other assets */
+        {
+          "glob": "{*loader.js,bundles/*.js}",
+          "input": "../node_modules/@webcomponents/webcomponentsjs",
+          "output": "node_modules/@webcomponents/webcomponentsjs"
+        }
+      ]
+    }
+  ]
+}
+```
+
+#### ES5
+
+```json
+{
+  "apps": [
+    {
+      "name": "es5App",
+      "root": "src",
+      "assets": [
+        "assets",
+        /* other assets */
+        {
+          "glob": "{*loader.js,*adapter.js,bundles/*.js}",
+          "input": "../node_modules/@webcomponents/webcomponentsjs",
+          "output": "node_modules/@webcomponents/webcomponentsjs"
+        }
+      ]
+    }
+  ]
 }
 ```
 
