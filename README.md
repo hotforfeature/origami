@@ -12,9 +12,9 @@ Angular + Polymer
 
 [Angular and custom elements are BFFs](https://custom-elements-everywhere.com/). With Polymer, there are a few gaps that Origami fills. The library is divided into several modules that can be imported individually to address these gaps.
 
-- [Angular Form Support]('forms/README.md')
-- [ShadyCSS Polyfill]('shadycss/README.md')
-- [Polymer `<template>` Stamping]('templates/README.md')
+- [Angular Form Support](forms/README.md)
+- [ShadyCSS Polyfill](shadycss/README.md)
+- [Polymer `<template>` Stamping](templates/README.md)
 
 To setup Origami, follow these steps:
 
