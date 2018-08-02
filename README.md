@@ -5,7 +5,8 @@ _Origami is the art of folding paper with sharp angles to form beautiful creatio
 Angular + Polymer
 
 [![NPM Package](https://badge.fury.io/js/%40codebakery%2Forigami.svg)](https://www.npmjs.com/package/@codebakery/origami)
-[![Build Status](https://saucelabs.com/browser-matrix/codebakery-origami.svg)](https://saucelabs.com/open_sauce/user/codebakery-origami)
+
+[![Test Status](https://saucelabs.com/browser-matrix/codebakery-origami.svg)](https://saucelabs.com/open_sauce/user/codebakery-origami)
 
 ## Summary
 
@@ -20,7 +21,7 @@ To setup Origami, follow these steps:
 1. [Install and import](#install) `OrigamiModule`]
 2. Install [webcomponent polyfills](#polyfills)
    1. Add links to them in [`index.html`](#indexhtml)
-   2. Add assets to include them in [`angular.json`](#angularjson) or [`.angular-cli.json`](#angular-clijson)
+   2. Add assets to include them in [`angular.json`](#angularjson-angular-6+) or [`.angular-cli.json`](#angular-clijson-angular-5)
 3. [Use it!](#usage)
 
 ## Install
@@ -89,9 +90,9 @@ Add a `<script>` importing `webcomponents-loader.js`. If your app compiles to ES
 </html>
 ```
 
-### `angular.json`
+### `angular.json` (Angular 6+)
 
-> Skip this section and go to [`.angular-cli.json`](#angular-clijson) if you are using Angular 5.
+> Skip this section and go to [`.angular-cli.json`](#angular-clijson-angular-5) if you are using Angular 5.
 
 Add an asset glob to the architect `"build"` and `"test"` sections. The glob will vary depending on if the project is set to compile to ES6 or ES5, since ES5 needs the `custom-elements-es5-adapter.js` file. The `"input"` property of the asset must be relative to the project's `"root"`.
 
@@ -108,7 +109,6 @@ Add an asset glob to the architect `"build"` and `"test"` sections. The glob wil
           "options": {
             "assets": [
               "src/assets",
-              /* other assets */
               {
                 "glob": "{*loader.js,bundles/*.js}",
                 "input": "node_modules/@webcomponents/webcomponentsjs",
@@ -121,7 +121,6 @@ Add an asset glob to the architect `"build"` and `"test"` sections. The glob wil
           "options": {
             "assets": [
               "src/assets",
-              /* other assets */
               {
                 "glob": "{*loader.js,bundles/*.js}",
                 "input": "node_modules/@webcomponents/webcomponentsjs",
@@ -148,7 +147,6 @@ Add an asset glob to the architect `"build"` and `"test"` sections. The glob wil
         "build": {
           "assets": [
             "src/assets",
-            /* other assets */
             {
               "glob": "{*loader.js,*adapter.js,bundles/*.js}",
               "input": "node_modules/@webcomponents/webcomponentsjs",
@@ -160,7 +158,6 @@ Add an asset glob to the architect `"build"` and `"test"` sections. The glob wil
           "options": {
             "assets": [
               "src/assets",
-              /* other assets */
               {
                 "glob": "{*loader.js,*adapter.js,bundles/*.js}",
                 "input": "node_modules/@webcomponents/webcomponentsjs",
@@ -177,7 +174,7 @@ Add an asset glob to the architect `"build"` and `"test"` sections. The glob wil
 
 ### `.angular-cli.json` (Angular 5)
 
-> Skip this section and refer to [`angular.json`](#angularjson) if you are using Angular 6+.
+> Skip this section and refer to [`angular.json`](#angularjson-angular-6+) if you are using Angular 6+.
 
 Add an asset glob to the app's `"assets"` array. The glob will vary depending on if the project is set to compile to ES6 or ES5, since ES5 needs the `custom-elements-es5-adapter.js` file. The `"input"` property of the asset must be relative to the project's `"root"`.
 
@@ -227,7 +224,7 @@ Add an asset glob to the app's `"assets"` array. The glob will vary depending on
 
 ## Usage
 
-### [Angular Form Support]('forms/README.md')
+### [Angular Form Support](forms/README.md)
 
 Add the `origami` attribute to any custom element using `[ngModel]`, `[formControl]` or `[formControlName]`.
 
@@ -247,7 +244,7 @@ export class AppComponent {
 }
 ```
 
-### [ShadyCSS Polyfill]('shadycss/README.md')
+### [ShadyCSS Polyfill](shadycss/README.md)
 
 Enables the use of CSS custom properties in Angular styles.
 
@@ -274,7 +271,7 @@ import { Component } from '@angular/core';
 export class AppComponent {}
 ```
 
-### [Polymer `<template>` Stamping]('templates/README.md')
+### [Polymer `<template>` Stamping](templates/README.md)
 
 Call `polymerHost()` and add it to the providers for a component that uses Polymer's data binding syntax in `<template>` elements. Add `ngNonBindable` to all `<template>` elements.
 
