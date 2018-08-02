@@ -1,7 +1,7 @@
 # v3 Breaking Changes
 
 - `PolymerModule` has been renamed to `OrigamiModule` and no longer requires `.forRoot()`
-- `[ironControl]` directive has been renamed to `[polymer]`
+- `[ironControl]` directive has been renamed to `[origami]`
 - Control validation errors are reported as `{ "validate": true }` instead of `{ "polymer": true }`, and may be configured by setting `[validationErrorsKey]`
 - `<template [polymer]="this">` is no longer supported, instead add `polymerHost(AppComponent)` to the component providers
 - `webcomponentsReady()` is no longer required and will no longer throw an error if a polyfill is not detected
