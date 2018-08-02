@@ -188,7 +188,6 @@ Add an asset glob to the app's `"assets"` array. The glob will vary depending on
       "root": "src",
       "assets": [
         "assets",
-        /* other assets */
         {
           "glob": "{*loader.js,bundles/*.js}",
           "input": "../node_modules/@webcomponents/webcomponentsjs",
@@ -210,7 +209,6 @@ Add an asset glob to the app's `"assets"` array. The glob will vary depending on
       "root": "src",
       "assets": [
         "assets",
-        /* other assets */
         {
           "glob": "{*loader.js,*adapter.js,bundles/*.js}",
           "input": "../node_modules/@webcomponents/webcomponentsjs",
