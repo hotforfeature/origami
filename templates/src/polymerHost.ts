@@ -21,10 +21,7 @@ export const POLYMER_HOST = new InjectionToken<any>('polymerHost');
 export function polymerHost(componentType: Type<any>): Provider {
   return {
     provide: POLYMER_HOST,
-    useFactory: (component: any) => {
-      patchPolymerHost(component);
-      return component;
-    },
+    useFactory: patchPolymerHost,
     deps: [componentType]
   };
 }
@@ -39,8 +36,9 @@ export function polymerHost(componentType: Type<any>): Provider {
  * `polymerHost()`.
  *
  * @param dataHost the host to patch
+ * @returns the patched dataHost
  */
-export function patchPolymerHost(dataHost: any) {
+export function patchPolymerHost(dataHost: any): any {
   // Add methods from TemplateStamp that templatize instances expect
   if (!dataHost._addEventListenerToNode) {
     dataHost._addEventListenerToNode = (
@@ -51,4 +49,6 @@ export function patchPolymerHost(dataHost: any) {
       node.addEventListener(eventName, handler);
     };
   }
+
+  return dataHost;
 }
