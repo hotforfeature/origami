@@ -99,11 +99,33 @@ rm -rf src/bower_components/
 
 If you have any `.html` Polymer elements in the `src/elements/` folder, convert them to `.js` or `.ts` files at this time. [polymer-modulizer](https://github.com/Polymer/polymer-modulizer) may assist in the conversion.
 
+## Add prepare dependencies script (ES5 only)
+
+If an app is targeting ES5, add a script to `package.json` before `ng serve` and `ng build` tasks to prepare dependencies for ES5 or ES2015 targets. This section may be skipped if an app does not target ES5.
+
+`origami prepare es5 <globs...>` must be added before serve and build commands targeting ES5.
+
+`origami prepare es2015 <globs...>` must be added before serve and build commands targeting ES6 (ES2015).
+
+Change the glob, or add additional globs, to target all webcomponent npm folders.
+
+```diff
+{
+  "scripts": {
++    "prepare:es5": "origami prepare es5 node_modules/@polymer/*",
+-    "start": "ng serve",
+-    "build": "ng build --prod"
++    "start": "npm run prepare:es5 && ng serve",
++    "build": "npm run prepare:es5 && ng build --prod"
+  }
+}
+```
+
 ## Update `angular.json` or `.angular-cli.json` Polyfill Assets
 
 Remember that the `"input"` is relative to the `"root"` key of the project. If your root is not the same directory that `node_modules/` are installed to, you may need to go up a directory.
 
-### ES6 (es2015) Target Apps
+### ES6 (ES2015) Target Apps
 
 `angular.json` (Angular 6+)
 

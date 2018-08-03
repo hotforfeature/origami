@@ -22,7 +22,8 @@ To setup Origami, follow these steps:
 2. Install [webcomponent polyfills](#polyfills)
    1. Add links to them in [`index.html`](#indexhtml)
    2. Add assets to include them in [`angular.json`](#angularjson-angular-6) or [`.angular-cli.json`](#angular-clijson-angular-5)
-3. Read the [Usage Summary](#usage-summary)
+3. [Prepare dependencies](#prepare-dependencies-es5-only) if targeting ES5
+4. Read the [Usage Summary](#usage-summary)
 
 ## Install
 
@@ -217,6 +218,39 @@ Add an asset glob to the app's `"assets"` array. The glob will vary depending on
       ]
     }
   ]
+}
+```
+
+## Prepare Dependencies (ES5 only)
+
+Angular will not transpile `node_modules/`, and a common pattern among webcomponents is to be distributed as ES2015 classes. Origami provides a simple CLI to effeciently transpile dependencies to ES5 or back to ES2015 before building.
+
+For example, this command will prepare all `@polymer/` and `@vaadin/` dependencies.
+
+```sh
+origami prepare es5 node_modules/{@polymer,@vaadin}/*
+
+# to restore to ES2015
+origami prepare es2015 node_modules/{@polymer,@vaadin}/*
+
+# for more info
+origami --help
+```
+
+The CLI can also restore the previous ES2015 files for projects that compile to both targets.
+
+It is recommended to add a script before `ng build` and `ng serve` tasks in `package.json`.
+
+```json
+{
+  "scripts": {
+    "prepare:es5": "origami prepare es5 node_modules/{@polymer,@vaadin}/*",
+    "prepare:es2015": "origami prepare es2015 node_modules/{@polymer,@vaadin}/*",
+    "start": "npm run prepare:es5 && ng serve es5App",
+    "start:es2015": "npm run prepare:es2015 && ng serve es2015App",
+    "build": "npm run prepare:es5 && ng build es5App --prod",
+    "build:es2015": "npm run prepare:es2015 && ng build es2015App --prod"
+  }
 }
 ```
 
