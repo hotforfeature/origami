@@ -112,7 +112,7 @@ Change the glob, or add additional globs, to target all webcomponent npm folders
 ```diff
 {
   "scripts": {
-+    "prepare:es5": "origami prepare es5 node_modules/@polymer/*",
++    "prepare:es5": "origami prepare es5 node_modules/{@polymer/*,@webcomponents/shadycss}",
 -    "start": "ng serve",
 -    "build": "ng build --prod"
 +    "start": "npm run prepare:es5 && ng serve",

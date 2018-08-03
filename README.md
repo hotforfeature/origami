@@ -225,17 +225,19 @@ Add an asset glob to the app's `"assets"` array. The glob will vary depending on
 
 Angular will not transpile `node_modules/`, and a common pattern among webcomponents is to be distributed as ES2015 classes. Origami provides a simple CLI to effeciently transpile dependencies to ES5 or back to ES2015 before building.
 
-For example, this command will prepare all `@polymer/` and `@vaadin/` dependencies.
+Example:
 
 ```sh
-origami prepare es5 node_modules/{@polymer,@vaadin}/*
+origami prepare es5 node_modules/{@polymer/*,@vaadin/*,@webcomponents/shadycss}
 
 # to restore to ES2015
-origami prepare es2015 node_modules/{@polymer,@vaadin}/*
+origami prepare es2015 node_modules/{@polymer/*,@vaadin/*,@webcomponents/shadycss}
 
 # for more info
 origami --help
 ```
+
+> Note that the `@webcomponents/webcomponentsjs` should _not_ be transpiled. However, the `@webcomponents/shadycss` dependency should be if it's used.
 
 The CLI can also restore the previous ES2015 files for projects that compile to both targets.
 
