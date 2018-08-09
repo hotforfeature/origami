@@ -10,6 +10,7 @@
     "paths": {
       "@codebakery/origami": ["./public_api.ts"],
       "@codebakery/origami/forms": ["./forms/public_api.ts"],
+      "@codebakery/origami/polyfills": ["./polyfills/public_api.ts"],
       "@codebakery/origami/shadycss": ["./shadycss/public_api.ts"],
       "@codebakery/origami/templates": ["./templates/public_api.ts"],
       "@codebakery/origami/util": ["./util/public_api.ts"]

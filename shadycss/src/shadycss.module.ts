@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { ɵDomSharedStylesHost as DomSharedStylesHost } from '@angular/platform-browser';
+import { WebComponentsReadyModule } from '@codebakery/origami/polyfills';
 import { ShadyCSSSharedStylesHost } from './shared-styles-host';
 
 /**
@@ -11,6 +12,7 @@ import { ShadyCSSSharedStylesHost } from './shared-styles-host';
  * or `@polymer/polymer/lib/elements/custom-style.js`.
  */
 @NgModule({
+  imports: [WebComponentsReadyModule],
   providers: [
     { provide: DomSharedStylesHost, useClass: ShadyCSSSharedStylesHost }
   ]

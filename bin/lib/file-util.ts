@@ -1,14 +1,14 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import * as util from 'util';
+import { promisify } from 'util';
 import { warn } from './log';
 
-const existsAsync = util.promisify(fs.exists);
-const mkdirAsync = util.promisify(fs.mkdir);
-const readdirAsync = util.promisify(fs.readdir);
-const readFileAsync = util.promisify(fs.readFile);
-const statAsync = util.promisify(fs.stat);
-const writeFileAsync = util.promisify(fs.writeFile);
+const existsAsync = promisify(fs.exists);
+const mkdirAsync = promisify(fs.mkdir);
+const readdirAsync = promisify(fs.readdir);
+const readFileAsync = promisify(fs.readFile);
+const statAsync = promisify(fs.stat);
+const writeFileAsync = promisify(fs.writeFile);
 
 export interface CopyFolderSyncOptions {
   excludeDir?: string[];
@@ -80,4 +80,8 @@ export async function getFilesWithExt(
     warn('Failed to getFilesWithExt()');
     throw error;
   }
+}
+
+export async function writeJson(path: string, json: any): Promise<void> {
+  await writeFileAsync(path, `${JSON.stringify(json, null, 2)}\n`, 'utf8');
 }

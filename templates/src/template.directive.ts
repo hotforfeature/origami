@@ -1,15 +1,10 @@
 import { Directive, ElementRef, Inject, Optional, NgZone } from '@angular/core';
-import {
-  shimCustomElements,
-  wrapAndDefineDescriptor
-} from '@codebakery/origami/util';
+import { wrapAndDefineDescriptor } from '@codebakery/origami/util';
 import { camelToDashCase } from '@polymer/polymer/lib/utils/case-map';
 import { TemplateInfo } from '@polymer/polymer/interfaces';
 import { POLYMER_HOST } from './polymerHost';
 import { shimHTMLTemplateAppend } from './shim-template-append';
 
-// Ensure imported elements can define themselves before polyfills
-shimCustomElements();
 // Ensure templates work properly in Angular
 shimHTMLTemplateAppend();
 
@@ -49,13 +44,21 @@ export class TemplateDirective {
     public polymerHost: any,
     private zone: NgZone
   ) {
-    if (
-      this.polymerHost &&
-      elementRef.nativeElement instanceof HTMLTemplateElement
-    ) {
-      const template = elementRef.nativeElement;
-      this.enableEventBindings(template);
-      this.enablePropertyBindings(template);
+    if (this.polymerHost) {
+      shimHTMLTemplateAppend().then(() => {
+        if (elementRef.nativeElement instanceof HTMLTemplateElement) {
+          const template = elementRef.nativeElement;
+          if (template.children.length) {
+            // Move children to content if it was shimmed after Angular made it
+            Array.from(template.children).forEach(child => {
+              template.content.appendChild(child);
+            });
+          }
+
+          this.enableEventBindings(template);
+          this.enablePropertyBindings(template);
+        }
+      });
     }
   }
 

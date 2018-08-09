@@ -29,7 +29,7 @@
     "build": "ng-packagr -p package.json",
     "postbuild": "tsc -p bin/",
     "test": "echo \"Error: no test script\" && exit 1",
-    "lint": "prettier --write \"*.{js,ts,json,md}\" \"{src,test}/**/*\"",
+    "lint": "prettier --write \"*.{js,ts,json,md}\" \"{bin,forms,polyfills,shadycss,src,templates,util}/**/*\"",
     "precommit": "lint-staged",
     "release": "standard-version"
   },
@@ -47,6 +47,7 @@
     "whitelistedNonPeerDependencies": [
       "chalk",
       "node-glob",
+      "parse5",
       "progress",
       "yargs"
     ]
@@ -54,6 +55,7 @@
   "dependencies": {
     "chalk": "^2.4.1",
     "node-glob": "^1.2.0",
+    "parse5": "^5.0.0",
     "progress": "^2.0.0",
     "yargs": "^12.0.1"
   },
@@ -61,6 +63,7 @@
     "@angular/core": "^5.0.0-rc.0 || ^5.0.0 || ^6.0.0-rc.0 || ^6.0.0",
     "@angular/forms": "^5.0.0-rc.0 || ^5.0.0 || ^6.0.0-rc.0 || ^6.0.0",
     "@polymer/polymer": "^3.0.5",
+    "@webcomponents/webcomponentsjs": "^2.0.4",
     "tslib": "^1.7.0",
     "typescript": "^2.0.0"
   },
@@ -74,8 +77,10 @@
     "@polymer/polymer": "^3.0.5",
     "@types/glob": "^5.0.35",
     "@types/node": "^10.5.5",
+    "@types/parse5": "^5.0.0",
     "@types/progress": "^2.0.1",
     "@types/yargs": "^11.1.1",
+    "@webcomponents/webcomponentsjs": "^2.0.4",
     "cpr": "^3.0.1",
     "husky": "^0.14.3",
     "lint-staged": "^7.2.0",

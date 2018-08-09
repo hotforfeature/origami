@@ -3,10 +3,6 @@ import {
   DOCUMENT,
   ɵDomSharedStylesHost as DomSharedStylesHost
 } from '@angular/platform-browser';
-import { shimCustomElements } from '@codebakery/origami/util';
-
-// Ensure imported elements can define themselves before polyfills
-shimCustomElements();
 
 // First group is incorrect escape backslash, second group is rest of mixin detection
 const MIXIN_REGEX = /(?:\\)(--\w[\w-_]*:\s*{[^}]*})(;)?/g;

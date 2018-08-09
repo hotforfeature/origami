@@ -5,7 +5,7 @@
 - `[ironControl]` directive has been renamed to `[origami]`
 - Control validation errors are reported as `{ "validate": true }` instead of `{ "polymer": true }`, and may be configured by setting `[validationErrorsKey]`
 - `<template [polymer]="this">` is no longer supported, instead add `polymerHost(AppComponent)` to the component providers
-- `webcomponentsReady()` is no longer required and will no longer throw an error if a polyfill is not detected
+- `webcomponentsReady()` has been moved to `@codebakery/origami/polyfills` and will no longer throw an error if the polyfill is not detected
 - `getCustomElementClass()` has been removed
 - `getTagName()` has been removed
 - `unwrapPolymerEvent()` has been removed
@@ -18,13 +18,14 @@ import { OrigamiModule } from '@codebakery/origami';
 import { OrigamiFormsModule } from '@codebakery/origami/forms';
 import { ShadyCSSModule } from '@codebakery/origami/shadycss';
 import { TemplateModule } from '@codebakery/origami/templates';
+import { WebComponentsReadyModule } from '@codebakery/origami/polyfills';
 ```
 
 # Upgrade Guide
 
 ## Remove `patch-cli.js` Script
 
-Polymer 3 uses npm instead of Bower, so we no longer need the `patch-cli.js` script. Modify `package.json` and remove it from the postinstall task.
+Polymer 3 uses NPM instead of Bower, so we no longer need the `patch-cli.js` script. Modify `package.json` and remove it from the postinstall task.
 
 ```diff
 {
@@ -36,13 +37,13 @@ Polymer 3 uses npm instead of Bower, so we no longer need the `patch-cli.js` scr
 }
 ```
 
-Additionally, remove the extra dependencies required for the `patch-cli.js` script.
+Additionally, remove the extra dependencies that were required for the `patch-cli.js` script.
 
 ```sh
 npm rm polymer-webpack-loader babel-core babel-loader babel-preset-es2015 script-loader
 ```
 
-Finally, re-install @angular-devkit/build-angular (Angular 6) or @angular/cli (Angular 5) to remove the changes from `patch-cli.js`.
+Finally, re-install `@angular-devkit/build-angular` (Angular 6) or `@angular/cli` (Angular 5) to remove the changes applied by `patch-cli.js`.
 
 ```sh
 rm -rf node_modules/@angular-devkit/build-angular
@@ -84,10 +85,10 @@ Example `bower.json`:
 Example install command:
 
 ```
-npm install @webcomponents/webcomponentsjs @polymer/{polymer,app-layout,paper-icon-button,iron-iconset-svg,paper-styles}
+npm install @polymer/{polymer,app-layout,paper-icon-button,iron-iconset-svg,paper-styles}
 ```
 
-Finally, remove `bower.json`, `.bowerrc`, and the `bower_components` folder.
+Finally, remove `bower.json`, `.bowerrc`, and the `bower_components/` folder.
 
 ```sh
 rm bower.json
@@ -121,129 +122,12 @@ Change the glob, or add additional globs, to target all webcomponent npm folders
 }
 ```
 
-## Update `angular.json` or `.angular-cli.json` Polyfill Assets
+## Update Polyfill Paths
 
-Remember that the `"input"` is relative to the `"root"` key of the project. If your root is not the same directory that `node_modules/` are installed to, you may need to go up a directory.
+Run the following command to update `index.html` and `angular.json` or `.angular-cli.json` with the new webcomponent polyfill script paths.
 
-### ES6 (ES2015) Target Apps
-
-`angular.json` (Angular 6+)
-
-```diff
-{
-  "projects": {
-    "es6App": {
-      "root": "",
-      "sourceRoot": "src",
-      "architect": {
-        "build": {
-          "options": {
-            "assets": [
--              { "glob": "web*.js", "input": "src/bower_components/webcomponentsjs/", "output": "/bower_components/webcomponentsjs/" }
-+              { "glob": "{*loader.js,bundles/*.js}", "input": "node_modules/@webcomponents/webcomponentsjs", "output": "node_modules/@webcomponents/webcomponentsjs" }
-            ]
-          }
-        },
-        "test": {
-          "options": {
-            "assets": [
--              { "glob": "web*.js", "input": "src/bower_components/webcomponentsjs/", "output": "/bower_components/webcomponentsjs/" }
-+              { "glob": "{*loader.js,bundles/*.js}", "input": "node_modules/@webcomponents/webcomponentsjs", "output": "node_modules/@webcomponents/webcomponentsjs" }
-            ]
-          }
-        }
-      }
-    }
-  }
-}
-```
-
-`.angular-cli.json` (Angular 5)
-
-```diff
-{
-  "apps": [
-    {
-      "name": "es6App",
-      "root": "src",
-      "assets": [
--        "bower_components/webcomponentsjs/web*.js"
-+        { "glob": "{*loader.js,bundles/*.js}", "input": "../node_modules/@webcomponents/webcomponentsjs", "output": "node_modules/@webcomponents/webcomponentsjs" }
-      ]
-    }
-  ]
-}
-```
-
-### ES5 Target Apps
-
-`angular.json` (Angular 6+)
-
-```diff
-{
-  "projects": {
-    "es5App": {
-      "root": "",
-      "sourceRoot": "src",
-      "architect": {
-        "build": {
-          "options": {
-            "assets": [
--              { "glob": "*adapter.js", "input": "src/bower_components/webcomponentsjs/", "output": "/bower_components/webcomponentsjs/" }
--              { "glob": "web*.js", "input": "src/bower_components/webcomponentsjs/", "output": "/bower_components/webcomponentsjs/" }
-+              { "glob": "{*loader.js,*adapter.js,bundles/*.js}", "input": "node_modules/@webcomponents/webcomponentsjs", "output": "node_modules/@webcomponents/webcomponentsjs" }
-            ]
-          }
-        },
-        "test": {
-          "options": {
-            "assets": [
--              { "glob": "*adapter.js", "input": "src/bower_components/webcomponentsjs/", "output": "/bower_components/webcomponentsjs/" }
--              { "glob": "web*.js", "input": "src/bower_components/webcomponentsjs/", "output": "/bower_components/webcomponentsjs/" }
-+              { "glob": "{*loader.js,*adapter.js,bundles/*.js}", "input": "node_modules/@webcomponents/webcomponentsjs", "output": "node_modules/@webcomponents/webcomponentsjs" }
-            ]
-          }
-        }
-      }
-    }
-  }
-}
-```
-
-`.angular-cli.json` (Angular 5)
-
-```diff
-{
-  "apps": [
-    {
-      "name": "es5App",
-      "root": "src",
-      "assets": [
--        "bower_components/webcomponentsjs/custom-elements-es5-adapter.js",
--        "bower_components/webcomponentsjs/web*.js"
-+        { "glob": "{*loader.js,*adapter.js,bundles/*.js}", "input": "../node_modules/@webcomponents/webcomponentsjs", "output": "node_modules/@webcomponents/webcomponentsjs" }
-      ]
-    }
-  ]
-}
-```
-
-## Update `index.html` Polyfill Paths
-
-```diff
-<!-- ONLY include this div if your app compiles to ES5 -->
-<div id="es5-adapter">
-  <script>
-    if (!window.customElements) {
-      var container = document.querySelector('#es5-adapter');
-      container.parentElement.removeChild(container);
-    }
-  </script>
--  <script src="bower_components/webcomponentsjs/custom-elements-es5-adapter.js"></script>
-+  <script src="node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js"></script>
-</div>
--<script src="bower_components/webcomponentsjs/webcomponents-loader.js"></script>
-+<script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+```sh
+./node_modules/.bin/origami polyfill
 ```
 
 ## Update Bower Imports
@@ -259,19 +143,18 @@ Example:
 
 ## Origami Changes
 
-### Remove `webcomponentsReady()` from `main.ts`
-
-This is no longer needed thanks to [`shim-custom-elements.ts`](util/src/shim-custom-elements.ts) which Origami automatically calls.
+### Update `webcomponentsReady()` import
 
 ```diff
-import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 -import { webcomponentsReady } from '@codebakery/origami';
-import { AppModule } from './app/app.module';
++import { webcomponentsReady } from '@codebakery/origami/polyfills';
 
--webcomponentsReady().then(() => {
+webcomponentsReady().then(() => {
+  // requires "module: "esnext" in tsconfig.json
+  const { AppModule } = import('./app/app.module');
   platformBrowserDynamic().bootstrapModule(AppModule);
--});
+});
 ```
 
 ### Replace `PolymerModule` with `OrigamiModule`

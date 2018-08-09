@@ -20,10 +20,6 @@ import {
   Validators,
   AbstractControl
 } from '@angular/forms';
-import { shimCustomElements } from '@codebakery/origami/util';
-
-// Ensure imported elements can define themselves before polyfills
-shimCustomElements();
 
 /**
  * An interface for determining if an element is a checkbox.

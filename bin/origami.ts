@@ -7,6 +7,7 @@ import * as ts from 'typescript';
 import * as yargs from 'yargs';
 import { compile } from './lib/compile';
 import { error, info } from './lib/log';
+import { polyfill } from './lib/polyfill/polyfill';
 import { prepare } from './lib/prepare';
 import { getPackagePaths } from './lib/package-util';
 
@@ -60,6 +61,28 @@ yargs
         if (!fatal) {
           info(`${target} dependencies ready`);
         }
+      }
+    }
+  )
+  .command(
+    'polyfill [appNames...]',
+    'Add polyfills to all or the specified apps',
+    yargs => {
+      return yargs.positional('appNames', {
+        describe: 'angular.json or .angular-cli.json projects/apps to polyfill'
+      });
+    },
+    async argv => {
+      try {
+        await polyfill(argv.appNames);
+        if (argv.appNames.length) {
+          info(`Added polyfills to ${argv.appNames.join(',')}`);
+        } else {
+          info('Added polyfills to all apps');
+        }
+      } catch (error) {
+        error(error.message);
+        error('Failed to add polyfills', true);
       }
     }
   )

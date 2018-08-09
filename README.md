@@ -1,6 +1,6 @@
 # Origami
 
-_Origami is the art of folding paper with sharp angles to form beautiful creations._
+_Origami is the art of folding paper with angles to form beautiful creations._
 
 Angular + Polymer
 
@@ -13,15 +13,14 @@ Angular + Polymer
 [Angular and custom elements are BFFs](https://custom-elements-everywhere.com/). With Polymer, there are a few gaps that Origami fills. The library is divided into several modules that can be imported individually to address these gaps.
 
 - [Angular Form Support](forms/README.md)
-- [ShadyCSS Polyfill](shadycss/README.md)
+- [ShadyCSS Support](shadycss/README.md)
 - [Polymer `<template>` Stamping](templates/README.md)
+- [Polyfill Utilities](polyfills/README.md)
 
 To setup Origami, follow these steps:
 
-1. [Install and import](#install) `OrigamiModule`]
-2. Install [webcomponent polyfills](#polyfills)
-   1. Add links to them in [`index.html`](#indexhtml)
-   2. Add assets to include them in [`angular.json`](#angularjson-angular-6) or [`.angular-cli.json`](#angular-clijson-angular-5)
+1. [Install and import](#install) `OrigamiModule`
+2. Set up [polyfills](#polyfills)
 3. [Prepare dependencies](#prepare-dependencies-es5-only) if targeting ES5
 4. Read the [Usage Summary](#usage-summary)
 
@@ -33,7 +32,7 @@ To setup Origami, follow these steps:
 npm install @codebakery/origami
 ```
 
-Import each module as described in the links above, or if you need all of the modules you can simply import `OrigamiModule`. Include the `CUSTOM_ELEMENTS_SCHEMA` schema to enable custom elements in Angular templates.
+Import each module as described in the links above, or if you need all of the modules you can simply import `OrigamiModule`. Include `CUSTOM_ELEMENTS_SCHEMA` to enable custom elements in Angular templates.
 
 ```ts
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -53,177 +52,31 @@ export class AppModule {}
 
 ## Polyfills
 
-Polyfills are needed to support browsers that do not support all webcomponent features.
+[Polyfills](polyfills/README.md) are needed to support browsers that do not support all webcomponent features. To quickly set up polyfills, use the Origami CLI.
 
 ```sh
 npm install @webcomponents/webcomponentsjs
+./node_modules/.bin/origami polyfill
 ```
 
-Next, add the polyfills to `index.html` and `angular.json`
+### Wait for WebComponentsReady
 
-### `index.html`
+Some imports (such as Polymer's `TemplateStamp` mixin) have side effects that require certain features to be immediately available. For example, `TemplateStamp` expects `HTMLTemplateElement` to be defined. These imports should be deferred until after `webcomponentsReady()` resolves.
 
-Add a `<script>` importing `webcomponents-loader.js`. If your app compiles to ES5, include the `<div>` container to handle importing `custom-elements-es5-adapter.js`.
+```ts
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { webcomponentsReady } from '@codebakery/origami/polyfills';
 
-```html
-<html>
-<head>
-  <!-- ONLY include this div if your app compiles to ES5 -->
-  <div id="es5-adapter">
-    <script>
-      if (!window.customElements) {
-        // If the browser does not implement customElements, it should not load the adapter
-        var container = document.querySelector('#es5-adapter');
-        container.parentElement.removeChild(container);
-      }
-    </script>
-    <!-- Allows customElements to define ES5 functions instead of ES6 classes -->
-    <script src="node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js"></script>
-  </div>
-
-  <!-- Required polyfill loader -->
-  <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
-</head>
-<body>
-  <app-root></app-root>
-  <!-- Angular scripts will be added here -->
-</body>
-</html>
-```
-
-### `angular.json` (Angular 6+)
-
-> Skip this section and go to [`.angular-cli.json`](#angular-clijson-angular-5) if you are using Angular 5.
-
-Add an asset glob to the architect `"build"` and `"test"` sections. The glob will vary depending on if the project is set to compile to ES6 or ES5, since ES5 needs the `custom-elements-es5-adapter.js` file. The `"input"` property of the asset must be relative to the project's `"root"`.
-
-#### ES6
-
-```json
-{
-  "projects": {
-    "es6App": {
-      "root": "",
-      "sourceRoot": "src",
-      "architect": {
-        "build": {
-          "options": {
-            "assets": [
-              "src/assets",
-              {
-                "glob": "{*loader.js,bundles/*.js}",
-                "input": "node_modules/@webcomponents/webcomponentsjs",
-                "output": "node_modules/@webcomponents/webcomponentsjs"
-              }
-            ]
-          }
-        },
-        "test": {
-          "options": {
-            "assets": [
-              "src/assets",
-              {
-                "glob": "{*loader.js,bundles/*.js}",
-                "input": "node_modules/@webcomponents/webcomponentsjs",
-                "output": "node_modules/@webcomponents/webcomponentsjs"
-              }
-            ]
-          }
-        }
-      }
-    }
-  }
-}
-```
-
-#### ES5
-
-```json
-{
-  "projects": {
-    "es5App": {
-      "root": "",
-      "sourceRoot": "src",
-      "architect": {
-        "build": {
-          "assets": [
-            "src/assets",
-            {
-              "glob": "{*loader.js,*adapter.js,bundles/*.js}",
-              "input": "node_modules/@webcomponents/webcomponentsjs",
-              "output": "node_modules/@webcomponents/webcomponentsjs"
-            }
-          ]
-        },
-        "test": {
-          "options": {
-            "assets": [
-              "src/assets",
-              {
-                "glob": "{*loader.js,*adapter.js,bundles/*.js}",
-                "input": "node_modules/@webcomponents/webcomponentsjs",
-                "output": "node_modules/@webcomponents/webcomponentsjs"
-              }
-            ]
-          }
-        }
-      }
-    }
-  }
-}
-```
-
-### `.angular-cli.json` (Angular 5)
-
-> Skip this section and refer to [`angular.json`](#angularjson-angular-6) if you are using Angular 6+.
-
-Add an asset glob to the app's `"assets"` array. The glob will vary depending on if the project is set to compile to ES6 or ES5, since ES5 needs the `custom-elements-es5-adapter.js` file. The `"input"` property of the asset must be relative to the project's `"root"`.
-
-#### ES6
-
-```json
-{
-  "apps": [
-    {
-      "name": "es6App",
-      "root": "src",
-      "assets": [
-        "assets",
-        {
-          "glob": "{*loader.js,bundles/*.js}",
-          "input": "../node_modules/@webcomponents/webcomponentsjs",
-          "output": "node_modules/@webcomponents/webcomponentsjs"
-        }
-      ]
-    }
-  ]
-}
-```
-
-#### ES5
-
-```json
-{
-  "apps": [
-    {
-      "name": "es5App",
-      "root": "src",
-      "assets": [
-        "assets",
-        {
-          "glob": "{*loader.js,*adapter.js,bundles/*.js}",
-          "input": "../node_modules/@webcomponents/webcomponentsjs",
-          "output": "node_modules/@webcomponents/webcomponentsjs"
-        }
-      ]
-    }
-  ]
-}
+webcomponentsReady().then(() => {
+  // requires "module: "esnext" in tsconfig.json
+  const { AppModule } = import('./app/app.module');
+  platformBrowserDynamic().bootstrapModule(AppModule);
+});
 ```
 
 ## Prepare Dependencies (ES5 only)
 
-Angular will not transpile `node_modules/`, and a common pattern among webcomponents is to be distributed as ES2015 classes. Origami provides a simple CLI to effeciently transpile dependencies to ES5 or back to ES2015 before building.
+Angular will not transpile `node_modules/`, and a common pattern among webcomponents is to be distributed as ES2015 classes. Use Origami's CLI to effeciently transpile dependencies to ES5 or back to ES2015 before building.
 
 Example:
 
@@ -237,7 +90,7 @@ origami prepare es2015 node_modules/{@polymer/*,@vaadin/*,@webcomponents/shadycs
 origami --help
 ```
 
-> Note that the `@webcomponents/webcomponentsjs` should _not_ be transpiled. However, the `@webcomponents/shadycss` dependency should be if it's used.
+> Note that `@webcomponents/webcomponentsjs` should _not_ be transpiled. However, `@webcomponents/shadycss` _should_ be if it's used.
 
 The CLI can also restore the previous ES2015 files for projects that compile to both targets.
 
@@ -278,28 +131,25 @@ export class AppComponent {
 }
 ```
 
-### [ShadyCSS Polyfill](shadycss/README.md)
+### [ShadyCSS Support](shadycss/README.md)
 
-Enables the use of CSS custom properties in Angular styles.
+Enables the use of CSS custom properties in Angular styles on browsers that do not support them via [ShadyCSS](https://github.com/webcomponents/shadycss), with some [limitations](shadycss/README.md#limitations).
 
 ```ts
 import { Component } from '@angular/core';
+import '@polymer/paper-button/paper-button';
 
 @Component({
   selector: 'app-component',
   styles: [
     `
-      :host {
-        --my-color: blue;
-      }
-
-      h1 {
-        color: var(--my-color);
+      paper-button {
+        --paper-button-ink-color: blue;
       }
     `
   ],
   template: `
-    <h1>I'm blue!</h1>
+    <paper-button>Blue Ink!</paper-button>
   `
 })
 export class AppComponent {}

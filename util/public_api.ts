@@ -1,3 +1,2 @@
 export * from './src/descriptors';
-export * from './src/shim-custom-elements';
-export * from './src/webcomponents';
+export * from './src/when-set';
