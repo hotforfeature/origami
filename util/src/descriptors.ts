@@ -58,17 +58,10 @@ export function wrapAndDefineDescriptor<T>(
  */
 export function wrapDescriptor<T>(
   target: any,
-  propertyKey: string | number | symbol,
+  propertyKey: PropertyKey,
   hooks: DescriptorHooks<T>
 ): PropertyDescriptor {
-  let desc = Object.getOwnPropertyDescriptor(target, propertyKey);
-  if (!desc) {
-    desc = Object.getOwnPropertyDescriptor(
-      Object.getPrototypeOf(target),
-      propertyKey
-    );
-  }
-
+  const desc = getPropertyDescriptor(target, propertyKey);
   const properties = new WeakMap();
   return {
     enumerable: desc ? desc.enumerable : true,
@@ -105,4 +98,27 @@ export function wrapDescriptor<T>(
       }
     }
   };
+}
+
+/**
+ * Similar to `Object.getOwnPropertyDescriptor()`, but this function will
+ * search through the target's prototype chain when looking for the property's
+ * descriptor.
+ *
+ * @param target object that contains the property
+ * @param propertyKey name of the property
+ * @returns the property descriptor if one exists
+ */
+export function getPropertyDescriptor(
+  target: any,
+  propertyKey: PropertyKey
+): PropertyDescriptor | undefined {
+  while (target) {
+    const desc = Object.getOwnPropertyDescriptor(target, propertyKey);
+    if (desc) {
+      return desc;
+    } else {
+      target = Object.getPrototypeOf(target);
+    }
+  }
 }
