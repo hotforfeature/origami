@@ -8,8 +8,8 @@ export function warn(message: string) {
   log(message, chalk.yellow);
 }
 
-export function error(message: string, fatal?: boolean) {
-  log(message, chalk.red);
+export function error(message: Error | string, fatal?: boolean) {
+  log(message instanceof Error ? message.stack! : message, chalk.red);
   if (fatal) {
     process.exit(1);
   }

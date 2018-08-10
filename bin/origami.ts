@@ -54,7 +54,7 @@ yargs
           } catch (err) {
             fatal = true;
             console.log('\n');
-            error(err.message, true);
+            error(err, true);
           }
         }
 
@@ -81,7 +81,7 @@ yargs
           info('Added polyfills to all apps');
         }
       } catch (err) {
-        error(err.message);
+        error(err);
         error('Failed to add polyfills', true);
       }
     }
