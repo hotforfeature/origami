@@ -80,8 +80,8 @@ yargs
         } else {
           info('Added polyfills to all apps');
         }
-      } catch (error) {
-        error(error.message);
+      } catch (err) {
+        error(err.message);
         error('Failed to add polyfills', true);
       }
     }
