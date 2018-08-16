@@ -131,6 +131,17 @@ export class OrigamiControlValueAccessor extends DefaultValueAccessor
   validationErrorsKey = 'validate';
 
   /**
+   * The `AbstractControl` attached to this element.
+   */
+  get control(): AbstractControl | undefined {
+    if (!this._control) {
+      this._control = (<NgControl>this.injector.get(NgControl)).control!;
+    }
+
+    return this._control;
+  }
+
+  /**
    * Subscription to the NgControl's statusChanges.
    */
   protected statusSub?: { unsubscribe(): void };
@@ -141,11 +152,21 @@ export class OrigamiControlValueAccessor extends DefaultValueAccessor
    */
   private isWritingValue = false;
   /**
+   * Flag that informs the value accessor that it is currently updating an
+   * element's validity and should ignore additional `invalid` property changes
+   * until it is complete.
+   */
+  private isUpdatingValidity = false;
+  /**
    * Indicates whether or not to use the value property or index property for a
    * select or mulit-select element. When undefined, it indicates that the
    * determination of which property to use has not occurred yet.
    */
   private useSelectableValueProp?: boolean;
+  /**
+   * Cached `control` value.
+   */
+  private _control: AbstractControl | undefined;
 
   constructor(
     public elementRef: ElementRef,
@@ -165,7 +186,9 @@ export class OrigamiControlValueAccessor extends DefaultValueAccessor
   ngAfterViewInit() {
     const element = this.elementRef.nativeElement;
     if (this.isValidatable(element)) {
-      const control = (<NgControl>this.injector.get(NgControl)).control!;
+      // The control will always be set by ngAfterViewInit due to the nature of
+      // the directive's selectors
+      const control = this.control!;
       // Allows Angular validators to update the custom element's validity
       this.statusSub = control.statusChanges!.subscribe(() => {
         if (typeof this.isInvalid === 'function') {
@@ -274,6 +297,33 @@ export class OrigamiControlValueAccessor extends DefaultValueAccessor
         // change events will provide that. Additionally, some event details
         // may be splices of an array or object instead of the current value.
         this.onChange(element[property]);
+      }
+    }
+  }
+
+  /**
+   * Listen for `invalid` property changes. Some elements, such as
+   * `<vaadin-date-picker>` have multiple "values". Setting the primary value
+   * (ex. the date string) may result in a temporarily invalid element until
+   * subsequent values (ex. the selected date) have been updated.
+   *
+   * Since this value accessor only listens for value changes, it may not be
+   * notified of the change in validity. This listener will listen for any
+   * explicity validity changes from the element and re-evaluate a control's
+   * validity if it and the element's validity are out of sync.
+   */
+  @HostListener('invalid-changed')
+  onInvalidChanged() {
+    if (!this.isUpdatingValidity) {
+      const element = this.elementRef.nativeElement;
+      if (
+        this.isValidatable(element) &&
+        this.control &&
+        this.control.invalid !== element.invalid
+      ) {
+        this.isUpdatingValidity = true;
+        this.control.updateValueAndValidity();
+        this.isUpdatingValidity = false;
       }
     }
   }
