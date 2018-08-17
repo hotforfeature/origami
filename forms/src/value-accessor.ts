@@ -153,10 +153,10 @@ export class OrigamiControlValueAccessor extends DefaultValueAccessor
   private isWritingValue = false;
   /**
    * Flag that informs the value accessor that it is currently updating an
-   * element's validity and should ignore additional `invalid` property changes
-   * until it is complete.
+   * element and should ignore additional `invalid` property changes until it is
+   * complete.
    */
-  private isUpdatingValidity = false;
+  private ignoreInvalidChanges = false;
   /**
    * Indicates whether or not to use the value property or index property for a
    * select or mulit-select element. When undefined, it indicates that the
@@ -171,7 +171,7 @@ export class OrigamiControlValueAccessor extends DefaultValueAccessor
   constructor(
     public elementRef: ElementRef,
     protected injector: Injector,
-    renderer: Renderer2,
+    protected renderer: Renderer2,
     @Optional()
     @Inject(COMPOSITION_BUFFER_MODE)
     compositionMode: boolean
@@ -200,12 +200,12 @@ export class OrigamiControlValueAccessor extends DefaultValueAccessor
 
       // Allows custom element validate function to update Angular control's
       // validity
-      if (typeof element.validate === 'function') {
+      if (this.shouldUseValidate(element)) {
         control.setValidators(
           Validators.compose([
             control.validator,
             () => {
-              if (element.validate!()) {
+              if (element.validate()) {
                 return null;
               } else {
                 return { [this.validationErrorsKey]: true };
@@ -314,16 +314,16 @@ export class OrigamiControlValueAccessor extends DefaultValueAccessor
    */
   @HostListener('invalid-changed')
   onInvalidChanged() {
-    if (!this.isUpdatingValidity) {
+    if (!this.ignoreInvalidChanges) {
       const element = this.elementRef.nativeElement;
       if (
         this.isValidatable(element) &&
         this.control &&
         this.control.invalid !== element.invalid
       ) {
-        this.isUpdatingValidity = true;
+        this.ignoreInvalidChanges = true;
         this.control.updateValueAndValidity();
-        this.isUpdatingValidity = false;
+        this.ignoreInvalidChanges = false;
       }
     }
   }
@@ -370,6 +370,36 @@ export class OrigamiControlValueAccessor extends DefaultValueAccessor
    */
   isValidatable(element: any): element is ValidatableLike {
     return this.isPropertyDefined(element, 'invalid');
+  }
+
+  shouldUseValidate(element: any): element is { validate(): void } {
+    if (typeof element.validate === 'function') {
+      // Some element's (such as `<vaadin-text-field>`) may not actually mutate
+      // the `invalid` property when `validate()` is called. In these
+      // situations, it's possible for Angular to set an element as invalid and
+      // never be able to recover since the element's `validate()` will always
+      // report it is invalid.
+      //
+      // In these situations, Origami should ignore the element's validate()
+      // function.
+      this.ignoreInvalidChanges = true;
+      const wasInvalid = element.invalid;
+      // If the element does mutate `invalid`, ask it to do so first to get a
+      // baseline.
+      element.validate();
+      // When `validate()` is called next, we will know if the element mutates
+      // `invalid` if the expected value matches `invalid` after changing
+      // `invalid` to something else.
+      const expected = element.invalid;
+      element.invalid = !element.invalid;
+      element.validate();
+      const validateMutatesInvalid = element.invalid === expected;
+      element.invalid = wasInvalid;
+      this.ignoreInvalidChanges = false;
+      return validateMutatesInvalid;
+    } else {
+      return false;
+    }
   }
 
   /**
