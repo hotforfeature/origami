@@ -1,4 +1,11 @@
 /**
+ * Map of targets, their properties, and promises that will be resolved when
+ * they are set. This allows multiple invocations to `whenSet()` for the same
+ * target and property to resolve.
+ */
+let whenSetMap: WeakMap<any, Map<PropertyKey, Promise<any>>>;
+
+/**
  * Resolves when the provided property is set to a non-undefined value on the
  * target.
  *
@@ -9,35 +16,64 @@
  *   not undefined.
  * @returns a Promise that resolves with the new value
  */
-export function whenSet<T, K extends keyof T>(
+export function whenSet<
+  T,
+  K extends keyof T,
+  V extends T[K] = Exclude<T[K], undefined>
+>(
   target: T,
   property: K,
   predicate = (value: any) => typeof value !== 'undefined'
-): Promise<T[K]> {
+): Promise<V> {
   let currentValue = target[property];
   if (predicate(currentValue)) {
-    return Promise.resolve(target[property]);
+    return Promise.resolve(<V>target[property]);
   } else {
-    return new Promise(resolve => {
-      Object.defineProperty(target, property, {
-        configurable: true,
-        get() {
-          return currentValue;
-        },
-        set(value: T[K]) {
-          currentValue = value;
-          if (predicate(value)) {
-            Object.defineProperty(target, property, {
-              value,
-              configurable: true,
-              enumerable: true,
-              writable: true
-            });
+    if (!whenSetMap) {
+      whenSetMap = new WeakMap();
+    }
 
-            resolve(value);
+    let propertyPromiseMap: Map<K, Promise<V>>;
+    if (!whenSetMap.has(target)) {
+      propertyPromiseMap = new Map();
+      whenSetMap.set(target, propertyPromiseMap);
+    } else {
+      propertyPromiseMap = <Map<K, Promise<V>>>whenSetMap.get(target);
+    }
+
+    if (propertyPromiseMap.has(property)) {
+      return propertyPromiseMap.get(property)!;
+    } else {
+      const promise = new Promise<V>(resolve => {
+        Object.defineProperty(target, property, {
+          configurable: true,
+          enumerable: true,
+          get() {
+            return currentValue;
+          },
+          set(value: V) {
+            currentValue = value;
+            if (predicate(value)) {
+              Object.defineProperty(target, property, {
+                value,
+                configurable: true,
+                enumerable: true,
+                writable: true
+              });
+
+              propertyPromiseMap.delete(property);
+              if (!propertyPromiseMap.size) {
+                whenSetMap.delete(target);
+              }
+
+              resolve(value);
+            }
           }
-        }
+        });
       });
-    });
+
+      propertyPromiseMap.set(property, promise);
+      return promise;
+    }
   }
 }
