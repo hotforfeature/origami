@@ -2,11 +2,11 @@ import { whenSet } from '@codebakery/origami/util';
 
 declare global {
   interface Window {
-    HTMLTemplateElement: HTMLTemplateElement;
+    HTMLTemplateElement: typeof HTMLTemplateElement;
   }
 }
 
-let shimPromise: Promise<void>;
+let shimPromise: Promise<void> | undefined;
 /**
  * Angular incorrectly adds `<template>` children to the element's child node
  * list instead of its content. This shim forces children appended to a
@@ -43,4 +43,12 @@ export function shimHTMLTemplateAppend(): Promise<void> {
   }
 
   return shimPromise;
+}
+
+/**
+ * Resets `shimHTMLTemplateAppend()` so that it will re-shim the class next
+ * time it is called. This is primarily used for testing.
+ */
+export function resetShimHTMLTemplateAppend() {
+  shimPromise = undefined;
 }

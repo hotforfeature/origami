@@ -5,9 +5,6 @@ import { TemplateInfo } from '@polymer/polymer/interfaces';
 import { POLYMER_HOST } from './polymerHost';
 import { shimHTMLTemplateAppend } from './shim-template-append';
 
-// Ensure templates work properly in Angular
-shimHTMLTemplateAppend();
-
 /**
  * An HTMLTemplateElement that is processed by Polymer's templatizer.
  */
@@ -37,28 +34,22 @@ export interface PolymerTemplate extends HTMLTemplateElement {
   selector: 'template'
 })
 export class TemplateDirective {
+  ready: Promise<void>;
+  private _ready!: () => void;
+
   constructor(
-    elementRef: ElementRef,
+    public elementRef: ElementRef,
     @Inject(POLYMER_HOST)
     @Optional()
     public polymerHost: any,
     private zone: NgZone
   ) {
+    this.ready = new Promise(resolve => (this._ready = resolve));
     if (this.polymerHost) {
-      shimHTMLTemplateAppend().then(() => {
-        if (elementRef.nativeElement instanceof HTMLTemplateElement) {
-          const template = elementRef.nativeElement;
-          if (template.children.length) {
-            // Move children to content if it was shimmed after Angular made it
-            Array.from(template.children).forEach(child => {
-              template.content.appendChild(child);
-            });
-          }
-
-          this.enableEventBindings(template);
-          this.enablePropertyBindings(template);
-        }
-      });
+      this.enableEventBindings(elementRef.nativeElement);
+      this.enablePropertyBindings(elementRef.nativeElement);
+    } else {
+      this._ready();
     }
   }
 
@@ -86,7 +77,7 @@ export class TemplateDirective {
    */
   async enablePropertyBindings(template: PolymerTemplate) {
     const { hostProps } = await this.getTemplateInfo(template);
-    if (hostProps) {
+    if (Object.keys(hostProps).length) {
       for (let prop in hostProps) {
         // Angular -> Polymer (one-way bindings)
         const initialValue = this.polymerHost[prop];
@@ -108,15 +99,14 @@ export class TemplateDirective {
             !this.isPathChange(<CustomEvent>event)
           ) {
             this.zone.run(() => {
-              const value = (<CustomEvent>event).detail.value;
-              if (this.polymerHost[prop] !== value) {
-                this.polymerHost[prop] = value;
-              }
+              this.polymerHost[prop] = (<CustomEvent>event).detail.value;
             });
           }
         });
       }
     }
+
+    this._ready();
   }
 
   /**
