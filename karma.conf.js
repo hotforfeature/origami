@@ -69,6 +69,10 @@ module.exports = config => {
     reporters: ['mocha', 'kjhtml', 'karma-typescript'],
     reportSlowerThan: 200,
     browsers: ['Chrome'],
+    browserNoActivityTimeout: 60 * 1000,
+    browserDisconnectTimeout: 10 * 1000,
+    browserDisconnectTolerance: 1,
+    captureTimeout: 4 * 60 * 1000,
     concurrency: 5,
     customLaunchers: {
       ...SAUCE_BROWSERS
