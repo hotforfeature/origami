@@ -35,7 +35,6 @@ export interface PolymerTemplate extends HTMLTemplateElement {
 })
 export class TemplateDirective {
   ready: Promise<void>;
-  private _ready!: () => void;
 
   constructor(
     public elementRef: ElementRef,
@@ -44,13 +43,12 @@ export class TemplateDirective {
     public polymerHost: any,
     private zone: NgZone
   ) {
-    this.ready = new Promise(resolve => (this._ready = resolve));
-    if (this.polymerHost) {
-      this.enableEventBindings(elementRef.nativeElement);
-      this.enablePropertyBindings(elementRef.nativeElement);
-    } else {
-      this._ready();
-    }
+    this.ready = (async () => {
+      if (this.polymerHost) {
+        this.enableEventBindings(elementRef.nativeElement);
+        await this.enablePropertyBindings(elementRef.nativeElement);
+      }
+    })();
   }
 
   /**
@@ -105,8 +103,6 @@ export class TemplateDirective {
         });
       }
     }
-
-    this._ready();
   }
 
   /**
