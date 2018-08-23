@@ -20,23 +20,10 @@ import {
 const readFileAsync = promisify(fs.readFile);
 const writeFileAsync = promisify(fs.writeFile);
 
-const ADAPTER_DIV = `
-  <div id="es5-adapter">
-    <script>
-      if (!window.customElements) {
-        // If the browser does not implement customElements, it should not load the adapter
-        var container = document.querySelector('#es5-adapter');
-        container.parentElement.removeChild(container);
-      }
-    </script>
-    <!-- Allows customElements to define ES5 functions instead of ES6 classes -->
-    <!-- This will 404 on ES6 builds, that is intended -->
-    <script src="node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js"></script>
-  </div>
-`;
-
-const LOADER_SCRIPT = `  <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js" defer></script>
-`;
+const ADAPTER_SCRIPT =
+  '  <script src="node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js"></script>\n';
+const LOADER_SCRIPT =
+  '  <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js" defer></script>\n';
 
 export async function updateIndexFiles(appNames: string[] = []): Promise<void> {
   const json = await getAngularJson();
@@ -96,8 +83,14 @@ async function updateIndexFile(
     indexHtmlStr = indexHtmlStr.split(adapterDivStr).join('');
   }
 
+  const adapterScript = findNode(indexHtml, isAdapterScript);
+  if (adapterScript) {
+    const adapterScriptStr = getHtmlSubstring(indexHtmlStr, adapterScript);
+    indexHtmlStr = indexHtmlStr.split(adapterScriptStr).join('');
+  }
+
   // Add new ones
-  const insert = [isEs5 ? ADAPTER_DIV : '', LOADER_SCRIPT].join('');
+  const insert = [isEs5 ? ADAPTER_SCRIPT : '', LOADER_SCRIPT].join('');
 
   const insertPointMatch = indexHtmlStr.match(/(<\/head>|<\/body>|<\/html>)/);
   const insertPoint = insertPointMatch
@@ -134,16 +127,20 @@ function isDivWithCustomAdapter(
 ): node is DefaultTreeElement {
   if (node.nodeName === 'div' && hasChildren(node)) {
     return node.childNodes.some(childNode => {
-      if (childNode.nodeName === 'script' && hasAttrs(childNode)) {
-        return childNode.attrs.some(attr => {
-          return (
-            attr.name === 'src' &&
-            attr.value.indexOf('custom-elements-es5-adapter') > -1
-          );
-        });
-      } else {
-        return false;
-      }
+      return isAdapterScript(childNode);
+    });
+  } else {
+    return false;
+  }
+}
+
+function isAdapterScript(node: DefaultTreeNode): node is DefaultTreeElement {
+  if (node.nodeName === 'script' && hasAttrs(node)) {
+    return node.attrs.some(attr => {
+      return (
+        attr.name === 'src' &&
+        attr.value.indexOf('custom-elements-es5-adapter') > -1
+      );
     });
   } else {
     return false;

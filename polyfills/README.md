@@ -59,24 +59,13 @@ The Origami CLI will perform the following steps. Polyfills may be set up manual
 
 ### `index.html`
 
-Add a `<script>` importing `webcomponents-loader.js`. If your app compiles to ES5, include the `<div>` container to handle importing `custom-elements-es5-adapter.js`.
+Add a `<script>` importing `webcomponents-loader.js`. If your app compiles to ES5, include the `custom-elements-es5-adapter.js` script before it.
 
 ```html
 <html>
 <head>
-  <!-- ONLY include this div if your app compiles to ES5 -->
-  <div id="es5-adapter">
-    <script>
-      if (!window.customElements) {
-        // If the browser does not implement customElements, it should not load the adapter
-        var container = document.querySelector('#es5-adapter');
-        container.parentElement.removeChild(container);
-      }
-    </script>
-    <!-- Allows customElements to define ES5 functions instead of ES6 classes -->
-    <script src="node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js"></script>
-  </div>
-
+  <!-- ONLY include this if your app compiles to ES5 -->
+  <script src="node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js"></script>
   <!-- Required polyfill loader. It must `defer` so that Angular's polyfills load first. -->
   <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js" defer></script>
 </head>
