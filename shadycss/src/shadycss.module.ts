@@ -1,6 +1,7 @@
-import { NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { ɵDomSharedStylesHost as DomSharedStylesHost } from '@angular/platform-browser';
 import { WebComponentsReadyModule } from '@codebakery/origami/polyfills';
+import { USING_APPLY } from './process-stylesheets';
 import { ShadyCSSSharedStylesHost } from './shared-styles-host';
 
 /**
@@ -10,6 +11,9 @@ import { ShadyCSSSharedStylesHost } from './shared-styles-host';
  * The ShadyCSS polyfill must be imported separately. It may be imported from
  * `@webcomponents/shadycss/entrypoints/custom-style-interface.js`
  * or `@polymer/polymer/lib/elements/custom-style.js`.
+ *
+ * If using the deprecated `@apply` mixin proposal, import
+ * `ShadyCSSModule.usingApply()` instead.
  */
 @NgModule({
   imports: [WebComponentsReadyModule],
@@ -17,4 +21,21 @@ import { ShadyCSSSharedStylesHost } from './shared-styles-host';
     { provide: DomSharedStylesHost, useClass: ShadyCSSSharedStylesHost }
   ]
 })
-export class ShadyCSSModule {}
+export class ShadyCSSModule {
+  /**
+   * Forces Origami to register all stylesheets with ShadyCSS regardless of
+   * native CSS custom property support. Import `ShadyCSSModule.usingApply()`
+   * when using `@apply` mixins.
+   */
+  static usingApply(): ModuleWithProviders {
+    return {
+      ngModule: ShadyCSSModule,
+      providers: [
+        {
+          provide: USING_APPLY,
+          useValue: true
+        }
+      ]
+    };
+  }
+}

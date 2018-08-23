@@ -53,47 +53,40 @@ import '@polymer/paper-button/paper-button';
 export class AppComponent {}
 ```
 
-## IE11 Issue
+## `@apply` mixins
 
-Initial CSS custom properties must be defined on an `html` selector in a `ViewEncapsulation.None` component.
+If using the deprecated `@apply` mixin proposal, import `ShadyCSSModule.usingApply()` instead.
+
+```ts
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { ShadyCSSModule } from '@codebakery/origami/shadycss';
+import { AppComponent } from './app.component';
+
+@NgModule({
+  imports: [BrowserModule, ShadyCSSModule.usingApply()],
+  declarations: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  bootstrap: [AppComponent]
+})
+export class AppModule {}
+```
 
 ## Limitations
 
-### External Stylesheets
+### Defining CSS Custom Properties
 
-This module cannot provide polyfill support for external stylesheets or any styles defined in the `angular.json` or `.angular-cli.json` `"styles"` array. A recommended workaround is to use `ViewEncapsulation.None` on the app's root component and use its component styles as "global" styles.
-
-```ts
-import { Component, ViewEncapsulation } from '@angular/core';
-
-@Component({
-  selector: 'app-root',
-  templateUrl: './app-root.component.html',
-  // global.css may use CSS custom properties that will affect all children of
-  // the root element.
-  styleUrls: ['./global.css'],
-  encapsulation: ViewEncapsulation.None
-})
-export class AppRootComponent {}
-```
-
-### IE11 New Properties
-
-Properties that are defined in a Shadow DOM template (such as those provided by custom elements) will work with ShadyCSS in IE11. However, _newly_ defined properties in an Angular template must be defined with an `html` selector in a `ViewEncapsulation.None` component.
+_Newly_ defined CSS custom properties must be defined in a root `html` or `:root` selector. It is recommended to define new properties in global CSS instead of component styles.
 
 ```ts
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-component',
   styles: [
     `
-      html {
-        /* 
-        --my-color is not defined by an external element, it is our own
-        CSS property. To work with ShadyCSS, it must be defined on an html 
-        root selector.
-      */
+      /* This does not work */
+      :host {
         --my-color: blue;
       }
 
@@ -103,18 +96,19 @@ import { Component, ViewEncapsulation } from '@angular/core';
     `
   ],
   template: `
-    <div>I'm blue!</div>
-  `,
-  /*
-    In order for the above html selector to work, the component must have 
-    ViewEncapsulation.None, since Angular cannot encapsulate the root html 
-    element.
-  */
-  encapsulation: ViewEncapsulation.None
+    <div>I'm not blue :(</div>
+  `
 })
 export class AppComponent {}
 ```
 
-See [this issue](https://github.com/webcomponents/shadycss/issues/75) for more information.
+The example `--my-color` property should be defined in a global CSS stylesheet.
 
-Like the above limitation, it is recommended that all custom CSS properties an app defines should be declared in a root component that does not have view encapsulation.
+```css
+html {
+  /* AppComponent's <div> will now be blue */
+  --my-color: blue;
+}
+```
+
+See [this issue](https://github.com/webcomponents/shadycss/issues/75) for more information.

@@ -1,8 +1,9 @@
-import { Inject } from '@angular/core';
+import { Inject, Optional } from '@angular/core';
 import {
   DOCUMENT,
   ɵDomSharedStylesHost as DomSharedStylesHost
 } from '@angular/platform-browser';
+import { USING_APPLY, processStylesheets } from './process-stylesheets';
 
 // First group is incorrect escape backslash, second group is rest of mixin detection
 const MIXIN_REGEX = /(?:\\)(--\w[\w-_]*:\s*{[^}]*})(;)?/g;
@@ -13,11 +14,13 @@ const MIXIN_REGEX = /(?:\\)(--\w[\w-_]*:\s*{[^}]*})(;)?/g;
  * properties in Angular styles on browsers that do not support them.
  */
 export class ShadyCSSSharedStylesHost extends DomSharedStylesHost {
-  protected hostNodes = new Set<Node>();
-
-  constructor(@Inject(DOCUMENT) document: Document) {
+  constructor(
+    @Inject(DOCUMENT) document: Document,
+    @Optional()
+    @Inject(USING_APPLY)
+    private usingApply?: boolean
+  ) {
     super(document);
-    this.hostNodes.add(document.head);
   }
 
   addStyles(styles: string[]) {
@@ -43,39 +46,8 @@ export class ShadyCSSSharedStylesHost extends DomSharedStylesHost {
     super.addStyles(styles.map(style => style.replace(MIXIN_REGEX, '$1')));
   }
 
-  addHost(hostNode: Node) {
-    super.addHost(hostNode);
-    this.hostNodes.add(hostNode);
-    this.addStylesToShadyCSS();
-  }
-
   onStylesAdded(additions: Set<string>) {
     super.onStylesAdded(additions);
-    this.addStylesToShadyCSS();
-  }
-
-  removeHost(hostNode: Node) {
-    super.removeHost(hostNode);
-    this.hostNodes.delete(hostNode);
-  }
-
-  protected addStylesToShadyCSS() {
-    if (window.ShadyCSS && window.ShadyCSS.CustomStyleInterface) {
-      this.hostNodes.forEach(hostNode => {
-        Array.from(hostNode.childNodes).forEach(childNode => {
-          if (
-            this.isStyleElement(childNode) &&
-            !childNode.hasAttribute('scope')
-          ) {
-            // ShadyCSS will handle <style> elements that have already been registered
-            window.ShadyCSS!.CustomStyleInterface!.addCustomStyle(childNode);
-          }
-        });
-      });
-    }
-  }
-
-  protected isStyleElement(element: any): element is HTMLStyleElement {
-    return element.tagName === 'STYLE';
+    processStylesheets(this.usingApply);
   }
 }

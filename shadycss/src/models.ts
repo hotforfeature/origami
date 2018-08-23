@@ -5,6 +5,8 @@ export namespace ShadyCSS {
 }
 
 export interface ShadyCSS {
+  nativeCss: boolean;
+  nativeShadow: boolean;
   CustomStyleInterface?: ShadyCSS.CustomStyleInterface;
 }
 
