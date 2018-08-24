@@ -63,6 +63,7 @@
   "peerDependencies": {
     "@angular/core": "^5.0.0-rc.0 || ^5.0.0 || ^6.0.0-rc.0 || ^6.0.0",
     "@angular/forms": "^5.0.0-rc.0 || ^5.0.0 || ^6.0.0-rc.0 || ^6.0.0",
+    "@angular/router": "^5.0.0-rc.0 || ^5.0.0 || ^6.0.0-rc.0 || ^6.0.0",
     "@polymer/polymer": "^3.0.5",
     "@webcomponents/webcomponentsjs": "^2.0.4",
     "tslib": "^1.7.0",
@@ -76,6 +77,7 @@
     "@angular/forms": "^6.1.0",
     "@angular/platform-browser": "^6.1.0",
     "@angular/platform-browser-dynamic": "^6.1.0",
+    "@angular/router": "^6.1.0",
     "@polymer/polymer": "^3.0.5",
     "@types/glob": "^5.0.35",
     "@types/jasmine": "^2.8.8",

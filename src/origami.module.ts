@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { OrigamiFormsModule } from '@codebakery/origami/forms';
-import { ShadyCSSModule } from '@codebakery/origami/shadycss';
+import {
+  IncludeStylesModule,
+  ShadyCSSModule
+} from '@codebakery/origami/styles';
 import { TemplateModule } from '@codebakery/origami/templates';
 import { WebComponentsReadyModule } from '@codebakery/origami/polyfills';
 
@@ -10,12 +13,14 @@ import { WebComponentsReadyModule } from '@codebakery/origami/polyfills';
 @NgModule({
   imports: [
     OrigamiFormsModule,
+    IncludeStylesModule,
     ShadyCSSModule,
     TemplateModule,
     WebComponentsReadyModule
   ],
   exports: [
     OrigamiFormsModule,
+    IncludeStylesModule,
     ShadyCSSModule,
     TemplateModule,
     WebComponentsReadyModule

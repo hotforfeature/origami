@@ -33,7 +33,7 @@ module.exports = config => {
     frameworks: ['jasmine', 'karma-typescript'],
     files: [
       'init.spec.ts',
-      '{forms,polyfills,shadycss,src,templates,util}/**/*.ts'
+      '{forms,polyfills,styles,src,templates,util}/**/*.ts'
     ],
     preprocessors: {
       '**/*.ts': 'karma-typescript'

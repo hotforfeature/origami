@@ -1,3 +1,51 @@
+# Modules
+
+- [Include Styles](#include-styles)
+- [ShadyCSS](#shadycss)
+
+# Include Styles
+
+Allows for [style modules](https://www.polymer-project.org/3.0/docs/devguide/style-shadow-dom#style-modules) defined in Polymer to be injected into Angular components.
+
+## Usage
+
+Import the `IncludeStylesModule` into the app's root `@NgModule`.
+
+```ts
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { IncludeStylesModule } from '@codebakery/origami/styles';
+import { AppComponent } from './app.component';
+
+@NgModule({
+  imports: [BrowserModule, IncludeStylesModule],
+  declarations: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  bootstrap: [AppComponent]
+})
+export class AppModule {}
+```
+
+Use the `@IncludeStyles()` decorater to inject one or more style modules into the component.
+
+```ts
+import { Component } from '@angular/core';
+import { IncludeStyles } from '@codebakery/origami/styles';
+import '@polymer/iron-flex-layout/iron-flex-layout-classes';
+
+@IncludeStyles('iron-flex')
+@Component({
+  selector: 'app-component',
+  template: `
+    <div class="layout horizontal">
+      <div class="flex">Column 1</div>
+      <div class="flex">Column 2</div>
+    </div>
+  `
+})
+export class AppComponent {}
+```
+
 # ShadyCSS
 
 Adds [ShadyCSS](https://github.com/webcomponents/shadycss) support to Angular styles. This allows the usage of CSS custom properties in browsers that do not support them.
@@ -9,7 +57,7 @@ Import the `ShadyCSSModule` in any `@NgModule` you wish to use ShadyCSS with. Fo
 ```ts
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { ShadyCSSModule } from '@codebakery/origami/shadycss';
+import { ShadyCSSModule } from '@codebakery/origami/styles';
 import { AppComponent } from './app.component';
 
 @NgModule({
@@ -60,7 +108,7 @@ If using the deprecated `@apply` mixin proposal, import `ShadyCSSModule.usingApp
 ```ts
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { ShadyCSSModule } from '@codebakery/origami/shadycss';
+import { ShadyCSSModule } from '@codebakery/origami/styles';
 import { AppComponent } from './app.component';
 
 @NgModule({

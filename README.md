@@ -13,7 +13,8 @@ Angular + Polymer
 [Angular and custom elements are BFFs](https://custom-elements-everywhere.com/). With Polymer, there are a few gaps that Origami fills. The library is divided into several modules that can be imported individually to address these gaps.
 
 - [Angular Form Support](forms/README.md)
-- [ShadyCSS Support](shadycss/README.md)
+- [ShadyCSS Support](styles/README.md#shadycss)
+- [Style Modules](styles/README.md#style-modules)
 - [Polymer `<template>` Stamping](templates/README.md)
 - [Polyfill Utilities](polyfills/README.md)
 
@@ -131,9 +132,9 @@ export class AppComponent {
 }
 ```
 
-### [ShadyCSS Support](shadycss/README.md)
+### [ShadyCSS Support](styles/README.md#shadycss)
 
-Enables the use of CSS custom properties in Angular styles on browsers that do not support them via [ShadyCSS](https://github.com/webcomponents/shadycss), with some [limitations](shadycss/README.md#limitations).
+Enables the use of CSS custom properties in Angular styles on browsers that do not support them via [ShadyCSS](https://github.com/webcomponents/shadycss), with some [limitations](styles/README.md#limitations).
 
 ```ts
 import { Component } from '@angular/core';
@@ -150,6 +151,28 @@ import '@polymer/paper-button/paper-button';
   ],
   template: `
     <paper-button>Blue Ink!</paper-button>
+  `
+})
+export class AppComponent {}
+```
+
+### [Style Modules](styles/README.md#style-modules)
+
+Allows for [style modules](https://www.polymer-project.org/3.0/docs/devguide/style-shadow-dom#style-modules) defined in Polymer to be injected into Angular components.
+
+```ts
+import { Component } from '@angular/core';
+import { IncludeStyles } from '@codebakery/origami/styles';
+import '@polymer/iron-flex-layout/iron-flex-layout-classes';
+
+@IncludeStyles('iron-flex')
+@Component({
+  selector: 'app-component',
+  template: `
+    <div class="layout horizontal">
+      <div class="flex">Column 1</div>
+      <div class="flex">Column 2</div>
+    </div>
   `
 })
 export class AppComponent {}

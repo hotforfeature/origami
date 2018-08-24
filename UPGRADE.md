@@ -16,7 +16,10 @@ Additionally, Origami has been split into several modules. `OrigamiModule` will 
 import { OrigamiModule } from '@codebakery/origami';
 // or
 import { OrigamiFormsModule } from '@codebakery/origami/forms';
-import { ShadyCSSModule } from '@codebakery/origami/shadycss';
+import {
+  IncludeStylesModule,
+  ShadyCSSModule
+} from '@codebakery/origami/styles';
 import { TemplateModule } from '@codebakery/origami/templates';
 import { WebComponentsReadyModule } from '@codebakery/origami/polyfills';
 ```
