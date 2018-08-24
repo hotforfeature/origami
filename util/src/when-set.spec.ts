@@ -72,5 +72,39 @@ describe('util', () => {
       result = await promise;
       expect(result).toBe('bar');
     });
+
+    it('should allow synchronous callbacks', () => {
+      const target: { foo?: string } = {};
+      const callbackSync = jasmine.createSpy('callbackSync');
+      whenSet(target, 'foo', undefined, callbackSync);
+      target.foo = 'bar';
+      expect(callbackSync).toHaveBeenCalledWith('bar');
+      expect(target.foo).toBe('bar');
+    });
+
+    it('should allow synchronous callbacks when value already set', () => {
+      const target = { foo: 'bar' };
+      const callbackSync = jasmine.createSpy('callbackSync');
+      whenSet(target, 'foo', undefined, callbackSync);
+      expect(callbackSync).toHaveBeenCalledWith('bar');
+    });
+
+    it('should allow multiple synchronous callbacks', () => {
+      const target: { foo?: string } = {};
+      const callbacks = [
+        jasmine.createSpy('callbackSync1'),
+        jasmine.createSpy('callbackSync2'),
+        jasmine.createSpy('callbackSync3')
+      ];
+
+      callbacks.forEach(callback =>
+        whenSet(target, 'foo', undefined, callback)
+      );
+      target.foo = 'bar';
+      callbacks.forEach(callback =>
+        expect(callback).toHaveBeenCalledWith('bar')
+      );
+      expect(target.foo).toBe('bar');
+    });
   });
 });
