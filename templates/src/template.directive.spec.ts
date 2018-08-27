@@ -160,12 +160,12 @@ describe('templates', () => {
       await shimHTMLTemplateAppend();
     });
 
-    it('should enable event bindings', async () => {
-      await TestBed.configureTestingModule({
+    it('should enable event bindings', () => {
+      TestBed.configureTestingModule({
         declarations: [TemplateDirective, EventBindings],
         providers: [TEMPLATES_READY_PROVIDER],
         schemas: [CUSTOM_ELEMENTS_SCHEMA]
-      }).compileComponents();
+      });
 
       const fixture = TestBed.createComponent(EventBindings);
       fixture.detectChanges();
@@ -176,11 +176,11 @@ describe('templates', () => {
     });
 
     it('should enable Angular -> Polymer property bindings', async () => {
-      await TestBed.configureTestingModule({
+      TestBed.configureTestingModule({
         declarations: [TemplateDirective, PropertyBindings],
         providers: [TEMPLATES_READY_PROVIDER],
         schemas: [CUSTOM_ELEMENTS_SCHEMA]
-      }).compileComponents();
+      });
 
       const fixture = TestBed.createComponent(PropertyBindings);
       fixture.detectChanges();
@@ -192,11 +192,11 @@ describe('templates', () => {
     });
 
     it('should do nothing if Angular -> Polymer property does not change', async () => {
-      await TestBed.configureTestingModule({
+      TestBed.configureTestingModule({
         declarations: [TemplateDirective, PropertyBindings],
         providers: [TEMPLATES_READY_PROVIDER],
         schemas: [CUSTOM_ELEMENTS_SCHEMA]
-      }).compileComponents();
+      });
 
       const fixture = TestBed.createComponent(PropertyBindings);
       fixture.detectChanges();
@@ -212,11 +212,11 @@ describe('templates', () => {
     });
 
     it('should enable Angular -> Polymer computed bindings', async () => {
-      await TestBed.configureTestingModule({
+      TestBed.configureTestingModule({
         declarations: [TemplateDirective, ComputedBindings],
         providers: [TEMPLATES_READY_PROVIDER],
         schemas: [CUSTOM_ELEMENTS_SCHEMA]
-      }).compileComponents();
+      });
 
       const fixture = TestBed.createComponent(ComputedBindings);
       fixture.detectChanges();
@@ -227,11 +227,11 @@ describe('templates', () => {
     });
 
     it('should do nothing if there are no Angular -> Polymer bindings', async () => {
-      await TestBed.configureTestingModule({
+      TestBed.configureTestingModule({
         declarations: [TemplateDirective, NoBindings],
         providers: [TEMPLATES_READY_PROVIDER],
         schemas: [CUSTOM_ELEMENTS_SCHEMA]
-      }).compileComponents();
+      });
 
       const $enablePropertyBindings =
         TemplateDirective.prototype.enablePropertyBindings;
@@ -259,11 +259,11 @@ describe('templates', () => {
     });
 
     it('should enable Polymer -> Angular bindings', async () => {
-      await TestBed.configureTestingModule({
+      TestBed.configureTestingModule({
         declarations: [TemplateDirective, PolymerBindings],
         providers: [TEMPLATES_READY_PROVIDER],
         schemas: [CUSTOM_ELEMENTS_SCHEMA]
-      }).compileComponents();
+      });
 
       const fixture = TestBed.createComponent(PolymerBindings);
       fixture.detectChanges();
@@ -272,6 +272,7 @@ describe('templates', () => {
       const checkboxes = Array.from<CustomElement>(
         fixture.nativeElement.querySelectorAll('template-directive-element')
       );
+
       expect(fixture.componentInstance.checked).toBe(false);
       expect(checkboxes.length).toBe(3);
       expect(checkboxes[0].checked).toBe(false);
@@ -285,11 +286,11 @@ describe('templates', () => {
     });
 
     it('should handle Polymer -> Angular object splices', async () => {
-      await TestBed.configureTestingModule({
+      TestBed.configureTestingModule({
         declarations: [TemplateDirective, PolymerBindings],
         providers: [TEMPLATES_READY_PROVIDER],
         schemas: [CUSTOM_ELEMENTS_SCHEMA]
-      }).compileComponents();
+      });
 
       const fixture = TestBed.createComponent(PolymerBindings);
       fixture.detectChanges();
@@ -307,11 +308,11 @@ describe('templates', () => {
     });
 
     it('should handle Polymer -> Angular array splices', async () => {
-      await TestBed.configureTestingModule({
+      TestBed.configureTestingModule({
         declarations: [TemplateDirective, PolymerBindings],
         providers: [TEMPLATES_READY_PROVIDER],
         schemas: [CUSTOM_ELEMENTS_SCHEMA]
-      }).compileComponents();
+      });
 
       const fixture = TestBed.createComponent(PolymerBindings);
       fixture.detectChanges();
@@ -320,6 +321,7 @@ describe('templates', () => {
       const element = <CustomElement>(
         fixture.nativeElement.querySelector('template-directive-element')
       );
+
       expect(fixture.componentInstance.items).toEqual([1, 2, 3]);
       expect(element.arr).toBe(fixture.componentInstance.items);
       element.push('arr', 4);
@@ -329,11 +331,11 @@ describe('templates', () => {
     });
 
     it('should do nothing if POLYMER_HOST is not provided', async () => {
-      await TestBed.configureTestingModule({
+      TestBed.configureTestingModule({
         declarations: [TemplateDirective, NoHost],
         providers: [TEMPLATES_READY_PROVIDER],
         schemas: [CUSTOM_ELEMENTS_SCHEMA]
-      }).compileComponents();
+      });
 
       const fixture = TestBed.createComponent(NoHost);
       spyOn(
@@ -356,11 +358,11 @@ describe('templates', () => {
 
     describe('getTemplateInfo()', async () => {
       it('should resolve with _templateInfo before it is set', async () => {
-        await TestBed.configureTestingModule({
+        TestBed.configureTestingModule({
           declarations: [TemplateDirective, EventBindings],
           providers: [TEMPLATES_READY_PROVIDER],
           schemas: [CUSTOM_ELEMENTS_SCHEMA]
-        }).compileComponents();
+        });
 
         const fixture = TestBed.createComponent(EventBindings);
         const nativeTemplate =
@@ -369,17 +371,18 @@ describe('templates', () => {
         const promise = fixture.componentInstance.template.getTemplateInfo(
           nativeTemplate
         );
+
         fixture.componentInstance.repeatRef.nativeElement.render();
         const result = await promise;
         expect(result).toBe(nativeTemplate._templateInfo);
       });
 
       it('should resolve with _templateInfo after it is set', async () => {
-        await TestBed.configureTestingModule({
+        TestBed.configureTestingModule({
           declarations: [TemplateDirective, EventBindings],
           providers: [TEMPLATES_READY_PROVIDER],
           schemas: [CUSTOM_ELEMENTS_SCHEMA]
-        }).compileComponents();
+        });
 
         const fixture = TestBed.createComponent(EventBindings);
         const nativeTemplate =

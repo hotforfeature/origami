@@ -17,30 +17,41 @@ export const USING_APPLY = new InjectionToken<boolean>('usingApply');
  *
  * @param usingApply if true, parse stylesheets regardless of native support,
  *   since no browser supports `@apply` natively
+ * @returns a Promise when all stylesheets have been processed
  */
-export function processStylesheets(usingApply?: boolean) {
+export async function processStylesheets(usingApply?: boolean): Promise<void> {
   const CustomStyleInterface =
     window.ShadyCSS && window.ShadyCSS.CustomStyleInterface;
   if (CustomStyleInterface && (!window.ShadyCSS.nativeCss || usingApply)) {
-    Array.from(document.styleSheets).forEach(stylesheet => {
-      const node = stylesheet.ownerNode;
-      if (isStyleNode(node) && !node.hasAttribute('scope')) {
-        CustomStyleInterface.addCustomStyle(node);
-      } else if (stylesheet.href && !(<any>stylesheet)._fetching) {
-        (<any>stylesheet)._fetching = true;
-        const xhr = new XMLHttpRequest();
-        xhr.addEventListener('load', () => {
-          const style = document.createElement('style');
-          style.innerHTML = xhr.responseText;
-          node.parentNode!.insertBefore(style, node);
-          node.parentNode!.removeChild(node);
-          CustomStyleInterface.addCustomStyle(style);
-        });
+    await Promise.all(
+      Array.from(document.styleSheets).map(stylesheet => {
+        const node = stylesheet.ownerNode;
+        if (isStyleNode(node) && !node.hasAttribute('scope')) {
+          CustomStyleInterface.addCustomStyle(node);
+          return Promise.resolve();
+        } else if (stylesheet.href) {
+          if (!(<any>stylesheet)._fetching) {
+            const href = stylesheet.href;
+            (<any>stylesheet)._fetching = new Promise<void>(resolve => {
+              const xhr = new XMLHttpRequest();
+              xhr.addEventListener('load', () => {
+                const style = document.createElement('style');
+                style.innerHTML = xhr.responseText;
+                node.parentNode!.insertBefore(style, node);
+                node.parentNode!.removeChild(node);
+                CustomStyleInterface.addCustomStyle(style);
+                resolve();
+              });
 
-        xhr.open('GET', stylesheet.href);
-        xhr.send();
-      }
-    });
+              xhr.open('GET', href);
+              xhr.send();
+            });
+          }
+
+          return (<any>stylesheet)._fetching;
+        }
+      })
+    );
   }
 }
 

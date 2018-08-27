@@ -105,6 +105,7 @@
     "tsickle": "^0.32.1",
     "tslib": "^1.9.3",
     "typescript": "^2.8.4",
+    "xhr-mock": "^2.4.1",
     "zone.js": "^0.8.26"
   },
   "engine": {

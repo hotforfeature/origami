@@ -1,4 +1,4 @@
-import { Inject, Optional } from '@angular/core';
+import { Inject, Optional, Provider } from '@angular/core';
 import {
   DOCUMENT,
   ɵDomSharedStylesHost as DomSharedStylesHost
@@ -51,3 +51,11 @@ export class ShadyCSSSharedStylesHost extends DomSharedStylesHost {
     processStylesheets(this.usingApply);
   }
 }
+
+/**
+ * Provider that replaces the DomSharedStylesHost with ShadyCSSSharedStylesHost.
+ */
+export const SHADYCSS_SHARED_STYLES_HOST_PROVIDER: Provider = {
+  provide: DomSharedStylesHost,
+  useClass: ShadyCSSSharedStylesHost
+};

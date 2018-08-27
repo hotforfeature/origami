@@ -25,11 +25,11 @@ describe('templates', () => {
       templateDirective?: TemplateDirective;
     }
 
-    beforeEach(async () => {
-      await TestBed.configureTestingModule({
+    beforeEach(() => {
+      TestBed.configureTestingModule({
         imports: [TemplateModule],
         declarations: [TestComponent]
-      }).compileComponents();
+      });
     });
 
     it('should declare TemplateDirective', () => {

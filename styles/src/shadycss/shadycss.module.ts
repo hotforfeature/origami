@@ -2,7 +2,7 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { ɵDomSharedStylesHost as DomSharedStylesHost } from '@angular/platform-browser';
 import { WebComponentsReadyModule } from '@codebakery/origami/polyfills';
 import { USING_APPLY } from './process-stylesheets';
-import { ShadyCSSSharedStylesHost } from './shared-styles-host';
+import { SHADYCSS_SHARED_STYLES_HOST_PROVIDER } from './shared-styles-host';
 
 /**
  * Adds ShadyCSS support to Angular. This allows the use of CSS custom
@@ -17,9 +17,7 @@ import { ShadyCSSSharedStylesHost } from './shared-styles-host';
  */
 @NgModule({
   imports: [WebComponentsReadyModule],
-  providers: [
-    { provide: DomSharedStylesHost, useClass: ShadyCSSSharedStylesHost }
-  ]
+  providers: [SHADYCSS_SHARED_STYLES_HOST_PROVIDER]
 })
 export class ShadyCSSModule {
   /**
