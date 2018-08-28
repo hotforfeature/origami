@@ -36,6 +36,7 @@ import '@polymer/iron-flex-layout/iron-flex-layout-classes';
 @IncludeStyles('iron-flex')
 @Component({
   selector: 'app-component',
+  styles: [':host { display: block; }'], // See Limitations
   template: `
     <div class="layout horizontal">
       <div class="flex">Column 1</div>
@@ -45,6 +46,12 @@ import '@polymer/iron-flex-layout/iron-flex-layout-classes';
 })
 export class AppComponent {}
 ```
+
+## Limitations
+
+Angular will not process a component's renderer type if it does not have any styles. Since Origami relies on this type data being generated, components that use `@IncludeStyles()` must define either `styles` or `styleUrls`.
+
+An easy way to ensure the type data is generated if a component does not have any styles is to add `styles: [':host { display: block; }']` to the `@Component()` metadata.
 
 # ShadyCSS
 

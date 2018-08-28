@@ -5,15 +5,13 @@ import {
   NgModuleRef,
   Provider
 } from '@angular/core';
-import { injectIncludeStyles } from './inject-styles';
+import { INJECT_STYLES_PROVIDER } from './inject-styles';
 
-export const INJECT_STYLES_PROVIDER: Provider = {
-  provide: APP_INITIALIZER,
-  multi: true,
-  useFactory: injectIncludeStyles,
-  deps: [NgModuleRef]
-};
-
+/**
+ * Importing this module will add the ability for Angular components to include
+ * Polymer style modules with the `@IncludeStyles()` decorator. This module
+ * only needs to be imported once at the root component.
+ */
 @NgModule({
   providers: [INJECT_STYLES_PROVIDER]
 })

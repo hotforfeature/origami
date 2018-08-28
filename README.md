@@ -168,6 +168,7 @@ import '@polymer/iron-flex-layout/iron-flex-layout-classes';
 @IncludeStyles('iron-flex')
 @Component({
   selector: 'app-component',
+  styles: [':host { display: block; }'], // See Limitations
   template: `
     <div class="layout horizontal">
       <div class="flex">Column 1</div>

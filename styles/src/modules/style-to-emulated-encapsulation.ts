@@ -3,9 +3,23 @@ import {
   ɵshimHostAttribute as shimHostAttribute
 } from '@angular/platform-browser';
 
+/**
+ * Regex to find and replace `:host-context()` selectors.
+ */
 export const HOST_CONTEXT_REGEX = /:host-context\((.*)\)/g;
+/**
+ * Regex to find and replace `:host` selectors.
+ */
 export const HOST_REGEX = /:host(?:\((.*)\))?/g;
 
+/**
+ * Converts the provided CSS string to an Angular emulated encapsulation string
+ * for the given component id.
+ *
+ * @param style the CSS string to convert
+ * @param id the Angular component id
+ * @returns a CSS string that emulates encapsulation for the given component id
+ */
 export function styleToEmulatedEncapsulation(
   style: string,
   id: string
@@ -19,8 +33,6 @@ export function styleToEmulatedEncapsulation(
     } else {
       let { selector } = statement;
       selector = selector.trim();
-      selector = selector.replace(HOST_CONTEXT_REGEX, `$1 ${hostAttribute}`);
-      selector = selector.replace(HOST_REGEX, `${hostAttribute}$1`);
       selector = selector
         .split(',')
         .map(subSelector => {
@@ -28,12 +40,19 @@ export function styleToEmulatedEncapsulation(
             .trim()
             .split(' ')
             .map(part => {
-              return `${part.trim()}[${contentAttribute}]`;
+              part = part.trim();
+              if (part.includes(':host')) {
+                return part;
+              } else {
+                return `${part}[${contentAttribute}]`;
+              }
             })
             .join(' ');
         })
         .join(',');
 
+      selector = selector.replace(HOST_CONTEXT_REGEX, `*$1 [${hostAttribute}]`);
+      selector = selector.replace(HOST_REGEX, `[${hostAttribute}]$1`);
       statement.selector = selector;
     }
   }
@@ -45,12 +64,31 @@ export function styleToEmulatedEncapsulation(
   return statementsToString(statements);
 }
 
+/**
+ * Represents a single CSS statement.
+ */
 export interface StyleStatement {
+  /**
+   * The selector of the statement.
+   */
   selector: string;
+  /**
+   * The body block of the statement.
+   */
   block: string;
+  /**
+   * The body block statements. This is used for at-rule selectors such as
+   * `@media {}`
+   */
   statements?: StyleStatement[];
 }
 
+/**
+ * Parses a CSS string into an array of statements.
+ *
+ * @param style the CSS string to parse
+ * @returns an array of CSS statements
+ */
 export function parseStyleStatements(style: string): StyleStatement[] {
   let inAtRule = false;
   let inSingleQuote = false;
@@ -116,6 +154,12 @@ export function parseStyleStatements(style: string): StyleStatement[] {
   return statements;
 }
 
+/**
+ * Converts an array of statements back into a single CSS string.
+ *
+ * @param statements the statements to convert
+ * @returns a CSS string
+ */
 export function statementsToString(statements: StyleStatement[]): string {
   return statements
     .map(statement => {
