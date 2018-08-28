@@ -34,8 +34,8 @@ export function shimCustomElements() {
       // instruct webcomponentsjs to ignore this shim
       forcePolyfill = true;
 
-      get(name: string) {
-        return ceMap[name];
+      get(name: string): any {
+        return ceMap[name] && ceMap[name][0];
       }
 
       define(
@@ -48,9 +48,10 @@ export function shimCustomElements() {
 
       whenDefined(name: string): Promise<void> {
         if (!Array.isArray(ceWhenDefined[name])) {
-          ceWhenDefined[name] = <any>[
-            new Promise(resolve => (ceWhenDefined[name][1] = resolve))
-          ];
+          ceWhenDefined[name] = <any>[];
+          ceWhenDefined[name][0] = new Promise(resolve => {
+            ceWhenDefined[name][1] = resolve;
+          });
         }
 
         return ceWhenDefined[name][0];

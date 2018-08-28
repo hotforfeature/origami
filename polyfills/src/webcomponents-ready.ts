@@ -8,7 +8,7 @@ declare global {
   }
 }
 
-let readyPromise: Promise<void>;
+let readyPromise: Promise<void> | undefined;
 /**
  * Returns a Promise that resolves when webcomponent polyfills are ready. If
  * this function is used *without* polyfills loaded, it will never resolve.
@@ -17,18 +17,26 @@ let readyPromise: Promise<void>;
  */
 export function webcomponentsReady(): Promise<void> {
   if (!readyPromise) {
-    readyPromise = new Promise(async resolve => {
-      const WebComponents = await whenSet(window, 'WebComponents');
-      if (WebComponents && !WebComponents.ready) {
-        document.addEventListener('WebComponentsReady', function onready() {
-          document.removeEventListener('WebComponentsReady', onready);
+    readyPromise = new Promise(resolve => {
+      whenSet(window, 'WebComponents', undefined, WebComponents => {
+        if (WebComponents && !WebComponents.ready) {
+          document.addEventListener('WebComponentsReady', function onready() {
+            document.removeEventListener('WebComponentsReady', onready);
+            resolve();
+          });
+        } else {
           resolve();
-        });
-      } else {
-        resolve();
-      }
+        }
+      });
     });
   }
 
   return readyPromise;
+}
+
+/**
+ * Resets the `webcomponentsReady()` function. Should only be used in testing.
+ */
+export function resetWebcomponentsReady() {
+  readyPromise = undefined;
 }
