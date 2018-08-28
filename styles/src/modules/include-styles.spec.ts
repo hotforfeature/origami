@@ -3,18 +3,8 @@ import { IncludeStyles, resetIncludeStyles } from './include-styles';
 describe('styles', () => {
   describe('modules', () => {
     describe('IncludeStyles', () => {
-      let previousStyles: StyleSheet[];
-      beforeAll(() => {
-        previousStyles = Array.from(document.styleSheets);
-      });
-
       afterEach(() => {
         resetIncludeStyles();
-        Array.from(document.styleSheets).forEach(stylesheet => {
-          if (previousStyles.indexOf(stylesheet) === -1) {
-            stylesheet.ownerNode.parentNode!.removeChild(stylesheet.ownerNode);
-          }
-        });
       });
 
       describe('.getRegisteredTypes()', () => {

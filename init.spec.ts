@@ -31,9 +31,30 @@ import {
   platformBrowserDynamicTesting
 } from '@angular/platform-browser-dynamic/testing';
 
+let karmaStyles: Element[];
+
 beforeAll(() => {
+  karmaStyles = Array.from(
+    document.querySelectorAll('style,link[rel=stylesheet]')
+  );
   getTestBed().initTestEnvironment(
     BrowserDynamicTestingModule,
     platformBrowserDynamicTesting()
   );
+});
+
+afterEach(() => {
+  Array.from(document.querySelectorAll('style,link[rel=stylesheet]')).forEach(
+    style => {
+      if (karmaStyles.indexOf(style) === -1) {
+        style.parentNode!.removeChild(style);
+      }
+    }
+  );
+
+  karmaStyles.forEach(style => {
+    if (!style.parentNode) {
+      document.head.appendChild(style);
+    }
+  });
 });

@@ -19,14 +19,13 @@ describe('styles', () => {
       let $ShadyCSS: ShadyCSS;
       let $styles: Array<HTMLStyleElement | HTMLLinkElement>;
 
-      beforeAll(() => {
-        $ShadyCSS = window.ShadyCSS;
-        $styles = Array.from(document.querySelectorAll('style,link'));
-        $styles.forEach(style => style.parentNode!.removeChild(style));
-      });
-
       beforeEach(() => {
         xhrMock.setup();
+        $styles = Array.from(
+          document.querySelectorAll('style,link[rel=stylesheet]')
+        );
+        $styles.forEach(style => style.parentNode!.removeChild(style));
+        $ShadyCSS = window.ShadyCSS;
         window.ShadyCSS = {
           nativeCss: false,
           nativeShadow: false,
@@ -39,13 +38,13 @@ describe('styles', () => {
 
       afterEach(() => {
         xhrMock.teardown();
-        Array.from(document.querySelectorAll('style,link')).forEach(style => {
+        window.ShadyCSS = $ShadyCSS;
+        Array.from(
+          document.querySelectorAll('style,link[rel=stylesheet]')
+        ).forEach(style => {
           style.parentNode!.removeChild(style);
         });
-      });
 
-      afterAll(() => {
-        window.ShadyCSS = $ShadyCSS;
         $styles.forEach(style => document.head.appendChild(style));
       });
 

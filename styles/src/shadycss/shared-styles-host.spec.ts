@@ -22,10 +22,6 @@ describe('styles', () => {
 
     describe('ShadyCSSSharedStylesHost', () => {
       let globalStyle: HTMLStyleElement;
-      let previousStyles: StyleSheet[];
-      beforeAll(() => {
-        previousStyles = Array.from(document.styleSheets);
-      });
 
       beforeEach(() => {
         expect(window.ShadyCSS).toBeDefined();
@@ -36,11 +32,6 @@ describe('styles', () => {
 
       afterEach(() => {
         document.head.removeChild(globalStyle);
-        Array.from(document.styleSheets).forEach(stylesheet => {
-          if (previousStyles.indexOf(stylesheet) === -1) {
-            stylesheet.ownerNode.parentNode!.removeChild(stylesheet.ownerNode);
-          }
-        });
       });
 
       it('should ensure @apply mixins work', () => {

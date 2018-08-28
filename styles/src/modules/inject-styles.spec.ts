@@ -36,7 +36,6 @@ describe('styles', () => {
 
     describe('injectIncludeStyles()', () => {
       let fixture: ComponentFixture<any>;
-      let previousStyles: StyleSheet[];
       let styleModuleDiv: HTMLDivElement;
       beforeAll(() => {
         styleModuleDiv = document.createElement('div');
@@ -55,19 +54,10 @@ describe('styles', () => {
         document.head.appendChild(styleModuleDiv);
       });
 
-      beforeAll(() => {
-        previousStyles = Array.from(document.styleSheets);
-      });
-
       afterEach(() => {
         resetIncludeStyles();
         resetTypeSelectors();
         fixture.destroy();
-        Array.from(document.styleSheets).forEach(stylesheet => {
-          if (previousStyles.indexOf(stylesheet) === -1) {
-            stylesheet.ownerNode.parentNode!.removeChild(stylesheet.ownerNode);
-          }
-        });
       });
 
       afterAll(() => {
