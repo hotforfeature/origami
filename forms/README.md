@@ -97,7 +97,7 @@ Example:
 - sets the `selectedValues` or `selectedItems` property
 - updates from `(selected-values-changed)` or `(selected-items-changed)` events
 
-The element must have a `multi` property that is set to `true`. It must also define a `selectedValues` and/or `selectedItems` property. Origami will automatically determine the correct property to update based on what the element has defined and the value type.
+The element must define a `selectedValues` and/or `selectedItems` property. If the element also defines a `selected` and/or `selectedItem` property, then it must additional have a `multi` property that is set to `true`. Origami will automatically determine the correct property to update based on what the element has defined and the value type.
 
 Example:
 

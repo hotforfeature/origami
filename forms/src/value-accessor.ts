@@ -32,6 +32,7 @@ export interface CheckedElementLike {
  * An interface for determining if an element is selectable.
  */
 export interface SelectableLike {
+  multi?: boolean;
   selected?: string | number;
   selectedItem?: any;
 }
@@ -40,6 +41,7 @@ export interface SelectableLike {
  * An interface for determining if an element is multi selectable.
  */
 export interface MultiSelectableLike {
+  multi?: boolean;
   selectedValues?: Array<string | number>;
   selectedItems?: any[];
 }
@@ -355,12 +357,15 @@ export class OrigamiControlValueAccessor extends DefaultValueAccessor
    * @param element the element to check
    */
   isMultiSelectable(element: any): element is MultiSelectableLike {
-    return (
-      !!element &&
-      element.multi === true &&
+    if (
+      element &&
       (this.isPropertyDefined(element, 'selectedValues') ||
         this.isPropertyDefined(element, 'selectedItems'))
-    );
+    ) {
+      return this.isSelectable(element) ? element.multi === true : true;
+    } else {
+      return false;
+    }
   }
 
   /**
