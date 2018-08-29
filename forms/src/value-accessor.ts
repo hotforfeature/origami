@@ -359,7 +359,7 @@ export class OrigamiControlValueAccessor extends DefaultValueAccessor
       !!element &&
       element.multi === true &&
       (this.isPropertyDefined(element, 'selectedValues') ||
-        this.isPropertyDefined(element, 'selectedValues'))
+        this.isPropertyDefined(element, 'selectedItems'))
     );
   }
 
@@ -455,6 +455,13 @@ export class OrigamiControlValueAccessor extends DefaultValueAccessor
       }
     }
 
-    return this.useSelectableValueProp ? valueProp : indexProp;
+    if (element.itemValuePath) {
+      // <vaadin-combo-box> will want to use selectedItem for object values.
+      // However, if `itemValuePath` is set then the control value is not the
+      // item itself, but the `value` property.
+      return 'value';
+    } else {
+      return this.useSelectableValueProp ? valueProp : indexProp;
+    }
   }
 }
