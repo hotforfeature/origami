@@ -1,5 +1,5 @@
 import { Directive, ElementRef, Inject, Optional, NgZone } from '@angular/core';
-import { wrapAndDefineDescriptor } from '@codebakery/origami/util';
+import { whenSet, wrapAndDefineDescriptor } from '@codebakery/origami/util';
 import { camelToDashCase } from '@polymer/polymer/lib/utils/case-map';
 import { TemplateInfo } from '@polymer/polymer/interfaces';
 import { POLYMER_HOST } from './polymerHost';
@@ -75,7 +75,7 @@ export class TemplateDirective {
    */
   async enablePropertyBindings(template: PolymerTemplate) {
     const { hostProps } = await this.getTemplateInfo(template);
-    if (Object.keys(hostProps).length) {
+    if (hostProps) {
       for (let prop in hostProps) {
         // Angular -> Polymer (one-way bindings)
         const initialValue = this.polymerHost[prop];
@@ -115,16 +115,7 @@ export class TemplateDirective {
     if (template._templateInfo) {
       return template._templateInfo;
     } else {
-      return await new Promise<TemplateInfo>(resolve => {
-        wrapAndDefineDescriptor(template, '_templateInfo', {
-          afterSet() {
-            // Resolve at micro timing after _templateInfo is first set, since
-            // TemplateStamp will first set it to an empty object before
-            // initializing it
-            setTimeout(() => resolve(template._templateInfo));
-          }
-        });
-      });
+      return await whenSet(template, '_templateInfo');
     }
   }
 

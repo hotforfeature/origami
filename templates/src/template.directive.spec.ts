@@ -356,7 +356,30 @@ describe('templates', () => {
       ).not.toHaveBeenCalled();
     });
 
-    describe('getTemplateInfo()', async () => {
+    describe('enablePropertyBindings()', () => {
+      it('should do nothing if _templateInfo does not have hostProps', async () => {
+        TestBed.configureTestingModule({
+          declarations: [TemplateDirective, EventBindings],
+          providers: [TEMPLATES_READY_PROVIDER],
+          schemas: [CUSTOM_ELEMENTS_SCHEMA]
+        });
+
+        const fixture = TestBed.createComponent(EventBindings);
+        const nativeTemplate =
+          fixture.componentInstance.template.elementRef.nativeElement;
+        fixture.componentInstance.repeatRef.nativeElement.render();
+        expect(nativeTemplate._templateInfo).toBeDefined();
+        nativeTemplate._templateInfo.hostProps = undefined;
+        expect(nativeTemplate._templateInfo.hostProps).toBeUndefined();
+        spyOn(nativeTemplate, 'addEventListener').and.callThrough();
+        await fixture.componentInstance.template.enablePropertyBindings(
+          nativeTemplate
+        );
+        expect(nativeTemplate.addEventListener).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('getTemplateInfo()', () => {
       it('should resolve with _templateInfo before it is set', async () => {
         TestBed.configureTestingModule({
           declarations: [TemplateDirective, EventBindings],
