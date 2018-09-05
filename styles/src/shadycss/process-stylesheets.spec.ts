@@ -65,6 +65,7 @@ describe('styles', () => {
 
       it('should fetch link styles and replace them with style node', async () => {
         const link = document.createElement('link');
+        const linkLoad = new Promise(resolve => (link.onload = resolve));
         link.rel = 'stylesheet';
         const cssText = '.blue { color: blue; }';
         link.href = `data:text/css;base64,${btoa(cssText)}`;
@@ -73,6 +74,7 @@ describe('styles', () => {
         });
 
         document.head.appendChild(link);
+        await linkLoad;
         await processStylesheets();
         const createdStyle: HTMLStyleElement = Array.from(
           document.querySelectorAll('style')
@@ -90,6 +92,7 @@ describe('styles', () => {
 
       it('should not make multiple requests to link style hrefs', async () => {
         const link = document.createElement('link');
+        const linkLoad = new Promise(resolve => (link.onload = resolve));
         link.rel = 'stylesheet';
         const cssText = '.blue { color: blue; }';
         link.href = `data:text/css;base64,${btoa(cssText)}`;
@@ -101,6 +104,7 @@ describe('styles', () => {
 
         xhrMock.get(link.href, xhrHandler);
         document.head.appendChild(link);
+        await linkLoad;
         await Promise.all([processStylesheets(), processStylesheets()]);
         expect(xhrHandler).toHaveBeenCalledTimes(1);
         document.head.removeChild(
