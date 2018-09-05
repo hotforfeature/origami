@@ -20,6 +20,7 @@ export class ShadyCSSSharedStylesHost extends DomSharedStylesHost {
     @Inject(USING_APPLY)
     private usingApply?: boolean
   ) {
+    /* istanbul ignore next */
     super(document);
   }
 
