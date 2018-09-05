@@ -100,8 +100,8 @@ It is recommended to add a script before `ng build` and `ng serve` tasks in `pac
 ```json
 {
   "scripts": {
-    "prepare:es5": "origami prepare es5 node_modules/{@polymer,@vaadin}/*",
-    "prepare:es2015": "origami prepare es2015 node_modules/{@polymer,@vaadin}/*",
+    "prepare:es5": "origami prepare es5 node_modules/{@polymer/*,@vaadin/*,@webcomponents/shadycss}",
+    "prepare:es2015": "origami prepare es2015 node_modules/{@polymer/*,@vaadin/*,@webcomponents/shadycss}",
     "start": "npm run prepare:es5 && ng serve es5App",
     "start:es2015": "npm run prepare:es2015 && ng serve es2015App",
     "build": "npm run prepare:es5 && ng build es5App --prod",
