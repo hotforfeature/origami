@@ -22,6 +22,7 @@ import '@vaadin/vaadin-checkbox/vaadin-checkbox';
 import '@vaadin/vaadin-combo-box/vaadin-combo-box';
 import '@vaadin/vaadin-date-picker/vaadin-date-picker';
 import { OrigamiControlValueAccessor } from './value-accessor';
+import { accessSync } from 'fs';
 
 describe('forms', () => {
   describe('OrigamiControlValueAccessor', () => {
@@ -212,7 +213,7 @@ describe('forms', () => {
 
     customElements.define(SelectedItems.is, SelectedItems);
 
-    // <paper-listbox>
+    // SelectedItems
 
     @Component({
       template: `<value-accessor-selected-items [(ngModel)]="value" origami></value-accessor-selected-items>`
@@ -236,6 +237,62 @@ describe('forms', () => {
       `
     })
     class SelectedItemsFormControl extends BaseWithForm {}
+
+    // A custom element with selectedValues that is not readonly
+    class SelectedValues extends PolymerElement {
+      static get is() {
+        return 'value-accessor-selected-values';
+      }
+      static get template() {
+        return html``;
+      }
+
+      static get properties() {
+        return {
+          items: {
+            type: Array,
+            value() {
+              return ['foo', 'bar'];
+            },
+            notify: true
+          },
+          selectedValues: {
+            type: Array,
+            value() {
+              return [];
+            },
+            notify: true
+          }
+        };
+      }
+    }
+
+    customElements.define(SelectedValues.is, SelectedValues);
+
+    // SelectedValues
+
+    @Component({
+      template: `<value-accessor-selected-values [(ngModel)]="value" origami></value-accessor-selected-values>`
+    })
+    class SelectedValuesNgModel extends BaseWithValue<number[]> {}
+
+    @Component({
+      template: `
+        <form [formGroup]="form">
+          <value-accessor-selected-values formControlName="value" origami></value-accessor-selected-values>
+        </form>
+      `
+    })
+    class SelectedValuesFormControlName extends BaseWithForm {}
+
+    @Component({
+      template: `
+        <form [formGroup]="form">
+          <value-accessor-selected-values [formControl]="control" origami></value-accessor-selected-values>
+        </form>
+      `
+    })
+    class SelectedValuesFormControl extends BaseWithForm {}
 
     function getInstValue<T>(
       inst: BaseWithValue<T> | BaseWithForm
@@ -581,7 +638,8 @@ describe('forms', () => {
             declarations: [
               OrigamiControlValueAccessor,
               PaperListboxNgModel,
-              SelectedItemsNgModel
+              SelectedItemsNgModel,
+              SelectedValuesNgModel
             ]
           });
 
@@ -601,6 +659,14 @@ describe('forms', () => {
             'foo',
             'bar'
           ]);
+          const fixture3 = TestBed.createComponent(SelectedValuesNgModel);
+          testAngularToPolymer(fixture3, SelectedValues.is, 'selectedValues', [
+            0
+          ]);
+          testPolymerToAngular(fixture3, SelectedValues.is, 'selectedValues', [
+            0,
+            1
+          ]);
         })
       );
 
@@ -613,7 +679,8 @@ describe('forms', () => {
             declarations: [
               OrigamiControlValueAccessor,
               PaperListboxFormControlName,
-              SelectedItemsFormControlName
+              SelectedItemsFormControlName,
+              SelectedValuesFormControlName
             ]
           });
 
@@ -635,6 +702,16 @@ describe('forms', () => {
             'foo',
             'bar'
           ]);
+          const fixture3 = TestBed.createComponent(
+            SelectedValuesFormControlName
+          );
+          testAngularToPolymer(fixture3, SelectedValues.is, 'selectedValues', [
+            0
+          ]);
+          testPolymerToAngular(fixture3, SelectedValues.is, 'selectedValues', [
+            0,
+            1
+          ]);
         })
       );
 
@@ -647,7 +724,8 @@ describe('forms', () => {
             declarations: [
               OrigamiControlValueAccessor,
               PaperListboxFormControl,
-              SelectedItemsFormControl
+              SelectedItemsFormControl,
+              SelectedValuesFormControl
             ]
           });
 
@@ -666,6 +744,14 @@ describe('forms', () => {
           testPolymerToAngular(fixture2, SelectedItems.is, 'selectedItems', [
             'foo',
             'bar'
+          ]);
+          const fixture3 = TestBed.createComponent(SelectedValuesFormControl);
+          testAngularToPolymer(fixture3, SelectedValues.is, 'selectedValues', [
+            0
+          ]);
+          testPolymerToAngular(fixture3, SelectedValues.is, 'selectedValues', [
+            0,
+            1
           ]);
         })
       );
@@ -747,48 +833,396 @@ describe('forms', () => {
         expect(isInvalid).toHaveBeenCalledTimes(2);
       });
 
-      it(
-        'should call element validate() function as part of control validators'
-      );
-      it(
-        'should set validationErrorsKey to true when element validate() returns false'
-      );
+      it('should call element validate() function as part of control validators', () => {
+        TestBed.configureTestingModule({
+          imports: [ReactiveFormsModule],
+          schemas: [CUSTOM_ELEMENTS_SCHEMA],
+          declarations: [OrigamiControlValueAccessor, PaperInputFormControl]
+        });
+
+        const fixture = TestBed.createComponent(PaperInputFormControl);
+        fixture.detectChanges();
+        const { control } = fixture.componentInstance;
+        const element = fixture.nativeElement.querySelector('paper-input');
+        const validateSpy = spyOn(element, 'validate').and.returnValue(false);
+        expect(element.invalid).toBeFalsy();
+        expect(control.invalid).toBeFalsy();
+        control.updateValueAndValidity();
+        expect(element.validate).toHaveBeenCalled();
+        expect(control.invalid).toBe(true, 'control should be invalid');
+        validateSpy.and.returnValue(true);
+        control.updateValueAndValidity();
+        expect(element.validate).toHaveBeenCalled();
+        expect(control.invalid).toBe(false, 'control should be valid');
+      });
+
+      it('should set validationErrorsKey to true when element validate() returns false', () => {
+        TestBed.configureTestingModule({
+          imports: [ReactiveFormsModule],
+          schemas: [CUSTOM_ELEMENTS_SCHEMA],
+          declarations: [OrigamiControlValueAccessor, PaperInputFormControl]
+        });
+
+        const fixture = TestBed.createComponent(PaperInputFormControl);
+        fixture.detectChanges();
+        const { control, accessor } = fixture.componentInstance;
+        const element = fixture.nativeElement.querySelector('paper-input');
+        spyOn(element, 'validate').and.returnValue(false);
+        expect(control.errors).toBeFalsy();
+        control.updateValueAndValidity();
+        expect(control.invalid).toBe(true, 'control should be invalid');
+        expect(control.errors).toEqual({
+          [accessor!.validationErrorsKey]: true
+        });
+
+        accessor!.validationErrorsKey = 'customError';
+        control.updateValueAndValidity();
+        expect(control.errors).toEqual({
+          customError: true
+        });
+      });
+
+      it('should update value and validity if invalid changes from element', () => {
+        TestBed.configureTestingModule({
+          imports: [ReactiveFormsModule],
+          schemas: [CUSTOM_ELEMENTS_SCHEMA],
+          declarations: [OrigamiControlValueAccessor, PaperInputFormControl]
+        });
+
+        const fixture = TestBed.createComponent(PaperInputFormControl);
+        fixture.detectChanges();
+        const element = fixture.nativeElement.querySelector('paper-input');
+        const { control } = fixture.componentInstance;
+        control.markAsDirty();
+        control.updateValueAndValidity();
+        expect(control.invalid).toBe(false, 'control should not be invalid');
+        spyOn(element, 'validate').and.returnValue(false);
+        element.invalid = true;
+        expect(control.invalid).toBe(true, 'control should be invalid');
+      });
     });
 
     describe('isCheckedElement()', () => {
-      it('should return true if element has "checked"');
-      it('should return false otherwise');
+      it('should return true if element has "checked"', () => {
+        TestBed.configureTestingModule({
+          imports: [ReactiveFormsModule],
+          schemas: [CUSTOM_ELEMENTS_SCHEMA],
+          declarations: [
+            OrigamiControlValueAccessor,
+            PaperCheckboxFormControl,
+            VaadinCheckboxFormControl
+          ]
+        });
+
+        let fixture = TestBed.createComponent(PaperCheckboxFormControl);
+        const accessor = fixture.componentInstance.accessor!;
+        expect(
+          accessor.isCheckedElement(
+            fixture.nativeElement.querySelector('paper-checkbox')
+          )
+        ).toBe(true, '<paper-checkbox> is a checkbox');
+        fixture = TestBed.createComponent(VaadinCheckboxFormControl);
+        expect(
+          accessor.isCheckedElement(
+            fixture.nativeElement.querySelector('vaadin-checkbox')
+          )
+        ).toBe(true, '<vaadin-checkbox> is a checkbox');
+      });
+
+      it('should return false otherwise', () => {
+        TestBed.configureTestingModule({
+          imports: [ReactiveFormsModule],
+          schemas: [CUSTOM_ELEMENTS_SCHEMA],
+          declarations: [OrigamiControlValueAccessor, PaperInputFormControl]
+        });
+
+        const fixture = TestBed.createComponent(PaperInputFormControl);
+        const accessor = fixture.componentInstance.accessor!;
+        expect(
+          accessor.isCheckedElement(
+            fixture.nativeElement.querySelector('paper-input')
+          )
+        ).toBe(false, '<paper-input> is not a checkbox');
+      });
     });
 
     describe('isSelectable()', () => {
-      it('should return true if element has "selected"');
-      it('should return true if element has "selectedItem"');
-      it('should return false otherwise');
+      it('should return true if element has "selected"', () => {
+        TestBed.configureTestingModule({
+          imports: [ReactiveFormsModule],
+          schemas: [CUSTOM_ELEMENTS_SCHEMA],
+          declarations: [OrigamiControlValueAccessor, PaperListboxFormControl]
+        });
+
+        const fixture = TestBed.createComponent(PaperListboxFormControl);
+        const accessor = fixture.componentInstance.accessor!;
+        const element = fixture.nativeElement.querySelector('paper-listbox');
+        expect('selected' in element).toBe(
+          true,
+          '<paper-listbox> should have "selected"'
+        );
+        expect(accessor.isSelectable(element)).toBe(
+          true,
+          '<paper-listbox> is selectable'
+        );
+      });
+
+      it('should return true if element has "selectedItem"', () => {
+        TestBed.configureTestingModule({
+          imports: [ReactiveFormsModule],
+          schemas: [CUSTOM_ELEMENTS_SCHEMA],
+          declarations: [
+            OrigamiControlValueAccessor,
+            PaperListboxFormControl,
+            VaadinComboBoxFormControl
+          ]
+        });
+
+        let fixture: ComponentFixture<any> = TestBed.createComponent(
+          PaperListboxFormControl
+        );
+        const accessor = fixture.componentInstance.accessor!;
+        let element = fixture.nativeElement.querySelector('paper-listbox');
+        expect('selectedItem' in element).toBe(
+          true,
+          '<paper-listbox> should have "selectedItem"'
+        );
+        expect(accessor.isSelectable(element)).toBe(
+          true,
+          '<paper-listbox> is selectable'
+        );
+        fixture = TestBed.createComponent(VaadinComboBoxFormControl);
+        element = fixture.nativeElement.querySelector('vaadin-combo-box');
+        expect('selectedItem' in element).toBe(
+          true,
+          '<vaadin-combo-box> should have "selectedItem"'
+        );
+        expect(
+          accessor.isSelectable(
+            fixture.nativeElement.querySelector('vaadin-combo-box')
+          )
+        ).toBe(true, '<vaadin-combo-box> is selectable');
+      });
+
+      it('should return false otherwise', () => {
+        TestBed.configureTestingModule({
+          imports: [ReactiveFormsModule],
+          schemas: [CUSTOM_ELEMENTS_SCHEMA],
+          declarations: [OrigamiControlValueAccessor, PaperInputFormControl]
+        });
+
+        const fixture = TestBed.createComponent(PaperInputFormControl);
+        const accessor = fixture.componentInstance.accessor!;
+        expect(
+          accessor.isSelectable(
+            fixture.nativeElement.querySelector('paper-input')
+          )
+        ).toBe(false, '<paper-input> is not selectable');
+      });
     });
 
     describe('isMultiSelectable()', () => {
-      it(
-        'should return true if element has "selectedValues" and "multi" is true'
-      );
-      it(
-        'should return true if element has "selectedItems" and "multi" is true'
-      );
-      it('should return false otherwise');
+      it('should return true if selectable element has "selectedValues" or "selectedItems" and "multi" is true', () => {
+        TestBed.configureTestingModule({
+          imports: [ReactiveFormsModule],
+          schemas: [CUSTOM_ELEMENTS_SCHEMA],
+          declarations: [OrigamiControlValueAccessor, PaperInputFormControl]
+        });
+
+        const fixture: ComponentFixture<any> = TestBed.createComponent(
+          PaperInputFormControl
+        );
+        const accessor = fixture.componentInstance.accessor!;
+        let element: any = { selected: null, selectedValues: [] };
+        expect(accessor.isSelectable(element)).toBe(
+          true,
+          'element with "selected" should be selectable'
+        );
+        element.multi = false;
+        expect(accessor.isMultiSelectable(element)).toBe(
+          false,
+          'element with "selectedValues" and multi false is not multi-selectable'
+        );
+        element.multi = true;
+        expect(accessor.isMultiSelectable(element)).toBe(
+          true,
+          'element with "selectedValues" and multi true is multi-selectable'
+        );
+        element = { selectedItem: null, selectedItems: [] };
+        expect(accessor.isSelectable(element)).toBe(
+          true,
+          'element with "selectedItem" should be selectable'
+        );
+        element.multi = false;
+        expect(accessor.isMultiSelectable(element)).toBe(
+          false,
+          'element with "selectedItems" and multi false is not multi-selectable'
+        );
+        element.multi = true;
+        expect(accessor.isMultiSelectable(element)).toBe(
+          true,
+          'element with "selectedItems" and multi true is multi-selectable'
+        );
+      });
+
+      it('should return true if element is not selectable and has "selectedValues" or "selectedItems"', () => {
+        TestBed.configureTestingModule({
+          imports: [ReactiveFormsModule],
+          schemas: [CUSTOM_ELEMENTS_SCHEMA],
+          declarations: [OrigamiControlValueAccessor, PaperInputFormControl]
+        });
+
+        const fixture: ComponentFixture<any> = TestBed.createComponent(
+          PaperInputFormControl
+        );
+        const accessor = fixture.componentInstance.accessor!;
+        let element: any = { selectedValues: [] };
+        expect(accessor.isSelectable(element)).toBe(
+          false,
+          'element should not be selectable'
+        );
+        expect(accessor.isMultiSelectable(element)).toBe(
+          true,
+          'non-selectable element with "selectedValues" is multi-selectable'
+        );
+        element = { selectedItems: [] };
+        expect(accessor.isSelectable(element)).toBe(
+          false,
+          'element should not be selectable'
+        );
+        expect(accessor.isMultiSelectable(element)).toBe(
+          true,
+          'non-selectable element with "selectedItems" is multi-selectable'
+        );
+      });
+
+      it('should return false otherwise', () => {
+        TestBed.configureTestingModule({
+          imports: [ReactiveFormsModule],
+          schemas: [CUSTOM_ELEMENTS_SCHEMA],
+          declarations: [OrigamiControlValueAccessor, PaperInputFormControl]
+        });
+
+        const fixture = TestBed.createComponent(PaperInputFormControl);
+        const accessor = fixture.componentInstance.accessor!;
+        expect(
+          accessor.isMultiSelectable(
+            fixture.nativeElement.querySelector('paper-input')
+          )
+        ).toBe(false, '<paper-input> is not multi-selectable');
+      });
     });
 
     describe('isValidatable()', () => {
-      it('should return true if the element has "invalid"');
-      it('should return false otherwise');
+      it('should return true if the element has "invalid"', () => {
+        TestBed.configureTestingModule({
+          imports: [ReactiveFormsModule],
+          schemas: [CUSTOM_ELEMENTS_SCHEMA],
+          declarations: [OrigamiControlValueAccessor, PaperInputFormControl]
+        });
+
+        const fixture = TestBed.createComponent(PaperInputFormControl);
+        const accessor = fixture.componentInstance.accessor!;
+        expect(accessor.isValidatable({ invalid: false })).toBe(
+          true,
+          'element has "invalid" false'
+        );
+        expect(accessor.isValidatable({ invalid: true })).toBe(
+          true,
+          'element has "invalid" true'
+        );
+      });
+
+      it('should return false otherwise', () => {
+        TestBed.configureTestingModule({
+          imports: [ReactiveFormsModule],
+          schemas: [CUSTOM_ELEMENTS_SCHEMA],
+          declarations: [OrigamiControlValueAccessor, PaperInputFormControl]
+        });
+
+        const fixture = TestBed.createComponent(PaperInputFormControl);
+        const accessor = fixture.componentInstance.accessor!;
+        expect(accessor.isValidatable({})).toBe(
+          false,
+          'element does not have "invalid"'
+        );
+      });
     });
 
     describe('shouldUseValidate()', () => {
-      it(
-        'should return true if element has validate() validate mutates "invalid"'
-      );
-      it(
-        'should return false if element has validate() and does not mutate "invalid"'
-      );
-      it('should return false if element does not have validate()');
+      it('should return true if element has validate() validate mutates "invalid"', () => {
+        TestBed.configureTestingModule({
+          imports: [ReactiveFormsModule],
+          schemas: [CUSTOM_ELEMENTS_SCHEMA],
+          declarations: [OrigamiControlValueAccessor, PaperInputFormControl]
+        });
+
+        const fixture = TestBed.createComponent(PaperInputFormControl);
+        const accessor = fixture.componentInstance.accessor!;
+        const element = {
+          invalid: false,
+          validate() {
+            if (element.invalid) {
+              element.invalid = false;
+            }
+
+            return !element.invalid;
+          }
+        };
+
+        expect(accessor.shouldUseValidate(element)).toBe(
+          true,
+          'element mutates invalid'
+        );
+        expect(element.invalid).toBe(
+          false,
+          'should return invalid to original state'
+        );
+      });
+
+      it('should return false if element has validate() and does not mutate "invalid"', () => {
+        TestBed.configureTestingModule({
+          imports: [ReactiveFormsModule],
+          schemas: [CUSTOM_ELEMENTS_SCHEMA],
+          declarations: [OrigamiControlValueAccessor, PaperInputFormControl]
+        });
+
+        const fixture = TestBed.createComponent(PaperInputFormControl);
+        const accessor = fixture.componentInstance.accessor!;
+        const element = {
+          invalid: false,
+          validate() {
+            return element.invalid;
+          }
+        };
+
+        expect(accessor.shouldUseValidate(element)).toBe(
+          false,
+          'element does not mutate invalid'
+        );
+        expect(element.invalid).toBe(
+          false,
+          'should return invalid to original state'
+        );
+      });
+
+      it('should return false if element does not have validate()', () => {
+        TestBed.configureTestingModule({
+          imports: [ReactiveFormsModule],
+          schemas: [CUSTOM_ELEMENTS_SCHEMA],
+          declarations: [OrigamiControlValueAccessor, PaperInputFormControl]
+        });
+
+        const fixture = TestBed.createComponent(PaperInputFormControl);
+        const accessor = fixture.componentInstance.accessor!;
+        expect(accessor.shouldUseValidate({ invalid: false })).toBe(
+          false,
+          'element does not have "validate"'
+        );
+        expect(
+          accessor.shouldUseValidate({ invalid: false, validate: false })
+        ).toBe(false, 'element "validate" is not a function');
+      });
     });
   });
 });
