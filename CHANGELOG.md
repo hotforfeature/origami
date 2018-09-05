@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file. See [standa
 
 # [3.0.0](https://github.com/hotforfeature/origami/compare/v2.0.4...v3.0.0) (2018-09-05)
 
+This release adds support for Polymer 3 and introduces several breaking changes. Use the [upgrade guide](UPGRADE.md) to migrate from v2 to v3.
+
 ### Bug Fixes
 
 - **bin:** output CLI error stack traces ([d60d256](https://github.com/hotforfeature/origami/commit/d60d256))
@@ -29,6 +31,19 @@ All notable changes to this project will be documented in this file. See [standa
 - **styles:** rename shadycss path to styles, add Polymer style module support ([96f15a2](https://github.com/hotforfeature/origami/commit/96f15a2)), closes [#70](https://github.com/hotforfeature/origami/issues/70)
 - **styles:** support external stylesheets [#32](https://github.com/hotforfeature/origami/issues/32) ([13b4cad](https://github.com/hotforfeature/origami/commit/13b4cad))
 - **util:** add optional synchronous callback to whenSet ([85c99d4](https://github.com/hotforfeature/origami/commit/85c99d4))
+
+### BREAKING CHANGES
+
+- Dropped Angular 4 support
+- Dropped Polymer 2 support
+- `PolymerModule` has been renamed to `OrigamiModule` and no longer requires `.forRoot()`
+- `[ironControl]` directive has been renamed to `[origami]`
+- Control validation errors are reported as `{ "validate": true }` instead of `{ "polymer": true }`, and may be configured by setting `[validationErrorsKey]`
+- `<template [polymer]="this">` is no longer supported, instead add `polymerHost(AppComponent)` to the component providers
+- `webcomponentsReady()` has been moved to `@codebakery/origami/polyfills` and will no longer throw an error if the polyfill is not detected
+- `getCustomElementClass()` has been removed
+- `getTagName()` has been removed
+- `unwrapPolymerEvent()` has been removed
 
 <a name="2.0.4"></a>
 

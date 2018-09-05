@@ -1,6 +1,7 @@
 # v3 Breaking Changes
 
 - Dropped Angular 4 support
+- Dropped Polymer 2 support
 - `PolymerModule` has been renamed to `OrigamiModule` and no longer requires `.forRoot()`
 - `[ironControl]` directive has been renamed to `[origami]`
 - Control validation errors are reported as `{ "validate": true }` instead of `{ "polymer": true }`, and may be configured by setting `[validationErrorsKey]`
