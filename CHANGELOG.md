@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.0.0"></a>
+
+# [3.0.0](https://github.com/hotforfeature/origami/compare/v2.0.4...v3.0.0) (2018-09-05)
+
+### Bug Fixes
+
+- **bin:** output CLI error stack traces ([d60d256](https://github.com/hotforfeature/origami/commit/d60d256))
+- **bin:** shadowed error_1 variable ([4e892d0](https://github.com/hotforfeature/origami/commit/4e892d0))
+- **bin:** use adapter script directly, div wrapper no longer needed ([cc6dadf](https://github.com/hotforfeature/origami/commit/cc6dadf))
+- **forms:** do not use validate() when element does not mutate invalid ([eed58dc](https://github.com/hotforfeature/origami/commit/eed58dc))
+- **forms:** incorrect value set with vaadin-combo-box when using itemValuePath ([4f738a7](https://github.com/hotforfeature/origami/commit/4f738a7))
+- **forms:** re-calculate control validity when out of sync with element ([d09533a](https://github.com/hotforfeature/origami/commit/d09533a))
+- **templates:** aot decorator issue with polymerHost ([788db98](https://github.com/hotforfeature/origami/commit/788db98))
+- **templates:** property bindings fail when there is no hostProps (ex: vaadin-grid) ([f9f9250](https://github.com/hotforfeature/origami/commit/f9f9250))
+- **templates:** wait for template shim before initializing app ([7822368](https://github.com/hotforfeature/origami/commit/7822368))
+- **util:** allow multiple calls to whenSet on same target/property ([70ab9d0](https://github.com/hotforfeature/origami/commit/70ab9d0))
+- **util:** search entire prototype chain for existing descriptors when wrapping ([7428650](https://github.com/hotforfeature/origami/commit/7428650))
+
+### Features
+
+- add Angular 5 support ([da18ef3](https://github.com/hotforfeature/origami/commit/da18ef3))
+- add CLI to transpile dependencies to ES5 ([9b5d70b](https://github.com/hotforfeature/origami/commit/9b5d70b))
+- added polyfill module and updated docs ([0548b26](https://github.com/hotforfeature/origami/commit/0548b26))
+- v3 rewrite with Polymer 3 support ([a43bdb0](https://github.com/hotforfeature/origami/commit/a43bdb0))
+- **styles:** rename shadycss path to styles, add Polymer style module support ([96f15a2](https://github.com/hotforfeature/origami/commit/96f15a2)), closes [#70](https://github.com/hotforfeature/origami/issues/70)
+- **styles:** support external stylesheets [#32](https://github.com/hotforfeature/origami/issues/32) ([13b4cad](https://github.com/hotforfeature/origami/commit/13b4cad))
+- **util:** add optional synchronous callback to whenSet ([85c99d4](https://github.com/hotforfeature/origami/commit/85c99d4))
+
 <a name="2.0.4"></a>
 
 ## [2.0.4](https://github.com/hotforfeature/origami/compare/v2.0.3...v2.0.4) (2018-07-18)
