@@ -329,7 +329,7 @@ describe('forms', () => {
       );
       setInstValue(fixture.componentInstance, newValue);
       fixture.detectChanges();
-      tick();
+      tick(100);
       expect(getInstValue(fixture.componentInstance)).toEqual(
         newValue,
         'Angular -> Polymer, Angular not updated'
@@ -357,7 +357,7 @@ describe('forms', () => {
       );
       element[elementProperty] = newValue;
       fixture.detectChanges();
-      tick();
+      tick(100);
       expect(element[elementProperty]).toEqual(
         newValue,
         'Polymer -> Angular, Polymer not updated'
