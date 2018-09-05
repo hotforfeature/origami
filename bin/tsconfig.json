@@ -1,0 +1,11 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "declaration": false,
+    "lib": ["es5", "es2015.promise", "es2015.collection"],
+    "module": "commonjs",
+    "outDir": "../dist/bin/",
+    "sourceMap": false,
+    "target": "es5"
+  }
+}

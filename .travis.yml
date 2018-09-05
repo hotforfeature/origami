@@ -10,7 +10,4 @@ addons:
   jwt:
     secure: "PSfq6OSTpbI/2smymoU1sTx8fEW4FFBK8aqqK/qLMRyhhnt+jtM31DEZctDYyvrJdELNmIEle/OdnO4r2Mt7UgLu5je12vvJ5cLjpl/eRCBb5/zww7ZNeNGvJ687X/nY/sIGgi+aqW7evqkASaB6l1o/jDVKFzapZE5kuZo2AA/1OHq/euKkOhO3ZTmW09/APce9LUStwGa2b7pEodr5aZCC29aBSdYVdosQ7TIFwE0V5u5WB3cZO7RKkjlKAx2+lQ+WP8hDqUWzHGb5y3l6km6JP1MHh5QwjIR54MC+cKvwDFGVW7A1PZzABom+b/V2J7qbpUxBzxYIFDN+Tj+3Ya1GR/oKrrVfit9BWpfXb0zNEFbxCFgn4b4rIQVK+a4DActmJUwDUNcJ5OlNPcc+7ctyXlRL2hvPvGg9I6PAi04ft1TJqd68jkO8fj0/OcTWC0ExTg0MhbOXcSsvSmK42LRC26Sd/gEPWAvdhVR/BdAdOV6WqbE9dITT+istqITAPwcaol6/GIPlIookPrAfBkyosrahPb0V1bzvU4chD/rclGb4VGkaQwRitIJEhSl6WYm7aAbaqnZZKitAfxTbo03T61/7QaGeXrj4nv3zYi2XL1vB7Os4a+9lGfxoIt7aV8HG3APwxcp6QtqtgwXh2keOtgEq3QgzeZ+tsptvfvI="
 script:
-  - npm run bower
-  - npm run test:ci
-  - npm run test:ci:es5
-  - npm run test:ci:ie11
+  npm run test:ci
