@@ -50,7 +50,8 @@ module.exports = config => {
         target: 'es5'
       },
       coverageOptions: {
-        exclude: [/\.(d|spec|test)\.ts$/i, /public_api/]
+        exclude: [/\.(d|spec|test)\.ts$/i, /public_api/],
+        instrumentation: !SAUCE
       },
       reports: {
         html: 'coverage',
