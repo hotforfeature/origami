@@ -68,11 +68,14 @@ Some imports (such as Polymer's `TemplateStamp` mixin) have side effects that re
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { webcomponentsReady } from '@codebakery/origami/polyfills';
 
-webcomponentsReady().then(() => {
-  // requires "module: "esnext" in tsconfig.json
-  const { AppModule } = import('./app/app.module');
-  platformBrowserDynamic().bootstrapModule(AppModule);
-});
+webcomponentsReady()
+  .then(() => {
+    // requires "module: "esnext" in tsconfig.json
+    return import('./app/app.module');
+  })
+  .then(({ AppModule }) => {
+    platformBrowserDynamic().bootstrapModule(AppModule);
+  });
 ```
 
 ## Prepare Dependencies (ES5 only)

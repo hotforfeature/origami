@@ -156,7 +156,8 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 webcomponentsReady().then(() => {
   // requires "module: "esnext" in tsconfig.json
-  const { AppModule } = import('./app/app.module');
+  return import('./app/app.module');
+}).then(({ AppModule }) => {
   platformBrowserDynamic().bootstrapModule(AppModule);
 });
 ```

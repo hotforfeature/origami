@@ -46,11 +46,14 @@ However, the easiest way is to use dynamic imports and defer importing and boots
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { webcomponentsReady } from '@codebakery/origami/polyfills';
 
-webcomponentsReady().then(() => {
-  // requires "module: "esnext" in tsconfig.json
-  const { AppModule } = import('./app/app.module');
-  platformBrowserDynamic().bootstrapModule(AppModule);
-});
+webcomponentsReady()
+  .then(() => {
+    // requires "module: "esnext" in tsconfig.json
+    return import('./app/app.module');
+  })
+  .then(({ AppModule }) => {
+    platformBrowserDynamic().bootstrapModule(AppModule);
+  });
 ```
 
 ## Manual Setup
