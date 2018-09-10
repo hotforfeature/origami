@@ -99,7 +99,12 @@ export function isAngularCliJsonEs5(json: AngularCliJsonApp): boolean {
 export function isEs5(tsconfig: any): boolean {
   // TODO: follow extends and handle no compilerOptions/target, which defaults
   // to es5
-  return tsconfig.compilerOptions.target.toLowerCase() === 'es5';
+  if (tsconfig.compilerOptions.target) {
+    return tsconfig.compilerOptions.target.toLowerCase() === 'es5';
+  } else {
+    // No target will default to ES5
+    return true;
+  }
 }
 
 export function getRelativeNodeModulesPath(
