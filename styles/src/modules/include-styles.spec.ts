@@ -1,4 +1,9 @@
-import { IncludeStyles, resetIncludeStyles } from './include-styles';
+import {
+  IncludeStyles,
+  getRegisteredTypes,
+  getStyleModulesFor,
+  resetIncludeStyles
+} from './include-styles';
 
 describe('styles', () => {
   describe('modules', () => {
@@ -15,7 +20,7 @@ describe('styles', () => {
           @IncludeStyles('style-module', 'other-style-module')
           class Comp2 {}
 
-          expect(IncludeStyles.getRegisteredTypes()).toEqual([Comp1, Comp2]);
+          expect(getRegisteredTypes()).toEqual([Comp1, Comp2]);
         });
       });
 
@@ -27,19 +32,15 @@ describe('styles', () => {
           @IncludeStyles('style-module', 'other-style-module')
           class Comp2 {}
 
-          expect(IncludeStyles.getStyleModulesFor(Comp1)).toEqual([
-            'style-module'
-          ]);
-          expect(IncludeStyles.getStyleModulesFor(Comp2)).toEqual([
+          expect(getStyleModulesFor(Comp1)).toEqual(['style-module']);
+          expect(getStyleModulesFor(Comp2)).toEqual([
             'style-module',
             'other-style-module'
           ]);
         });
 
         it('should return an empty array if the type was not decorated', () => {
-          expect(
-            IncludeStyles.getStyleModulesFor(class Unregistered {})
-          ).toEqual([]);
+          expect(getStyleModulesFor(class Unregistered {})).toEqual([]);
         });
       });
     });

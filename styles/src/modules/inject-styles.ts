@@ -10,7 +10,7 @@ import {
 import { Router } from '@angular/router';
 import { whenSet } from '@codebakery/origami/util';
 import { importStyleModule } from './import-style-module';
-import { IncludeStyles } from './include-styles';
+import { getStyleModulesFor } from './include-styles';
 import { styleToEmulatedEncapsulation } from './style-to-emulated-encapsulation';
 import { getTypeFor, scanComponentFactoryResolver } from './type-selectors';
 
@@ -74,9 +74,7 @@ export function patchRendererFactory(factory: RendererFactory2) {
   factory.createRenderer = function(element, type) {
     const selector = element && element.localName;
     if (selector && type && INJECTED_SELECTORS.indexOf(selector) === -1) {
-      const styleModules = IncludeStyles.getStyleModulesFor(
-        getTypeFor(selector)
-      );
+      const styleModules = getStyleModulesFor(getTypeFor(selector));
       let styles = styleModules.map(styleModule =>
         importStyleModule(styleModule)
       );
