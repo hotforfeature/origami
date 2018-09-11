@@ -1,6 +1,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import * as ts from 'typescript';
 import { promisify } from 'util';
+import { getCompilerOptions } from '../ts-util';
 
 const existsAsync = promisify(fs.exists);
 
@@ -81,30 +83,19 @@ export function isAngularJsonEs5(
 ): boolean {
   const architect = json.architect[type];
   if (architect) {
-    const tsconfig = require(path.resolve(
-      json.root,
-      architect.options.tsConfig
-    ));
-    return isEs5(tsconfig);
+    return isEs5(path.resolve(json.root, architect.options.tsConfig));
   } else {
     return false;
   }
 }
 
 export function isAngularCliJsonEs5(json: AngularCliJsonApp): boolean {
-  const tsconfig = require(path.resolve(json.root, json.tsconfig));
-  return isEs5(tsconfig);
+  return isEs5(path.resolve(json.root, json.tsconfig));
 }
 
-export function isEs5(tsconfig: any): boolean {
-  // TODO: follow extends and handle no compilerOptions/target, which defaults
-  // to es5
-  if (tsconfig.compilerOptions.target) {
-    return tsconfig.compilerOptions.target.toLowerCase() === 'es5';
-  } else {
-    // No target will default to ES5
-    return true;
-  }
+export function isEs5(tsconfigPath: string): boolean {
+  const options = getCompilerOptions(tsconfigPath);
+  return !options.target || options.target === ts.ScriptTarget.ES5;
 }
 
 export function getRelativeNodeModulesPath(

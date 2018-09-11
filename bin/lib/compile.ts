@@ -4,6 +4,7 @@ import * as ts from 'typescript';
 import { copyFolder, getFilesWithExt } from './file-util';
 import { warn } from './log';
 import { getPackageJson } from './package-util';
+import { getDiagnosticsMessage } from './ts-util';
 
 export const ES5_DIR_NAME = '_origami-es5';
 export const ES2015_DIR_NAME = '_origami-es2015';
@@ -59,22 +60,8 @@ export async function compile(
       const allDiagnostics = ts
         .getPreEmitDiagnostics(program)
         .concat(emitResult.diagnostics);
-      let errorMessage = '';
-      allDiagnostics.forEach(diag => {
-        const message = ts.flattenDiagnosticMessageText(
-          diag.messageText,
-          ts.sys.newLine
-        );
-        if (diag.file) {
-          const pos = ts.getLineAndCharacterOfPosition(diag.file, diag.start!);
-          errorMessage += `${diag.file.fileName}:${pos.line +
-            1}:${pos.character + 1} ${message}`;
-        } else {
-          errorMessage += message;
-        }
-      });
 
-      throw new Error(errorMessage);
+      throw new Error(getDiagnosticsMessage(allDiagnostics));
     }
 
     return true;
