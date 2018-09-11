@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.0.2"></a>
+
+## [3.0.2](https://github.com/hotforfeature/origami/compare/v3.0.1...v3.0.2) (2018-09-11)
+
+### Bug Fixes
+
+- **bin:** error thrown when tsconfig does not have a target [#85](https://github.com/hotforfeature/origami/issues/85) ([334089b](https://github.com/hotforfeature/origami/commit/334089b))
+- **bin:** read compilerOptions target from extended tsconfig.json [#85](https://github.com/hotforfeature/origami/issues/85) ([489a3bd](https://github.com/hotforfeature/origami/commit/489a3bd))
+
 <a name="3.0.1"></a>
 
 ## [3.0.1](https://github.com/hotforfeature/origami/compare/v3.0.0...v3.0.1) (2018-09-10)
