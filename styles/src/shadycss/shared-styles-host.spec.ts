@@ -27,11 +27,11 @@ describe('styles', () => {
         expect(window.ShadyCSS).toBeDefined();
         expect(window.ShadyCSS.CustomStyleInterface).toBeDefined();
         globalStyle = document.createElement('style');
-        document.head.appendChild(globalStyle);
+        document.head!.appendChild(globalStyle);
       });
 
       afterEach(() => {
-        document.head.removeChild(globalStyle);
+        document.head!.removeChild(globalStyle);
       });
 
       it('should ensure @apply mixins work', () => {

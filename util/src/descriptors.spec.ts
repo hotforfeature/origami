@@ -1,4 +1,4 @@
-import { wrapAndDefineDescriptor, wrapDescriptor } from './descriptors';
+import { wrapAndDefineDescriptor } from './descriptors';
 
 describe('util', () => {
   describe('wrapAndDefineDescriptor()', () => {

@@ -118,7 +118,10 @@ Before
 After
 
 ```html
-<paper-checkbox [checked]="isChecked" (checked-changed)="isChecked = $event.detail.value"></paper-checkbox>
+<paper-checkbox
+  [checked]="isChecked"
+  (checked-changed)="isChecked = $event.detail.value"
+></paper-checkbox>
 <!-- or -->
 <paper-checkbox [(ngModel)]="isChecked" ironControl></paper-checkbox>
 ```

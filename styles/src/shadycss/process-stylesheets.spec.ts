@@ -45,15 +45,15 @@ describe('styles', () => {
           style.parentNode!.removeChild(style);
         });
 
-        $styles.forEach(style => document.head.appendChild(style));
+        $styles.forEach(style => document.head!.appendChild(style));
       });
 
       it('should pass non-scoped style nodes to CustomStyleInterface', async () => {
         const style = document.createElement('style');
-        document.head.appendChild(style);
+        document.head!.appendChild(style);
         const scoped = document.createElement('style');
         scoped.setAttribute('scope', 'paper-button');
-        document.head.appendChild(scoped);
+        document.head!.appendChild(scoped);
         await processStylesheets();
         expect(
           window.ShadyCSS.CustomStyleInterface!.addCustomStyle
@@ -69,11 +69,11 @@ describe('styles', () => {
         link.rel = 'stylesheet';
         const cssText = '.blue { color: blue; }';
         link.href = `data:text/css;base64,${btoa(cssText)}`;
-        xhrMock.get(link.href, (req, res) => {
+        xhrMock.get(link.href, (_req, res) => {
           return res.status(200).body(cssText);
         });
 
-        document.head.appendChild(link);
+        document.head!.appendChild(link);
         await linkLoad;
         await processStylesheets();
         const createdStyle: HTMLStyleElement = Array.from(
@@ -98,16 +98,16 @@ describe('styles', () => {
         link.href = `data:text/css;base64,${btoa(cssText)}`;
         const xhrHandler = jasmine
           .createSpy('handler')
-          .and.callFake((req: MockRequest, res: MockResponse) => {
+          .and.callFake((_req: MockRequest, res: MockResponse) => {
             return res.status(200).body(cssText);
           });
 
         xhrMock.get(link.href, xhrHandler);
-        document.head.appendChild(link);
+        document.head!.appendChild(link);
         await linkLoad;
         await Promise.all([processStylesheets(), processStylesheets()]);
         expect(xhrHandler).toHaveBeenCalledTimes(1);
-        document.head.removeChild(
+        document.head!.removeChild(
           Array.from(document.querySelectorAll('style')).find(style => {
             return style.innerText.includes(cssText);
           })!
@@ -116,7 +116,7 @@ describe('styles', () => {
 
       it('should not process styles if nativeCss is supported', async () => {
         const style = document.createElement('style');
-        document.head.appendChild(style);
+        document.head!.appendChild(style);
         window.ShadyCSS.nativeCss = true;
         await processStylesheets();
         expect(
@@ -126,7 +126,7 @@ describe('styles', () => {
 
       it('should process styles if nativeCss is supported and usingApply is true', async () => {
         const style = document.createElement('style');
-        document.head.appendChild(style);
+        document.head!.appendChild(style);
         window.ShadyCSS.nativeCss = true;
         await processStylesheets(true);
         expect(

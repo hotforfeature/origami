@@ -62,5 +62,5 @@ export async function processStylesheets(usingApply?: boolean): Promise<void> {
  * @returns true if the node is a `<style>` node
  */
 export function isStyleNode(node: Node): node is HTMLStyleElement {
-  return node.localName === 'style';
+  return (<HTMLStyleElement>node).localName === 'style';
 }

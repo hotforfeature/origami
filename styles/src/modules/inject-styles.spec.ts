@@ -6,12 +6,7 @@ import {
   NgModuleRef,
   ViewEncapsulation
 } from '@angular/core';
-import {
-  ComponentFixture,
-  TestBed,
-  fakeAsync,
-  tick
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import {
   RouterTestingModule,
@@ -51,7 +46,7 @@ describe('styles', () => {
           </dom-module>
         `;
 
-        document.head.appendChild(styleModuleDiv);
+        document.head!.appendChild(styleModuleDiv);
       });
 
       afterEach(() => {
@@ -61,7 +56,7 @@ describe('styles', () => {
       });
 
       afterAll(() => {
-        document.head.removeChild(styleModuleDiv);
+        document.head!.removeChild(styleModuleDiv);
       });
 
       it('should inject @IncludeStyles() for emulated encapsulation components', () => {

@@ -70,7 +70,7 @@ import { webcomponentsReady } from '@codebakery/origami/polyfills';
 
 webcomponentsReady()
   .then(() => {
-    // requires "module: "esnext" in tsconfig.json "compilerOptions" and
+    // requires "module": "esnext" in tsconfig.json "compilerOptions" and
     // "angularCompilerOptions": {
     //   "entryModule": "app/app.module#AppModule"
     // }

@@ -1,10 +1,4 @@
-import {
-  APP_INITIALIZER,
-  ModuleWithProviders,
-  NgModule,
-  NgModuleRef,
-  Provider
-} from '@angular/core';
+import { NgModule } from '@angular/core';
 import { INJECT_STYLES_PROVIDER } from './inject-styles';
 
 /**

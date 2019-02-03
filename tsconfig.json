@@ -7,6 +7,10 @@
     "importHelpers": true,
     "module": "es2015",
     "moduleResolution": "node",
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "paths": {
       "@codebakery/origami": ["./public_api.ts"],
       "@codebakery/origami/forms": ["./forms/public_api.ts"],
@@ -15,6 +19,7 @@
       "@codebakery/origami/templates": ["./templates/public_api.ts"],
       "@codebakery/origami/util": ["./util/public_api.ts"]
     },
+    "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
     "target": "es2015"

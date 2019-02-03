@@ -30,6 +30,8 @@ export function shimCustomElements() {
       [name: string]: [Promise<void>, Function];
     } = {};
 
+    const ceUpgrade: Node[] = [];
+
     class CustomElementRegistryShim {
       // instruct webcomponentsjs to ignore this shim
       forcePolyfill = true;
@@ -56,6 +58,10 @@ export function shimCustomElements() {
 
         return ceWhenDefined[name][0];
       }
+
+      upgrade(root: Node) {
+        ceUpgrade.push(root);
+      }
     }
 
     window.customElements = new CustomElementRegistryShim();
@@ -72,6 +78,8 @@ export function shimCustomElements() {
         const [constructor, options] = ceMap[name];
         window.customElements.define(name, constructor, options);
       });
+
+      ceUpgrade.forEach(root => window.customElements.upgrade(root));
     });
   }
 }

@@ -1,11 +1,6 @@
 #!/usr/bin/env node
-import * as fs from 'fs';
-import * as glob from 'glob';
-import * as path from 'path';
 import * as ProgressBar from 'progress';
-import * as ts from 'typescript';
 import * as yargs from 'yargs';
-import { compile } from './lib/compile';
 import { error, info } from './lib/log';
 import { polyfill } from './lib/polyfill/polyfill';
 import { prepare } from './lib/prepare';

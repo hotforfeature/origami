@@ -4,12 +4,12 @@ import {
   ViewChild,
   CUSTOM_ELEMENTS_SCHEMA
 } from '@angular/core';
-import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import '@polymer/polymer/lib/elements/dom-repeat';
 import { PolymerElement, html } from '@polymer/polymer/polymer-element';
 import { polymerHost } from './polymerHost';
 import { shimHTMLTemplateAppend } from './shim-template-append';
-import { PolymerTemplate, TemplateDirective } from './template.directive';
+import { TemplateDirective } from './template.directive';
 import { TEMPLATES_READY_PROVIDER } from './template.module';
 
 describe('templates', () => {
@@ -36,7 +36,9 @@ describe('templates', () => {
       }
 
       static get template() {
-        return html`<input type="checkbox" value="{{checked}}">`;
+        return html`
+          <input type="checkbox" value="{{checked}}" />
+        `;
       }
 
       checked?: boolean;
@@ -59,7 +61,7 @@ describe('templates', () => {
       template: `
         <dom-repeat #repeat [items]="items">
           <template ngNonBindable>
-            <div on-click="onClick">[[item]]</div>
+            <div on-click="(onClick)">[[item]]</div>
           </template>
         </dom-repeat>
       `,
@@ -120,9 +122,9 @@ describe('templates', () => {
         <dom-repeat #repeat [items]="items">
           <template #template ngNonBindable>
             <template-directive-element
-              checked="{{checked}}"
-              obj="{{obj}}"
-              arr="{{items}}"
+              checked="{{ checked }}"
+              obj="{{ obj }}"
+              arr="{{ items }}"
             ></template-directive-element>
           </template>
         </dom-repeat>

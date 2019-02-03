@@ -22,7 +22,6 @@ import '@vaadin/vaadin-checkbox/vaadin-checkbox';
 import '@vaadin/vaadin-combo-box/vaadin-combo-box';
 import '@vaadin/vaadin-date-picker/vaadin-date-picker';
 import { OrigamiControlValueAccessor } from './value-accessor';
-import { accessSync } from 'fs';
 
 describe('forms', () => {
   describe('OrigamiControlValueAccessor', () => {
@@ -52,68 +51,114 @@ describe('forms', () => {
     // <paper-input>
 
     @Component({
-      template: `<paper-input [(ngModel)]="value" origami></paper-input>`
+      template: `
+        <paper-input [(ngModel)]="value" origami></paper-input>
+      `
     })
     class PaperInputNgModel extends BaseWithValue<string> {}
 
     @Component({
-      template: `<form [formGroup]="form"><paper-input formControlName="value" origami></paper-input></form>`
+      template: `
+        <form [formGroup]="form">
+          <paper-input formControlName="value" origami></paper-input>
+        </form>
+      `
     })
     class PaperInputFormControlName extends BaseWithForm {}
 
     @Component({
-      template: `<form [formGroup]="form"><paper-input [formControl]="control" origami></paper-input></form>`
+      template: `
+        <form [formGroup]="form">
+          <paper-input [formControl]="control" origami></paper-input>
+        </form>
+      `
     })
     class PaperInputFormControl extends BaseWithForm {}
 
     // <vaadin-date-picker>
 
     @Component({
-      template: `<vaadin-date-picker [(ngModel)]="value" origami></vaadin-date-picker>`
+      template: `
+        <vaadin-date-picker [(ngModel)]="value" origami></vaadin-date-picker>
+      `
     })
     class VaadinDatePickerNgModel extends BaseWithValue<string> {}
 
     @Component({
-      template: `<form [formGroup]="form"><vaadin-date-picker formControlName="value" origami></vaadin-date-picker></form>`
+      template: `
+        <form [formGroup]="form">
+          <vaadin-date-picker
+            formControlName="value"
+            origami
+          ></vaadin-date-picker>
+        </form>
+      `
     })
     class VaadinDatePickerFormControlName extends BaseWithForm {}
 
     @Component({
-      template: `<form [formGroup]="form"><vaadin-date-picker [formControl]="control" origami></vaadin-date-picker></form>`
+      template: `
+        <form [formGroup]="form">
+          <vaadin-date-picker
+            [formControl]="control"
+            origami
+          ></vaadin-date-picker>
+        </form>
+      `
     })
     class VaadinDatePickerFormControl extends BaseWithForm {}
 
     // <paper-checkbox>
 
     @Component({
-      template: `<paper-checkbox [(ngModel)]="value" origami></paper-checkbox>`
+      template: `
+        <paper-checkbox [(ngModel)]="value" origami></paper-checkbox>
+      `
     })
     class PaperCheckboxNgModel extends BaseWithValue<boolean> {}
 
     @Component({
-      template: `<form [formGroup]="form"><paper-checkbox formControlName="value" origami></paper-checkbox></form>`
+      template: `
+        <form [formGroup]="form">
+          <paper-checkbox formControlName="value" origami></paper-checkbox>
+        </form>
+      `
     })
     class PaperCheckboxFormControlName extends BaseWithForm {}
 
     @Component({
-      template: `<form [formGroup]="form"><paper-checkbox [formControl]="control" origami></paper-checkbox></form>`
+      template: `
+        <form [formGroup]="form">
+          <paper-checkbox [formControl]="control" origami></paper-checkbox>
+        </form>
+      `
     })
     class PaperCheckboxFormControl extends BaseWithForm {}
 
     // <vaadin-checkbox>
 
     @Component({
-      template: `<vaadin-checkbox [(ngModel)]="value" origami></vaadin-checkbox>`
+      template: `
+        <vaadin-checkbox [(ngModel)]="value" origami></vaadin-checkbox>
+      `
     })
     class VaadinCheckboxNgModel extends BaseWithValue<boolean> {}
 
     @Component({
-      template: `<form [formGroup]="form"><vaadin-checkbox formControlName="value" origami></vaadin-checkbox></form>`
+      template: `
+        <form [formGroup]="form">
+          <vaadin-checkbox formControlName="value" origami></vaadin-checkbox>
+        </form>
+      `
     })
     class VaadinCheckboxFormControlName extends BaseWithForm {}
 
     @Component({
-      template: `<form [formGroup]="form"><vaadin-checkbox [formControl]="control" origami></vaadin-checkbox></form>`
+      template: `
+        <form [formGroup]="form">
+          <vaadin-checkbox [formControl]="control" origami></vaadin-checkbox>
+        </form>
+      `
     })
     class VaadinCheckboxFormControl extends BaseWithForm {}
 
@@ -162,21 +207,43 @@ describe('forms', () => {
     // <vaadin-combo-box>
 
     @Component({
-      template: `<vaadin-combo-box [items]="items" [(ngModel)]="value" origami></vaadin-combo-box>`
+      template: `
+        <vaadin-combo-box
+          [items]="items"
+          [(ngModel)]="value"
+          origami
+        ></vaadin-combo-box>
+      `
     })
     class VaadinComboBoxNgModel extends BaseWithValue<string> {
       items = ['foo', 'bar'];
     }
 
     @Component({
-      template: `<form [formGroup]="form"><vaadin-combo-box [items]="items" formControlName="value" origami></vaadin-combo-box></form>`
+      template: `
+        <form [formGroup]="form">
+          <vaadin-combo-box
+            [items]="items"
+            formControlName="value"
+            origami
+          ></vaadin-combo-box>
+        </form>
+      `
     })
     class VaadinComboBoxFormControlName extends BaseWithForm {
       items = ['foo', 'bar'];
     }
 
     @Component({
-      template: `<form [formGroup]="form"><vaadin-combo-box [items]="items" [formControl]="control" origami></vaadin-combo-box></form>`
+      template: `
+        <form [formGroup]="form">
+          <vaadin-combo-box
+            [items]="items"
+            [formControl]="control"
+            origami
+          ></vaadin-combo-box>
+        </form>
+      `
     })
     class VaadinComboBoxFormControl extends BaseWithForm {
       items = ['foo', 'bar'];
@@ -216,14 +283,22 @@ describe('forms', () => {
     // SelectedItems
 
     @Component({
-      template: `<value-accessor-selected-items [(ngModel)]="value" origami></value-accessor-selected-items>`
+      template: `
+        <value-accessor-selected-items
+          [(ngModel)]="value"
+          origami
+        ></value-accessor-selected-items>
+      `
     })
     class SelectedItemsNgModel extends BaseWithValue<string[]> {}
 
     @Component({
       template: `
         <form [formGroup]="form">
-          <value-accessor-selected-items formControlName="value" origami></value-accessor-selected-items>
+          <value-accessor-selected-items
+            formControlName="value"
+            origami
+          ></value-accessor-selected-items>
         </form>
       `
     })
@@ -232,7 +307,10 @@ describe('forms', () => {
     @Component({
       template: `
         <form [formGroup]="form">
-          <value-accessor-selected-items [formControl]="control" origami></value-accessor-selected-items>
+          <value-accessor-selected-items
+            [formControl]="control"
+            origami
+          ></value-accessor-selected-items>
         </form>
       `
     })
@@ -272,14 +350,22 @@ describe('forms', () => {
     // SelectedValues
 
     @Component({
-      template: `<value-accessor-selected-values [(ngModel)]="value" origami></value-accessor-selected-values>`
+      template: `
+        <value-accessor-selected-values
+          [(ngModel)]="value"
+          origami
+        ></value-accessor-selected-values>
+      `
     })
     class SelectedValuesNgModel extends BaseWithValue<number[]> {}
 
     @Component({
       template: `
         <form [formGroup]="form">
-          <value-accessor-selected-values formControlName="value" origami></value-accessor-selected-values>
+          <value-accessor-selected-values
+            formControlName="value"
+            origami
+          ></value-accessor-selected-values>
         </form>
       `
     })
@@ -288,7 +374,10 @@ describe('forms', () => {
     @Component({
       template: `
         <form [formGroup]="form">
-          <value-accessor-selected-values [formControl]="control" origami></value-accessor-selected-values>
+          <value-accessor-selected-values
+            [formControl]="control"
+            origami
+          ></value-accessor-selected-values>
         </form>
       `
     })
@@ -369,392 +458,350 @@ describe('forms', () => {
     }
 
     describe('control', () => {
-      it(
-        'should connect to default elements with ngModel',
-        fakeAsync(() => {
-          TestBed.configureTestingModule({
-            imports: [FormsModule],
-            schemas: [CUSTOM_ELEMENTS_SCHEMA],
-            declarations: [
-              OrigamiControlValueAccessor,
-              PaperInputNgModel,
-              VaadinDatePickerNgModel
-            ]
-          });
+      it('should connect to default elements with ngModel', fakeAsync(() => {
+        TestBed.configureTestingModule({
+          imports: [FormsModule],
+          schemas: [CUSTOM_ELEMENTS_SCHEMA],
+          declarations: [
+            OrigamiControlValueAccessor,
+            PaperInputNgModel,
+            VaadinDatePickerNgModel
+          ]
+        });
 
-          let fixture = TestBed.createComponent(PaperInputNgModel);
-          testAngularToPolymer(fixture, 'paper-input', 'value', 'foo');
-          testPolymerToAngular(fixture, 'paper-input', 'value', 'bar');
-          fixture = TestBed.createComponent(VaadinDatePickerNgModel);
-          testAngularToPolymer(
-            fixture,
-            'vaadin-date-picker',
-            'value',
-            '2018-01-01'
-          );
-          testPolymerToAngular(
-            fixture,
-            'vaadin-date-picker',
-            'value',
-            '2018-02-01'
-          );
-        })
-      );
+        let fixture = TestBed.createComponent(PaperInputNgModel);
+        testAngularToPolymer(fixture, 'paper-input', 'value', 'foo');
+        testPolymerToAngular(fixture, 'paper-input', 'value', 'bar');
+        fixture = TestBed.createComponent(VaadinDatePickerNgModel);
+        testAngularToPolymer(
+          fixture,
+          'vaadin-date-picker',
+          'value',
+          '2018-01-01'
+        );
+        testPolymerToAngular(
+          fixture,
+          'vaadin-date-picker',
+          'value',
+          '2018-02-01'
+        );
+      }));
 
-      it(
-        'should connect to default elements with formControlName',
-        fakeAsync(() => {
-          TestBed.configureTestingModule({
-            imports: [ReactiveFormsModule],
-            schemas: [CUSTOM_ELEMENTS_SCHEMA],
-            declarations: [
-              OrigamiControlValueAccessor,
-              PaperInputFormControlName,
-              VaadinDatePickerFormControlName
-            ]
-          });
+      it('should connect to default elements with formControlName', fakeAsync(() => {
+        TestBed.configureTestingModule({
+          imports: [ReactiveFormsModule],
+          schemas: [CUSTOM_ELEMENTS_SCHEMA],
+          declarations: [
+            OrigamiControlValueAccessor,
+            PaperInputFormControlName,
+            VaadinDatePickerFormControlName
+          ]
+        });
 
-          let fixture = TestBed.createComponent(PaperInputFormControlName);
-          testAngularToPolymer(fixture, 'paper-input', 'value', 'foo');
-          testPolymerToAngular(fixture, 'paper-input', 'value', 'bar');
-          fixture = TestBed.createComponent(VaadinDatePickerFormControlName);
-          testAngularToPolymer(
-            fixture,
-            'vaadin-date-picker',
-            'value',
-            '2018-01-01'
-          );
-          testPolymerToAngular(
-            fixture,
-            'vaadin-date-picker',
-            'value',
-            '2018-02-01'
-          );
-        })
-      );
+        let fixture = TestBed.createComponent(PaperInputFormControlName);
+        testAngularToPolymer(fixture, 'paper-input', 'value', 'foo');
+        testPolymerToAngular(fixture, 'paper-input', 'value', 'bar');
+        fixture = TestBed.createComponent(VaadinDatePickerFormControlName);
+        testAngularToPolymer(
+          fixture,
+          'vaadin-date-picker',
+          'value',
+          '2018-01-01'
+        );
+        testPolymerToAngular(
+          fixture,
+          'vaadin-date-picker',
+          'value',
+          '2018-02-01'
+        );
+      }));
 
-      it(
-        'should connect to default elements with formControl',
-        fakeAsync(() => {
-          TestBed.configureTestingModule({
-            imports: [ReactiveFormsModule],
-            schemas: [CUSTOM_ELEMENTS_SCHEMA],
-            declarations: [
-              OrigamiControlValueAccessor,
-              PaperInputFormControl,
-              VaadinDatePickerFormControl
-            ]
-          });
+      it('should connect to default elements with formControl', fakeAsync(() => {
+        TestBed.configureTestingModule({
+          imports: [ReactiveFormsModule],
+          schemas: [CUSTOM_ELEMENTS_SCHEMA],
+          declarations: [
+            OrigamiControlValueAccessor,
+            PaperInputFormControl,
+            VaadinDatePickerFormControl
+          ]
+        });
 
-          let fixture = TestBed.createComponent(PaperInputFormControl);
-          testAngularToPolymer(fixture, 'paper-input', 'value', 'foo');
-          testPolymerToAngular(fixture, 'paper-input', 'value', 'bar');
-          fixture = TestBed.createComponent(VaadinDatePickerFormControl);
-          testAngularToPolymer(
-            fixture,
-            'vaadin-date-picker',
-            'value',
-            '2018-01-01'
-          );
-          testPolymerToAngular(
-            fixture,
-            'vaadin-date-picker',
-            'value',
-            '2018-02-01'
-          );
-        })
-      );
+        let fixture = TestBed.createComponent(PaperInputFormControl);
+        testAngularToPolymer(fixture, 'paper-input', 'value', 'foo');
+        testPolymerToAngular(fixture, 'paper-input', 'value', 'bar');
+        fixture = TestBed.createComponent(VaadinDatePickerFormControl);
+        testAngularToPolymer(
+          fixture,
+          'vaadin-date-picker',
+          'value',
+          '2018-01-01'
+        );
+        testPolymerToAngular(
+          fixture,
+          'vaadin-date-picker',
+          'value',
+          '2018-02-01'
+        );
+      }));
 
-      it(
-        'should connect to checkbox elements with ngModel',
-        fakeAsync(() => {
-          TestBed.configureTestingModule({
-            imports: [FormsModule],
-            schemas: [CUSTOM_ELEMENTS_SCHEMA],
-            declarations: [
-              OrigamiControlValueAccessor,
-              PaperCheckboxNgModel,
-              VaadinCheckboxNgModel
-            ]
-          });
+      it('should connect to checkbox elements with ngModel', fakeAsync(() => {
+        TestBed.configureTestingModule({
+          imports: [FormsModule],
+          schemas: [CUSTOM_ELEMENTS_SCHEMA],
+          declarations: [
+            OrigamiControlValueAccessor,
+            PaperCheckboxNgModel,
+            VaadinCheckboxNgModel
+          ]
+        });
 
-          let fixture = TestBed.createComponent(PaperCheckboxNgModel);
-          testAngularToPolymer(fixture, 'paper-checkbox', 'checked', true);
-          testPolymerToAngular(fixture, 'paper-checkbox', 'checked', false);
-          fixture = TestBed.createComponent(VaadinCheckboxNgModel);
-          testAngularToPolymer(fixture, 'vaadin-checkbox', 'checked', true);
-          testPolymerToAngular(fixture, 'vaadin-checkbox', 'checked', false);
-        })
-      );
+        let fixture = TestBed.createComponent(PaperCheckboxNgModel);
+        testAngularToPolymer(fixture, 'paper-checkbox', 'checked', true);
+        testPolymerToAngular(fixture, 'paper-checkbox', 'checked', false);
+        fixture = TestBed.createComponent(VaadinCheckboxNgModel);
+        testAngularToPolymer(fixture, 'vaadin-checkbox', 'checked', true);
+        testPolymerToAngular(fixture, 'vaadin-checkbox', 'checked', false);
+      }));
 
-      it(
-        'should connect to checkbox elements with formControlName',
-        fakeAsync(() => {
-          TestBed.configureTestingModule({
-            imports: [ReactiveFormsModule],
-            schemas: [CUSTOM_ELEMENTS_SCHEMA],
-            declarations: [
-              OrigamiControlValueAccessor,
-              PaperCheckboxFormControlName,
-              VaadinCheckboxFormControlName
-            ]
-          });
+      it('should connect to checkbox elements with formControlName', fakeAsync(() => {
+        TestBed.configureTestingModule({
+          imports: [ReactiveFormsModule],
+          schemas: [CUSTOM_ELEMENTS_SCHEMA],
+          declarations: [
+            OrigamiControlValueAccessor,
+            PaperCheckboxFormControlName,
+            VaadinCheckboxFormControlName
+          ]
+        });
 
-          let fixture = TestBed.createComponent(PaperCheckboxFormControlName);
-          testAngularToPolymer(fixture, 'paper-checkbox', 'checked', true);
-          testPolymerToAngular(fixture, 'paper-checkbox', 'checked', false);
-          fixture = TestBed.createComponent(VaadinCheckboxFormControlName);
-          testAngularToPolymer(fixture, 'vaadin-checkbox', 'checked', true);
-          testPolymerToAngular(fixture, 'vaadin-checkbox', 'checked', false);
-        })
-      );
+        let fixture = TestBed.createComponent(PaperCheckboxFormControlName);
+        testAngularToPolymer(fixture, 'paper-checkbox', 'checked', true);
+        testPolymerToAngular(fixture, 'paper-checkbox', 'checked', false);
+        fixture = TestBed.createComponent(VaadinCheckboxFormControlName);
+        testAngularToPolymer(fixture, 'vaadin-checkbox', 'checked', true);
+        testPolymerToAngular(fixture, 'vaadin-checkbox', 'checked', false);
+      }));
 
-      it(
-        'should connect to checkbox elements with formControl',
-        fakeAsync(() => {
-          TestBed.configureTestingModule({
-            imports: [ReactiveFormsModule],
-            schemas: [CUSTOM_ELEMENTS_SCHEMA],
-            declarations: [
-              OrigamiControlValueAccessor,
-              PaperCheckboxFormControl,
-              VaadinCheckboxFormControl
-            ]
-          });
+      it('should connect to checkbox elements with formControl', fakeAsync(() => {
+        TestBed.configureTestingModule({
+          imports: [ReactiveFormsModule],
+          schemas: [CUSTOM_ELEMENTS_SCHEMA],
+          declarations: [
+            OrigamiControlValueAccessor,
+            PaperCheckboxFormControl,
+            VaadinCheckboxFormControl
+          ]
+        });
 
-          let fixture = TestBed.createComponent(PaperCheckboxFormControl);
-          testAngularToPolymer(fixture, 'paper-checkbox', 'checked', true);
-          testPolymerToAngular(fixture, 'paper-checkbox', 'checked', false);
-          fixture = TestBed.createComponent(VaadinCheckboxFormControl);
-          testAngularToPolymer(fixture, 'vaadin-checkbox', 'checked', true);
-          testPolymerToAngular(fixture, 'vaadin-checkbox', 'checked', false);
-        })
-      );
+        let fixture = TestBed.createComponent(PaperCheckboxFormControl);
+        testAngularToPolymer(fixture, 'paper-checkbox', 'checked', true);
+        testPolymerToAngular(fixture, 'paper-checkbox', 'checked', false);
+        fixture = TestBed.createComponent(VaadinCheckboxFormControl);
+        testAngularToPolymer(fixture, 'vaadin-checkbox', 'checked', true);
+        testPolymerToAngular(fixture, 'vaadin-checkbox', 'checked', false);
+      }));
 
-      it(
-        'should connect to select elements with ngModel',
-        fakeAsync(() => {
-          TestBed.configureTestingModule({
-            imports: [FormsModule],
-            schemas: [CUSTOM_ELEMENTS_SCHEMA],
-            declarations: [
-              OrigamiControlValueAccessor,
-              PaperListboxNgModel,
-              VaadinComboBoxNgModel
-            ]
-          });
+      it('should connect to select elements with ngModel', fakeAsync(() => {
+        TestBed.configureTestingModule({
+          imports: [FormsModule],
+          schemas: [CUSTOM_ELEMENTS_SCHEMA],
+          declarations: [
+            OrigamiControlValueAccessor,
+            PaperListboxNgModel,
+            VaadinComboBoxNgModel
+          ]
+        });
 
-          const fixture = TestBed.createComponent(PaperListboxNgModel);
-          testAngularToPolymer(fixture, 'paper-listbox', 'selected', 0);
-          testPolymerToAngular(fixture, 'paper-listbox', 'selected', 1);
-          const fixture2 = TestBed.createComponent(VaadinComboBoxNgModel);
-          testAngularToPolymer(
-            fixture2,
-            'vaadin-combo-box',
-            'selectedItem',
-            'foo'
-          );
-          testPolymerToAngular(
-            fixture2,
-            'vaadin-combo-box',
-            'selectedItem',
-            'bar'
-          );
-        })
-      );
+        const fixture = TestBed.createComponent(PaperListboxNgModel);
+        testAngularToPolymer(fixture, 'paper-listbox', 'selected', 0);
+        testPolymerToAngular(fixture, 'paper-listbox', 'selected', 1);
+        const fixture2 = TestBed.createComponent(VaadinComboBoxNgModel);
+        testAngularToPolymer(
+          fixture2,
+          'vaadin-combo-box',
+          'selectedItem',
+          'foo'
+        );
+        testPolymerToAngular(
+          fixture2,
+          'vaadin-combo-box',
+          'selectedItem',
+          'bar'
+        );
+      }));
 
-      it(
-        'should connect to select elements with formControlName',
-        fakeAsync(() => {
-          TestBed.configureTestingModule({
-            imports: [ReactiveFormsModule],
-            schemas: [CUSTOM_ELEMENTS_SCHEMA],
-            declarations: [
-              OrigamiControlValueAccessor,
-              PaperListboxFormControlName,
-              VaadinComboBoxFormControlName
-            ]
-          });
-
-          const fixture = TestBed.createComponent(PaperListboxFormControlName);
-          testAngularToPolymer(fixture, 'paper-listbox', 'selected', 0);
-          testPolymerToAngular(fixture, 'paper-listbox', 'selected', 1);
-          const fixture2 = TestBed.createComponent(
+      it('should connect to select elements with formControlName', fakeAsync(() => {
+        TestBed.configureTestingModule({
+          imports: [ReactiveFormsModule],
+          schemas: [CUSTOM_ELEMENTS_SCHEMA],
+          declarations: [
+            OrigamiControlValueAccessor,
+            PaperListboxFormControlName,
             VaadinComboBoxFormControlName
-          );
-          testAngularToPolymer(
-            fixture2,
-            'vaadin-combo-box',
-            'selectedItem',
-            'foo'
-          );
-          testPolymerToAngular(
-            fixture2,
-            'vaadin-combo-box',
-            'selectedItem',
-            'bar'
-          );
-        })
-      );
+          ]
+        });
 
-      it(
-        'should connect to select elements with formControl',
-        fakeAsync(() => {
-          TestBed.configureTestingModule({
-            imports: [ReactiveFormsModule],
-            schemas: [CUSTOM_ELEMENTS_SCHEMA],
-            declarations: [
-              OrigamiControlValueAccessor,
-              PaperListboxFormControl,
-              VaadinComboBoxFormControl
-            ]
-          });
+        const fixture = TestBed.createComponent(PaperListboxFormControlName);
+        testAngularToPolymer(fixture, 'paper-listbox', 'selected', 0);
+        testPolymerToAngular(fixture, 'paper-listbox', 'selected', 1);
+        const fixture2 = TestBed.createComponent(VaadinComboBoxFormControlName);
+        testAngularToPolymer(
+          fixture2,
+          'vaadin-combo-box',
+          'selectedItem',
+          'foo'
+        );
+        testPolymerToAngular(
+          fixture2,
+          'vaadin-combo-box',
+          'selectedItem',
+          'bar'
+        );
+      }));
 
-          const fixture = TestBed.createComponent(PaperListboxFormControl);
-          testAngularToPolymer(fixture, 'paper-listbox', 'selected', 0);
-          testPolymerToAngular(fixture, 'paper-listbox', 'selected', 1);
-          const fixture2 = TestBed.createComponent(VaadinComboBoxFormControl);
-          testAngularToPolymer(
-            fixture2,
-            'vaadin-combo-box',
-            'selectedItem',
-            'foo'
-          );
-          testPolymerToAngular(
-            fixture2,
-            'vaadin-combo-box',
-            'selectedItem',
-            'bar'
-          );
-        })
-      );
+      it('should connect to select elements with formControl', fakeAsync(() => {
+        TestBed.configureTestingModule({
+          imports: [ReactiveFormsModule],
+          schemas: [CUSTOM_ELEMENTS_SCHEMA],
+          declarations: [
+            OrigamiControlValueAccessor,
+            PaperListboxFormControl,
+            VaadinComboBoxFormControl
+          ]
+        });
 
-      it(
-        'should connect to multi-select elements with ngModel',
-        fakeAsync(() => {
-          TestBed.configureTestingModule({
-            imports: [FormsModule],
-            schemas: [CUSTOM_ELEMENTS_SCHEMA],
-            declarations: [
-              OrigamiControlValueAccessor,
-              PaperListboxNgModel,
-              SelectedItemsNgModel,
-              SelectedValuesNgModel
-            ]
-          });
+        const fixture = TestBed.createComponent(PaperListboxFormControl);
+        testAngularToPolymer(fixture, 'paper-listbox', 'selected', 0);
+        testPolymerToAngular(fixture, 'paper-listbox', 'selected', 1);
+        const fixture2 = TestBed.createComponent(VaadinComboBoxFormControl);
+        testAngularToPolymer(
+          fixture2,
+          'vaadin-combo-box',
+          'selectedItem',
+          'foo'
+        );
+        testPolymerToAngular(
+          fixture2,
+          'vaadin-combo-box',
+          'selectedItem',
+          'bar'
+        );
+      }));
 
-          const fixture = TestBed.createComponent(PaperListboxNgModel);
-          fixture.componentInstance.multi = true;
-          fixture.detectChanges();
-          testAngularToPolymer(fixture, 'paper-listbox', 'selectedValues', [
-            0,
-            1
-          ]);
-          testPolymerToAngular(fixture, 'paper-listbox', 'selectedValues', [1]);
-          const fixture2 = TestBed.createComponent(SelectedItemsNgModel);
-          testAngularToPolymer(fixture2, SelectedItems.is, 'selectedItems', [
-            'foo'
-          ]);
-          testPolymerToAngular(fixture2, SelectedItems.is, 'selectedItems', [
-            'foo',
-            'bar'
-          ]);
-          const fixture3 = TestBed.createComponent(SelectedValuesNgModel);
-          testAngularToPolymer(fixture3, SelectedValues.is, 'selectedValues', [
-            0
-          ]);
-          testPolymerToAngular(fixture3, SelectedValues.is, 'selectedValues', [
-            0,
-            1
-          ]);
-        })
-      );
+      it('should connect to multi-select elements with ngModel', fakeAsync(() => {
+        TestBed.configureTestingModule({
+          imports: [FormsModule],
+          schemas: [CUSTOM_ELEMENTS_SCHEMA],
+          declarations: [
+            OrigamiControlValueAccessor,
+            PaperListboxNgModel,
+            SelectedItemsNgModel,
+            SelectedValuesNgModel
+          ]
+        });
 
-      it(
-        'should connect to multi-select elements with formControlName',
-        fakeAsync(() => {
-          TestBed.configureTestingModule({
-            imports: [ReactiveFormsModule],
-            schemas: [CUSTOM_ELEMENTS_SCHEMA],
-            declarations: [
-              OrigamiControlValueAccessor,
-              PaperListboxFormControlName,
-              SelectedItemsFormControlName,
-              SelectedValuesFormControlName
-            ]
-          });
+        const fixture = TestBed.createComponent(PaperListboxNgModel);
+        fixture.componentInstance.multi = true;
+        fixture.detectChanges();
+        testAngularToPolymer(fixture, 'paper-listbox', 'selectedValues', [
+          0,
+          1
+        ]);
+        testPolymerToAngular(fixture, 'paper-listbox', 'selectedValues', [1]);
+        const fixture2 = TestBed.createComponent(SelectedItemsNgModel);
+        testAngularToPolymer(fixture2, SelectedItems.is, 'selectedItems', [
+          'foo'
+        ]);
+        testPolymerToAngular(fixture2, SelectedItems.is, 'selectedItems', [
+          'foo',
+          'bar'
+        ]);
+        const fixture3 = TestBed.createComponent(SelectedValuesNgModel);
+        testAngularToPolymer(fixture3, SelectedValues.is, 'selectedValues', [
+          0
+        ]);
+        testPolymerToAngular(fixture3, SelectedValues.is, 'selectedValues', [
+          0,
+          1
+        ]);
+      }));
 
-          const fixture = TestBed.createComponent(PaperListboxFormControlName);
-          fixture.componentInstance.multi = true;
-          fixture.detectChanges();
-          testAngularToPolymer(fixture, 'paper-listbox', 'selectedValues', [
-            0,
-            1
-          ]);
-          testPolymerToAngular(fixture, 'paper-listbox', 'selectedValues', [1]);
-          const fixture2 = TestBed.createComponent(
-            SelectedItemsFormControlName
-          );
-          testAngularToPolymer(fixture2, SelectedItems.is, 'selectedItems', [
-            'foo'
-          ]);
-          testPolymerToAngular(fixture2, SelectedItems.is, 'selectedItems', [
-            'foo',
-            'bar'
-          ]);
-          const fixture3 = TestBed.createComponent(
+      it('should connect to multi-select elements with formControlName', fakeAsync(() => {
+        TestBed.configureTestingModule({
+          imports: [ReactiveFormsModule],
+          schemas: [CUSTOM_ELEMENTS_SCHEMA],
+          declarations: [
+            OrigamiControlValueAccessor,
+            PaperListboxFormControlName,
+            SelectedItemsFormControlName,
             SelectedValuesFormControlName
-          );
-          testAngularToPolymer(fixture3, SelectedValues.is, 'selectedValues', [
-            0
-          ]);
-          testPolymerToAngular(fixture3, SelectedValues.is, 'selectedValues', [
-            0,
-            1
-          ]);
-        })
-      );
+          ]
+        });
 
-      it(
-        'should connect to multi-select elements with formControl',
-        fakeAsync(() => {
-          TestBed.configureTestingModule({
-            imports: [ReactiveFormsModule],
-            schemas: [CUSTOM_ELEMENTS_SCHEMA],
-            declarations: [
-              OrigamiControlValueAccessor,
-              PaperListboxFormControl,
-              SelectedItemsFormControl,
-              SelectedValuesFormControl
-            ]
-          });
+        const fixture = TestBed.createComponent(PaperListboxFormControlName);
+        fixture.componentInstance.multi = true;
+        fixture.detectChanges();
+        testAngularToPolymer(fixture, 'paper-listbox', 'selectedValues', [
+          0,
+          1
+        ]);
+        testPolymerToAngular(fixture, 'paper-listbox', 'selectedValues', [1]);
+        const fixture2 = TestBed.createComponent(SelectedItemsFormControlName);
+        testAngularToPolymer(fixture2, SelectedItems.is, 'selectedItems', [
+          'foo'
+        ]);
+        testPolymerToAngular(fixture2, SelectedItems.is, 'selectedItems', [
+          'foo',
+          'bar'
+        ]);
+        const fixture3 = TestBed.createComponent(SelectedValuesFormControlName);
+        testAngularToPolymer(fixture3, SelectedValues.is, 'selectedValues', [
+          0
+        ]);
+        testPolymerToAngular(fixture3, SelectedValues.is, 'selectedValues', [
+          0,
+          1
+        ]);
+      }));
 
-          const fixture = TestBed.createComponent(PaperListboxFormControl);
-          fixture.componentInstance.multi = true;
-          fixture.detectChanges();
-          testAngularToPolymer(fixture, 'paper-listbox', 'selectedValues', [
-            0,
-            1
-          ]);
-          testPolymerToAngular(fixture, 'paper-listbox', 'selectedValues', [1]);
-          const fixture2 = TestBed.createComponent(SelectedItemsFormControl);
-          testAngularToPolymer(fixture2, SelectedItems.is, 'selectedItems', [
-            'foo'
-          ]);
-          testPolymerToAngular(fixture2, SelectedItems.is, 'selectedItems', [
-            'foo',
-            'bar'
-          ]);
-          const fixture3 = TestBed.createComponent(SelectedValuesFormControl);
-          testAngularToPolymer(fixture3, SelectedValues.is, 'selectedValues', [
-            0
-          ]);
-          testPolymerToAngular(fixture3, SelectedValues.is, 'selectedValues', [
-            0,
-            1
-          ]);
-        })
-      );
+      it('should connect to multi-select elements with formControl', fakeAsync(() => {
+        TestBed.configureTestingModule({
+          imports: [ReactiveFormsModule],
+          schemas: [CUSTOM_ELEMENTS_SCHEMA],
+          declarations: [
+            OrigamiControlValueAccessor,
+            PaperListboxFormControl,
+            SelectedItemsFormControl,
+            SelectedValuesFormControl
+          ]
+        });
+
+        const fixture = TestBed.createComponent(PaperListboxFormControl);
+        fixture.componentInstance.multi = true;
+        fixture.detectChanges();
+        testAngularToPolymer(fixture, 'paper-listbox', 'selectedValues', [
+          0,
+          1
+        ]);
+        testPolymerToAngular(fixture, 'paper-listbox', 'selectedValues', [1]);
+        const fixture2 = TestBed.createComponent(SelectedItemsFormControl);
+        testAngularToPolymer(fixture2, SelectedItems.is, 'selectedItems', [
+          'foo'
+        ]);
+        testPolymerToAngular(fixture2, SelectedItems.is, 'selectedItems', [
+          'foo',
+          'bar'
+        ]);
+        const fixture3 = TestBed.createComponent(SelectedValuesFormControl);
+        testAngularToPolymer(fixture3, SelectedValues.is, 'selectedValues', [
+          0
+        ]);
+        testPolymerToAngular(fixture3, SelectedValues.is, 'selectedValues', [
+          0,
+          1
+        ]);
+      }));
     });
 
     describe('validation', () => {

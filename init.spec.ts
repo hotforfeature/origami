@@ -54,7 +54,7 @@ afterEach(() => {
 
   karmaStyles.forEach(style => {
     if (!style.parentNode) {
-      document.head.appendChild(style);
+      document.head!.appendChild(style);
     }
   });
 });

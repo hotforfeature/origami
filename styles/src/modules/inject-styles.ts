@@ -4,7 +4,6 @@ import {
   NgModuleRef,
   Provider,
   RendererFactory2,
-  Type,
   ViewEncapsulation
 } from '@angular/core';
 import { Router } from '@angular/router';

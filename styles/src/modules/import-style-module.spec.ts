@@ -37,8 +37,8 @@ describe('styles', () => {
           </dom-module>
         `;
 
-        document.head.appendChild(styleModuleDiv);
-        document.head.appendChild(multiStyleModuleDiv);
+        document.head!.appendChild(styleModuleDiv);
+        document.head!.appendChild(multiStyleModuleDiv);
       });
 
       afterEach(() => {
@@ -46,8 +46,8 @@ describe('styles', () => {
       });
 
       afterAll(() => {
-        document.head.removeChild(styleModuleDiv);
-        document.head.removeChild(multiStyleModuleDiv);
+        document.head!.removeChild(styleModuleDiv);
+        document.head!.removeChild(multiStyleModuleDiv);
       });
 
       it('should return string of CSS from Polymer style module', () => {

@@ -3,7 +3,6 @@ import { whenSet, wrapAndDefineDescriptor } from '@codebakery/origami/util';
 import { camelToDashCase } from '@polymer/polymer/lib/utils/case-map';
 import { TemplateInfo } from '@polymer/polymer/interfaces';
 import { POLYMER_HOST } from './polymerHost';
-import { shimHTMLTemplateAppend } from './shim-template-append';
 
 /**
  * An HTMLTemplateElement that is processed by Polymer's templatizer.

@@ -9,7 +9,6 @@ import {
 } from 'parse5';
 import * as path from 'path';
 import { promisify } from 'util';
-import { writeJson } from '../file-util';
 import {
   getAngularJson,
   isAngularCliJsonEs5,

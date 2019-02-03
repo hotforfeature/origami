@@ -1,5 +1,4 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { ɵDomSharedStylesHost as DomSharedStylesHost } from '@angular/platform-browser';
 import { WebComponentsReadyModule } from '@codebakery/origami/polyfills';
 import { USING_APPLY } from './process-stylesheets';
 import { SHADYCSS_SHARED_STYLES_HOST_PROVIDER } from './shared-styles-host';

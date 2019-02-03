@@ -4,7 +4,10 @@
     "dest": "../",
     "lib": {
       "entryFile": "public_api.ts",
-      "flatModuleFile": "origami-templates"
+      "flatModuleFile": "origami-templates",
+      "umdModuleIds": {
+        "@polymer/polymer/lib/utils/case-map": "Polymer.CaseMap"
+      }
     }
   },
   "sideEffects": true

@@ -377,7 +377,7 @@ export class OrigamiControlValueAccessor extends DefaultValueAccessor
     return this.isPropertyDefined(element, 'invalid');
   }
 
-  shouldUseValidate(element: any): element is { validate(): void } {
+  shouldUseValidate(element: any): element is { validate(): boolean } {
     if (typeof element.validate === 'function') {
       // Some element's (such as `<vaadin-text-field>`) may not actually mutate
       // the `invalid` property when `validate()` is called. In these

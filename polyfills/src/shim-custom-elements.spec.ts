@@ -29,6 +29,7 @@ describe('polyfills', () => {
     });
 
     it('should shim customElements when it is not present', () => {
+      expect(window.customElements).toBeUndefined();
       shimCustomElements();
       expect(window.customElements).toBeDefined();
       expect(window.customElements.define).toEqual(jasmine.any(Function));
@@ -56,7 +57,8 @@ describe('polyfills', () => {
       window.customElements = {
         define: jasmine.createSpy('define'),
         get: jasmine.createSpy('get'),
-        whenDefined: jasmine.createSpy('whenDefined')
+        whenDefined: jasmine.createSpy('whenDefined'),
+        upgrade: jasmine.createSpy('upgrade')
       };
 
       window.WebComponents = { ready: true };
@@ -84,7 +86,8 @@ describe('polyfills', () => {
         get: jasmine.createSpy('get'),
         whenDefined: jasmine
           .createSpy('whenDefined')
-          .and.returnValue(Promise.resolve())
+          .and.returnValue(Promise.resolve()),
+        upgrade: jasmine.createSpy('upgrade')
       };
 
       expect(promiseThen).not.toHaveBeenCalled();
@@ -111,13 +114,30 @@ describe('polyfills', () => {
         get: jasmine.createSpy('get'),
         whenDefined: jasmine
           .createSpy('whenDefined')
-          .and.returnValue(Promise.resolve())
+          .and.returnValue(Promise.resolve()),
+        upgrade: jasmine.createSpy('upgrade')
       };
 
       expect(promiseThen).not.toHaveBeenCalled();
       await webcomponentsReady();
       await Promise.all(promises);
       expect(promiseThen).toHaveBeenCalled();
+    });
+
+    it('should upgrade nodes when webcomponents are ready', async () => {
+      shimCustomElements();
+      const node = document.createElement('div');
+      window.customElements.upgrade(node);
+      window.customElements = {
+        define: jasmine.createSpy('define'),
+        get: jasmine.createSpy('get'),
+        whenDefined: jasmine.createSpy('whenDefined'),
+        upgrade: jasmine.createSpy('upgrade')
+      };
+
+      window.WebComponents = { ready: true };
+      await webcomponentsReady();
+      expect(window.customElements.upgrade).toHaveBeenCalledWith(node);
     });
   });
 });
