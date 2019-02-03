@@ -25,6 +25,18 @@ export const INJECT_STYLES_PROVIDER: Provider = {
 };
 
 /**
+ * Provider that ensures `injectIncludeStyles()` will run on application
+ * startup before components are created. This provider does _not_ require
+ * @angular/router.
+ */
+export const INJECT_STYLES_NO_ROUTER_PROVIDER: Provider = {
+  provide: APP_INITIALIZER,
+  multi: true,
+  useFactory: injectIncludeStylesNoRouter,
+  deps: [NgModuleRef]
+};
+
+/**
  * Returns a callback that, when invoked, will use the provided `NgModuleRef`
  * to patch the renderer factory and scan the component factory resolver in
  * order to enable injecting Polymer style modules for components decorated with
@@ -38,11 +50,9 @@ export const INJECT_STYLES_PROVIDER: Provider = {
  * @returns a callback that will begin the injection process
  */
 export function injectIncludeStyles(ngModule: NgModuleRef<any>): () => void {
+  const injectStyles = injectIncludeStylesNoRouter(ngModule);
   return () => {
-    patchRendererFactory(ngModule.injector.get(RendererFactory2));
-    scanComponentFactoryResolver(
-      ngModule.injector.get(ComponentFactoryResolver)
-    );
+    injectStyles();
     const router = <Router>ngModule.injector.get(Router);
     router.events.subscribe(e => {
       if ('route' in e && !(<any>e.route)._loadedConfig) {
@@ -53,6 +63,26 @@ export function injectIncludeStyles(ngModule: NgModuleRef<any>): () => void {
         });
       }
     });
+  };
+}
+
+/**
+ * Returns a callback that, when invoked, will use the provided `NgModuleRef`
+ * to patch the renderer factory and scan the component factory resolver in
+ * order to enable injecting Polymer style modules for components decorated with
+ * `@IncludeStyles()`.
+ *
+ * @param ngModule the root `NgModule` reference
+ * @returns a callback that will begin the injection process
+ */
+export function injectIncludeStylesNoRouter(
+  ngModule: NgModuleRef<any>
+): () => void {
+  return () => {
+    patchRendererFactory(ngModule.injector.get(RendererFactory2));
+    scanComponentFactoryResolver(
+      ngModule.injector.get(ComponentFactoryResolver)
+    );
   };
 }
 

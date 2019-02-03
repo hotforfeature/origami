@@ -1,4 +1,5 @@
 export * from './src/modules/import-style-module';
+export * from './src/modules/include-styles-no-router.module';
 export * from './src/modules/include-styles.module';
 export * from './src/modules/include-styles';
 export * from './src/modules/inject-styles';

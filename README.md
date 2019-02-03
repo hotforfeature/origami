@@ -39,11 +39,14 @@ Import each module as described in the links above, or if you need all of the mo
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
+// If @angular/router is not used, import modules individually
+// and use IncludeStylesNoRouterModule instead of IncludeStylesModule.
 import { OrigamiModule } from '@codebakery/origami';
 import { AppComponent } from './app.component';
 
 @NgModule({
-  imports: [BrowserModule, FormsModule, OrigamiModule],
+  imports: [BrowserModule, FormsModule, RouterModule, OrigamiModule],
   declarations: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]
@@ -122,6 +125,8 @@ It is recommended to add a script before `ng build` and `ng serve` tasks in `pac
 
 Add the `origami` attribute to any custom element using `[ngModel]`, `[formControl]` or `[formControlName]`.
 
+> Requires the `@angular/forms` module.
+
 ```ts
 import { Component } from '@angular/core';
 import '@polymer/paper-input/paper-input';
@@ -165,6 +170,8 @@ export class AppComponent {}
 ### [Style Modules](styles/README.md#style-modules)
 
 Allows for [style modules](https://www.polymer-project.org/3.0/docs/devguide/style-shadow-dom#style-modules) defined in Polymer to be injected into Angular components.
+
+> Requires the `@angular/router` module. Use `IncludeStylesNoRouterModule` if `@angular/router` is not used.
 
 ```ts
 import { Component } from '@angular/core';

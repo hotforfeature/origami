@@ -11,14 +11,17 @@ Allows for [style modules](https://www.polymer-project.org/3.0/docs/devguide/sty
 
 Import the `IncludeStylesModule` into the app's root `@NgModule`.
 
+> This module _requires_ `@angular/router` in order to include styles in lazy-loaded components. Use `IncludeStylesNoRouterModule` instead if an application does not use `@angular/router`.
+
 ```ts
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
 import { IncludeStylesModule } from '@codebakery/origami/styles';
 import { AppComponent } from './app.component';
 
 @NgModule({
-  imports: [BrowserModule, IncludeStylesModule],
+  imports: [BrowserModule, RouterModule, IncludeStylesModule],
   declarations: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]
