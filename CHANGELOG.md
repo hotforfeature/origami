@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.1.0"></a>
+# [3.1.0](https://github.com/hotforfeature/origami/compare/v3.0.2...v3.1.0) (2019-02-03)
+
+
+### Bug Fixes
+
+* **styles:** document [@angular](https://github.com/angular)/router requirement with alternative IncludeStylesNoRouterModule [#87](https://github.com/hotforfeature/origami/issues/87) ([7bb2886](https://github.com/hotforfeature/origami/commit/7bb2886))
+
+
+### Features
+
+* add Angular 7 support [#88](https://github.com/hotforfeature/origami/issues/88) ([7dccff2](https://github.com/hotforfeature/origami/commit/7dccff2))
+
+
+
 <a name="3.0.2"></a>
 
 ## [3.0.2](https://github.com/hotforfeature/origami/compare/v3.0.1...v3.0.2) (2018-09-11)
