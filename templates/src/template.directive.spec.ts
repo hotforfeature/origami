@@ -61,7 +61,8 @@ describe('templates', () => {
       template: `
         <dom-repeat #repeat [items]="items">
           <template ngNonBindable>
-            <div on-click="(onClick)">[[item]]</div>
+            <!-- prettier-ignore -->
+            <div on-click="onClick">[[item]]</div>
           </template>
         </dom-repeat>
       `,
