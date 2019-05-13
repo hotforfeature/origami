@@ -7,8 +7,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { Router } from '@angular/router';
+import { stylesFromModule } from '@polymer/polymer/lib/utils/style-gather';
 import { whenSet } from '@codebakery/origami/util';
-import { importStyleModule } from './import-style-module';
 import { getStyleModulesFor } from './include-styles';
 import { styleToEmulatedEncapsulation } from './style-to-emulated-encapsulation';
 import { getTypeFor, scanComponentFactoryResolver } from './type-selectors';
@@ -104,9 +104,10 @@ export function patchRendererFactory(factory: RendererFactory2) {
     const selector = element && element.localName;
     if (selector && type && INJECTED_SELECTORS.indexOf(selector) === -1) {
       const styleModules = getStyleModulesFor(getTypeFor(selector));
-      let styles = styleModules.map(styleModule =>
-        importStyleModule(styleModule)
-      );
+      let styles = styleModules.map(styleModule => {
+        const styleElements = stylesFromModule(styleModule);
+        return styleElements.map(e => e.innerText).join('\n');
+      });
       switch (type.encapsulation) {
         case ViewEncapsulation.Emulated:
         default:
