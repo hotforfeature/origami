@@ -1,4 +1,8 @@
-import { styleToEmulatedEncapsulation } from './style-to-emulated-encapsulation';
+import {
+  CONTENT_ATTR,
+  HOST_ATTR,
+  styleToEmulatedEncapsulation
+} from './style-to-emulated-encapsulation';
 
 describe('styles', () => {
   describe('modules', () => {
@@ -6,7 +10,7 @@ describe('styles', () => {
       it('should replace :host', () => {
         expect(
           styleToEmulatedEncapsulation(':host {display: block;}', 'c1')
-        ).toBe('[_nghost-c1] {display: block;}');
+        ).toBe(`[${HOST_ATTR}] {display: block;}`);
       });
 
       it('should replace :host in @media', () => {
@@ -15,7 +19,7 @@ describe('styles', () => {
             '@media (print) {:host {display: block;}}',
             'c1'
           )
-        ).toBe('@media (print) {[_nghost-c1] {display: block;}}');
+        ).toBe(`@media (print) {[${HOST_ATTR}] {display: block;}}`);
       });
 
       it('should replace :host-context()', () => {
@@ -24,19 +28,19 @@ describe('styles', () => {
             ':host-context(.hidden) {display: block;}',
             'c1'
           )
-        ).toBe('*.hidden [_nghost-c1] {display: block;}');
+        ).toBe(`*.hidden [${HOST_ATTR}] {display: block;}`);
         expect(
           styleToEmulatedEncapsulation(
             ':host-context(:not(.hidden)) {display: block;}',
             'c1'
           )
-        ).toBe('*:not(.hidden) [_nghost-c1] {display: block;}');
+        ).toBe(`*:not(.hidden) [${HOST_ATTR}] {display: block;}`);
         expect(
           styleToEmulatedEncapsulation(
             ':host-context([disabled]) {display: block;}',
             'c1'
           )
-        ).toBe('*[disabled] [_nghost-c1] {display: block;}');
+        ).toBe(`*[disabled] [${HOST_ATTR}] {display: block;}`);
       });
 
       it('should replace :host-context() in @media', () => {
@@ -45,78 +49,78 @@ describe('styles', () => {
             '@media (print) {:host-context(.hidden) {display: block;}}',
             'c1'
           )
-        ).toBe('@media (print) {*.hidden [_nghost-c1] {display: block;}}');
+        ).toBe(`@media (print) {*.hidden [${HOST_ATTR}] {display: block;}}`);
         expect(
           styleToEmulatedEncapsulation(
             '@media (print) {:host-context(:not(.hidden)) {display: block;}}',
             'c1'
           )
         ).toBe(
-          '@media (print) {*:not(.hidden) [_nghost-c1] {display: block;}}'
+          `@media (print) {*:not(.hidden) [${HOST_ATTR}] {display: block;}}`
         );
         expect(
           styleToEmulatedEncapsulation(
             '@media (print) {:host-context([disabled]) {display: block;}}',
             'c1'
           )
-        ).toBe('@media (print) {*[disabled] [_nghost-c1] {display: block;}}');
+        ).toBe(`@media (print) {*[disabled] [${HOST_ATTR}] {display: block;}}`);
       });
 
       it('should ignore single and double quoted :host', () => {
         expect(
           styleToEmulatedEncapsulation(":host {content: ':host{}';}", 'c1')
-        ).toBe("[_nghost-c1] {content: ':host{}';}");
+        ).toBe(`[${HOST_ATTR}] {content: ':host{}';}`);
         expect(
           styleToEmulatedEncapsulation(':host {content: ":host{}";}', 'c1')
-        ).toBe('[_nghost-c1] {content: ":host{}";}');
+        ).toBe(`[${HOST_ATTR}] {content: ":host{}";}`);
         expect(
           styleToEmulatedEncapsulation(
             ":host {content: ':host-context(.any){}';}",
             'c1'
           )
-        ).toBe("[_nghost-c1] {content: ':host-context(.any){}';}");
+        ).toBe(`[${HOST_ATTR}] {content: ':host-context(.any){}';}`);
         expect(
           styleToEmulatedEncapsulation(
             ':host {content: ":host-context(.any){}";}',
             'c1'
           )
-        ).toBe('[_nghost-c1] {content: ":host-context(.any){}";}');
+        ).toBe(`[${HOST_ATTR}] {content: ":host-context(.any){}";}`);
         expect(
           styleToEmulatedEncapsulation(
             ":host-context(.any) {content: ':host{}';}",
             'c1'
           )
-        ).toBe("*.any [_nghost-c1] {content: ':host{}';}");
+        ).toBe(`*.any [${HOST_ATTR}] {content: ':host{}';}`);
         expect(
           styleToEmulatedEncapsulation(
             ':host-context(.any) {content: ":host{}";}',
             'c1'
           )
-        ).toBe('*.any [_nghost-c1] {content: ":host{}";}');
+        ).toBe(`*.any [${HOST_ATTR}] {content: ":host{}";}`);
         expect(
           styleToEmulatedEncapsulation(
             ":host-context(.any) {content: ':host-context(.any){}';}",
             'c1'
           )
-        ).toBe("*.any [_nghost-c1] {content: ':host-context(.any){}';}");
+        ).toBe(`*.any [${HOST_ATTR}] {content: ':host-context(.any){}';}`);
         expect(
           styleToEmulatedEncapsulation(
             ':host-context(.any) {content: ":host-context(.any){}";}',
             'c1'
           )
-        ).toBe('*.any [_nghost-c1] {content: ":host-context(.any){}";}');
+        ).toBe(`*.any [${HOST_ATTR}] {content: ":host-context(.any){}";}`);
       });
 
       it('should add content attribute to selectors', () => {
         expect(styleToEmulatedEncapsulation('.blue {color: blue;}', 'c1')).toBe(
-          '.blue[_ngcontent-c1] {color: blue;}'
+          `.blue[${CONTENT_ATTR}] {color: blue;}`
         );
         expect(
           styleToEmulatedEncapsulation('div.blue {color: blue;}', 'c1')
-        ).toBe('div.blue[_ngcontent-c1] {color: blue;}');
+        ).toBe(`div.blue[${CONTENT_ATTR}] {color: blue;}`);
         expect(
           styleToEmulatedEncapsulation('.color,.blue {color: blue;}', 'c1')
-        ).toBe('.color[_ngcontent-c1],.blue[_ngcontent-c1] {color: blue;}');
+        ).toBe(`.color[${CONTENT_ATTR}],.blue[${CONTENT_ATTR}] {color: blue;}`);
       });
 
       it('should add content attribute to selectors in @media', () => {
@@ -125,20 +129,22 @@ describe('styles', () => {
             '@media (print) {.blue {color: blue;}}',
             'c1'
           )
-        ).toBe('@media (print) {.blue[_ngcontent-c1] {color: blue;}}');
+        ).toBe(`@media (print) {.blue[${CONTENT_ATTR}] {color: blue;}}`);
         expect(
           styleToEmulatedEncapsulation(
             '@media (print) {div.blue {background: blue;}}',
             'c1'
           )
-        ).toBe('@media (print) {div.blue[_ngcontent-c1] {background: blue;}}');
+        ).toBe(
+          `@media (print) {div.blue[${CONTENT_ATTR}] {background: blue;}}`
+        );
         expect(
           styleToEmulatedEncapsulation(
             '@media (print) {.color,.blue {color: blue;}}',
             'c1'
           )
         ).toBe(
-          '@media (print) {.color[_ngcontent-c1],.blue[_ngcontent-c1] {color: blue;}}'
+          `@media (print) {.color[${CONTENT_ATTR}],.blue[${CONTENT_ATTR}] {color: blue;}}`
         );
       });
     });

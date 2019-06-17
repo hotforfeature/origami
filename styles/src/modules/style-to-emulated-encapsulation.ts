@@ -1,8 +1,3 @@
-import {
-  ɵshimContentAttribute as shimContentAttribute,
-  ɵshimHostAttribute as shimHostAttribute
-} from '@angular/platform-browser';
-
 /**
  * Regex to find and replace `:host-context()` selectors.
  */
@@ -11,6 +6,11 @@ export const HOST_CONTEXT_REGEX = /:host-context\((.*)\)/g;
  * Regex to find and replace `:host` selectors.
  */
 export const HOST_REGEX = /:host(?:\((.*)\))?/g;
+
+// from @angular/platform-browser
+export const COMPONENT_VARIABLE = '%COMP%';
+export const HOST_ATTR = `_nghost-${COMPONENT_VARIABLE}`;
+export const CONTENT_ATTR = `_ngcontent-${COMPONENT_VARIABLE}`;
 
 /**
  * Converts the provided CSS string to an Angular emulated encapsulation string
@@ -22,10 +22,8 @@ export const HOST_REGEX = /:host(?:\((.*)\))?/g;
  */
 export function styleToEmulatedEncapsulation(
   style: string,
-  id: string
+  _id: string
 ): string {
-  const contentAttribute = shimContentAttribute(id);
-  const hostAttribute = shimHostAttribute(id);
   const statements = parseStyleStatements(style);
   function addEmulation(statement: StyleStatement) {
     if (Array.isArray(statement.statements)) {
@@ -44,15 +42,15 @@ export function styleToEmulatedEncapsulation(
               if (part.includes(':host')) {
                 return part;
               } else {
-                return `${part}[${contentAttribute}]`;
+                return `${part}[${CONTENT_ATTR}]`;
               }
             })
             .join(' ');
         })
         .join(',');
 
-      selector = selector.replace(HOST_CONTEXT_REGEX, `*$1 [${hostAttribute}]`);
-      selector = selector.replace(HOST_REGEX, `[${hostAttribute}]$1`);
+      selector = selector.replace(HOST_CONTEXT_REGEX, `*$1 [${HOST_ATTR}]`);
+      selector = selector.replace(HOST_REGEX, `[${HOST_ATTR}]$1`);
       statement.selector = selector;
     }
   }
