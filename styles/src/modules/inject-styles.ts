@@ -110,9 +110,7 @@ export function patchRendererFactory(factory: RendererFactory2) {
       switch (type.encapsulation) {
         case ViewEncapsulation.Emulated:
         default:
-          styles = styles.map(style =>
-            styleToEmulatedEncapsulation(style, type.id)
-          );
+          styles = styles.map(style => styleToEmulatedEncapsulation(style));
           break;
         case ViewEncapsulation.None:
         case ViewEncapsulation.Native:

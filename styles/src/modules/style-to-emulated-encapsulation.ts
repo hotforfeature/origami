@@ -17,13 +17,9 @@ export const CONTENT_ATTR = `_ngcontent-${COMPONENT_VARIABLE}`;
  * for the given component id.
  *
  * @param style the CSS string to convert
- * @param id the Angular component id
  * @returns a CSS string that emulates encapsulation for the given component id
  */
-export function styleToEmulatedEncapsulation(
-  style: string,
-  _id: string
-): string {
+export function styleToEmulatedEncapsulation(style: string): string {
   const statements = parseStyleStatements(style);
   function addEmulation(statement: StyleStatement) {
     if (Array.isArray(statement.statements)) {
