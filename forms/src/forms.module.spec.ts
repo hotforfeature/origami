@@ -12,7 +12,7 @@ describe('forms', () => {
         template: '<paper-input [(ngModel)]="value" origami></paper-input>'
       })
       class AppComponent {
-        @ViewChild(OrigamiControlValueAccessor)
+        @ViewChild(OrigamiControlValueAccessor, { static: true })
         accessor?: OrigamiControlValueAccessor;
         value = 'foo';
       }

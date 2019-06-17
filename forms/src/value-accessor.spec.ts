@@ -29,7 +29,7 @@ describe('forms', () => {
     localStorage.setItem('vaadin.statistics.optout', 'true');
 
     class BaseWithAccessor {
-      @ViewChild(OrigamiControlValueAccessor)
+      @ViewChild(OrigamiControlValueAccessor, { static: true })
       accessor?: OrigamiControlValueAccessor;
     }
 

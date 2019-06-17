@@ -82,6 +82,7 @@ describe('styles', () => {
         })
         class EmulatedModule {}
 
+        debugger;
         TestBed.configureTestingModule({
           imports: [EmulatedModule, RouterTestingModule.withRoutes([])],
           providers: [INJECT_STYLES_PROVIDER]

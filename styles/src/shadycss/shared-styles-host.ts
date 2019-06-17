@@ -1,8 +1,6 @@
 import { Inject, Optional, Provider } from '@angular/core';
-import {
-  DOCUMENT,
-  ɵDomSharedStylesHost as DomSharedStylesHost
-} from '@angular/platform-browser';
+import { DOCUMENT } from '@angular/common';
+import { ɵDomSharedStylesHost as DomSharedStylesHost } from '@angular/platform-browser';
 import { USING_APPLY, processStylesheets } from './process-stylesheets';
 
 // First group is incorrect escape backslash, second group is rest of mixin detection

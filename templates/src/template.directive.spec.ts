@@ -49,9 +49,9 @@ describe('templates', () => {
     customElements.define(CustomElement.is, CustomElement);
 
     class RepeatComponent {
-      @ViewChild(TemplateDirective)
+      @ViewChild(TemplateDirective, { static: true })
       template!: TemplateDirective;
-      @ViewChild('repeat')
+      @ViewChild('repeat', { static: true })
       repeatRef!: ElementRef;
       items = [1, 2, 3];
     }
@@ -244,7 +244,7 @@ describe('templates', () => {
             this.elementRef.nativeElement,
             'addEventListener'
           ).and.callThrough();
-          return $enablePropertyBindings.apply(this, arguments);
+          return $enablePropertyBindings.apply(this, <any>arguments);
         }
       );
 

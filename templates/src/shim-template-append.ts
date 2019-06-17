@@ -30,7 +30,7 @@ export function shimHTMLTemplateAppend(): Promise<void> {
         if (this.content) {
           return this.content.appendChild(childNode);
         } else {
-          return nativeAppend.apply(this, [childNode]);
+          return <T>nativeAppend.apply(this, [childNode]);
         }
       };
     };

@@ -124,6 +124,6 @@ export function patchRendererFactory(factory: RendererFactory2) {
       INJECTED_SELECTORS.push(selector);
     }
 
-    return $createRenderer.apply(this, arguments);
+    return $createRenderer.apply(this, <any>arguments);
   };
 }

@@ -21,7 +21,7 @@ describe('templates', () => {
       template: '<template></template>'
     })
     class TestComponent {
-      @ViewChild(TemplateDirective)
+      @ViewChild(TemplateDirective, { static: true })
       templateDirective?: TemplateDirective;
     }
 
