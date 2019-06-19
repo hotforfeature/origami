@@ -15,7 +15,8 @@ let CACHED_STYLE_MODULES = new Map<string, string>();
  * `<style>` content for the module. Ensure that the module is imported and
  * added to the DOM before calling `importStyleModule()`.
  *
- * @deprecated importStyleModule will be removed in the next major release.
+ * @deprecated Use stylesFromModule from
+ *   `@polymer/polymer/lib/utils/style-gather`
  * @param styleModule the named id of the style module to import
  * @returns the style module's CSS text, or an empty string if the module does
  *   not exist
@@ -48,7 +49,7 @@ export function importStyleModule(styleModule: string): string {
 /**
  * Resets the cache using by `importStyleModule()`, primarily used for testing.
  *
- * @deprecated clearStyleModuleCache will be removed in the next major release.leModule will be removed in the next major release.
+ * @deprecated clearStyleModuleCache will be removed in the next major release
  */
 export function clearStyleModuleCache() {
   CACHED_STYLE_MODULES = new Map();
