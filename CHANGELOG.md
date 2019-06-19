@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.1.1"></a>
+## [3.1.1](https://github.com/hotforfeature/origami/compare/v3.1.0...v3.1.1) (2019-06-19)
+
+
+### Bug Fixes
+
+* **styles:** emulated encapsulation not working for IncludeStyles ([50e5a3c](https://github.com/hotforfeature/origami/commit/50e5a3c))
+* **styles:** remove unused id from styleToEmulatedEncapsulation ([3b278cd](https://github.com/hotforfeature/origami/commit/3b278cd))
+* **styles:** use polymer *stylesFromModule* to retrieve styles from dom-modules [#90](https://github.com/hotforfeature/origami/issues/90) ([f585ccd](https://github.com/hotforfeature/origami/commit/f585ccd))
+* add support for Angular 8 ([b72cae9](https://github.com/hotforfeature/origami/commit/b72cae9))
+
+
+
 <a name="3.1.0"></a>
 # [3.1.0](https://github.com/hotforfeature/origami/compare/v3.0.2...v3.1.0) (2019-02-03)
 
