@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.1.2"></a>
+## [3.1.2](https://github.com/hotforfeature/origami/compare/v3.1.1...v3.1.2) (2019-11-17)
+
+
+### Bug Fixes
+
+* **bin:** always compile provided paths for ES5 ([7784caa](https://github.com/hotforfeature/origami/commit/7784caa))
+
+
+
 <a name="3.1.1"></a>
 ## [3.1.1](https://github.com/hotforfeature/origami/compare/v3.1.0...v3.1.1) (2019-06-19)
 
