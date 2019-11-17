@@ -3,7 +3,6 @@ import * as path from 'path';
 import * as ts from 'typescript';
 import { copyFolder, getFilesWithExt } from './file-util';
 import { warn } from './log';
-import { getPackageJson } from './package-util';
 import { getDiagnosticsMessage } from './ts-util';
 
 export const ES5_DIR_NAME = '_origami-es5';
@@ -26,10 +25,7 @@ export async function compile(
   opts: CompileOptions = {}
 ): Promise<boolean> {
   try {
-    if (
-      !needsCompile(packagePath) ||
-      (isCompiled(packagePath) && !opts.force)
-    ) {
+    if (isCompiled(packagePath) && !opts.force) {
       return false;
     }
 
@@ -69,19 +65,6 @@ export async function compile(
     warn('Failed to compile()');
     throw error;
   }
-}
-
-function needsCompile(packagePath: string): boolean {
-  const packageJson = getPackageJson(packagePath);
-  return ![
-    'es2015',
-    'esm2015',
-    'esm5',
-    'fesm2015',
-    'fesm5',
-    'esm2015',
-    'module'
-  ].some(key => key in packageJson);
 }
 
 function isCompiled(packagePath: string): boolean {
