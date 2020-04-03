@@ -50,11 +50,16 @@ export class ShadyCSSSharedStylesHost extends DomSharedStylesHost {
     processStylesheets(this.usingApply);
   }
 }
-
+/**
+ * Factory to resolve runtime errors
+ */
+export function ShadyCSSSharedStylesHostFactory() {
+  return new ShadyCSSSharedStylesHost(document);
+}
 /**
  * Provider that replaces the DomSharedStylesHost with ShadyCSSSharedStylesHost.
  */
 export const SHADYCSS_SHARED_STYLES_HOST_PROVIDER: Provider = {
   provide: DomSharedStylesHost,
-  useClass: ShadyCSSSharedStylesHost
+  useFactory: ShadyCSSSharedStylesHostFactory
 };
