@@ -51,7 +51,7 @@ export class ShadyCSSSharedStylesHost extends DomSharedStylesHost {
   }
 }
 /**
- * Factory to resolve runtime errors for Ivy compilation
+ * Factory that creates a new ShadyCSSSharedStylesHost.
  */
 export function ShadyCSSSharedStylesHostFactory() {
   return new ShadyCSSSharedStylesHost(document);
