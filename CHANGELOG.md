@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.2.0"></a>
+# [3.2.0](https://github.com/hotforfeature/origami/compare/v3.1.2...v3.2.0) (2020-04-07)
+
+
+### Features
+
+* add Angular 9 and Ivy support [#99](https://github.com/hotforfeature/origami/issues/99) [#101](https://github.com/hotforfeature/origami/issues/101) ([#102](https://github.com/hotforfeature/origami/issues/102)) ([478057c](https://github.com/hotforfeature/origami/commit/478057c))
+
+
+
 <a name="3.1.2"></a>
 ## [3.1.2](https://github.com/hotforfeature/origami/compare/v3.1.1...v3.1.2) (2019-11-17)
 
