@@ -23,7 +23,10 @@ declare global {
 export function shimCustomElements() {
   if (!window.customElements) {
     const ceMap: {
-      [name: string]: [Function, ElementDefinitionOptions | undefined];
+      [name: string]: [
+        new () => HTMLElement,
+        ElementDefinitionOptions | undefined
+      ];
     } = {};
 
     const ceWhenDefined: {
@@ -42,7 +45,7 @@ export function shimCustomElements() {
 
       define(
         name: string,
-        constructor: Function,
+        constructor: new () => HTMLElement,
         options?: ElementDefinitionOptions
       ) {
         ceMap[name] = [constructor, options];
